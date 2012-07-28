@@ -86,6 +86,7 @@ import android.util.EventLog;
 import android.util.Slog;
 import android.view.ContextThemeWrapper;
 import android.view.Display;
+import com.android.internal.app.ActivityTrigger;
 
 import java.io.FileDescriptor;
 import java.io.PrintWriter;
@@ -256,6 +257,8 @@ final class ActivityStack {
     }
 
     final Handler mHandler;
+
+    static final ActivityTrigger mActivityTrigger = new ActivityTrigger();
 
     final class ActivityStackHandler extends Handler {
         //public Handler() {
@@ -1589,6 +1592,8 @@ final class ActivityStack {
 
         if (DEBUG_SWITCH) Slog.v(TAG, "Resuming " + next);
 
+        mActivityTrigger.activityResumeTrigger(next.intent);
+
         // If we are currently pausing an activity, then don't do anything
         // until that is done.
         if (!mStackSupervisor.allPausedActivitiesComplete()) {
@@ -2040,6 +2045,7 @@ final class ActivityStack {
         task.setFrontOfTask();
 
         r.putInHistory();
+        mActivityTrigger.activityStartTrigger(r.intent);
         if (!isHomeStack() || numActivities() > 0) {
             // We want to show the starting preview window if we are
             // switching to a new task, or the next activity's process is
