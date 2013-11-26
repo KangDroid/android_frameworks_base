@@ -160,6 +160,14 @@
         android:background="@drawable/ripple_drawable"
         android:visibility="gone"
         />
+		
+        <ImageView android:id="@+id/halo_button"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:scaleType="center"
+            android:src="@drawable/ic_notify_halo"
+            android:contentDescription="@string/accessibility_halo"
+		             />
 
     <LinearLayout
         android:id="@+id/weather_container"

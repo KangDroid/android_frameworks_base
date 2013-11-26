@@ -137,6 +137,7 @@ import java.util.concurrent.ExecutorService;
 public class NotificationManagerService extends SystemService {
     static final String TAG = "NotificationService";
     static final boolean DBG = false;
+	private static final String SYSTEM_FOLDER = "/data/system";
 
     static final int MAX_PACKAGE_NOTIFICATIONS = 50;
 
@@ -255,14 +256,19 @@ public class NotificationManagerService extends SystemService {
     private Archive mArchive;
 
     // Notification control database. For now just contains disabled packages.
-    private AtomicFile mPolicyFile;
+    private AtomicFile mPolicyFile, mHaloPolicyFile;
     private HashSet<String> mBlockedPackages = new HashSet<String>();
+    private HashSet<String> mHaloBlacklist = new HashSet<String>();
+    private HashSet<String> mHaloWhitelist = new HashSet<String>();
+    private boolean mHaloPolicyisBlack = true;
 
     private static final int DB_VERSION = 1;
 
     private static final String TAG_BODY = "notification-policy";
     private static final String ATTR_VERSION = "version";
+    private static final String ATTR_HALO_POLICY_IS_BLACK = "policy_is_black";
 
+    private static final String TAG_ALLOWED_PKGS = "allowed-packages";
     private static final String TAG_BLOCKED_PKGS = "blocked-packages";
     private static final String TAG_PACKAGE = "package";
     private static final String ATTR_NAME = "name";
@@ -473,6 +479,7 @@ public class NotificationManagerService extends SystemService {
                 mPolicyFile.failWrite(stream);
             }
         }
+        writeBlockDb();
     }
 
     /** Use this when you actually want to post a notification or toast.
@@ -521,6 +528,7 @@ public class NotificationManagerService extends SystemService {
                 + " callback=" + callback
                 + " duration=" + duration;
         }
+        writeBlockDb();
     }
 
     class NotificationLedValues {
@@ -1020,6 +1028,50 @@ public class NotificationManagerService extends SystemService {
 
         publishBinderService(Context.NOTIFICATION_SERVICE, mService);
         publishLocalService(NotificationManagerInternal.class, mInternalService);
+    }
+
+    private int readPolicy(AtomicFile file, String lookUpTag, HashSet<String> db) {
+        return readPolicy(file, lookUpTag, db, null, 0);
+    }
+
+    private int readPolicy(AtomicFile file, String lookUpTag, HashSet<String> db, String resultTag, int defaultResult) {
+        int result = defaultResult;
+        FileInputStream infile = null;
+        try {
+            infile = file.openRead();
+            final XmlPullParser parser = Xml.newPullParser();
+            parser.setInput(infile, null);
+
+            int type;
+            String tag;
+            int version = DB_VERSION;
+            while ((type = parser.next()) != END_DOCUMENT) {
+                tag = parser.getName();
+                if (type == START_TAG) {
+                    if (TAG_BODY.equals(tag)) {
+                        version = Integer.parseInt(parser.getAttributeValue(null, ATTR_VERSION));
+                        if (resultTag != null) {
+                            String attribValue = parser.getAttributeValue(null, resultTag);
+                            result = Integer.parseInt((attribValue != null ? attribValue : "0"));
+                        }
+                    } else if (lookUpTag.equals(tag)) {
+                        while ((type = parser.next()) != END_DOCUMENT) {
+                            tag = parser.getName();
+                            if (TAG_PACKAGE.equals(tag)) {
+                                db.add(parser.getAttributeValue(null, ATTR_NAME));
+                            } else if (lookUpTag.equals(tag) && type == END_TAG) {
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+        } catch (Exception e) {
+            // Unable to read
+        } finally {
+            IoUtils.closeQuietly(infile);
+        }
+        return result;
     }
 
     /**

@@ -391,7 +391,6 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
 
     // ticker
     private boolean mTickerEnabled;
-    private Ticker mTicker;
     private View mTickerView;
     private boolean mTicking;
 
@@ -560,7 +559,6 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
             if (MULTIUSER_DEBUG) Log.d(TAG, String.format("User setup changed: " +
                     "selfChange=%s userSetup=%s mUserSetup=%s",
                     selfChange, userSetup, mUserSetup));
-
             if (userSetup != mUserSetup) {
                 mUserSetup = userSetup;
                 if (!mUserSetup && mStatusBarView != null)
@@ -917,6 +915,8 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
                 R.id.notification_stack_scroller);
         mStackScroller.setLongPressListener(getNotificationLongClicker());
         mStackScroller.setPhoneStatusBar(this);
+
+ 	   if (mHaloActive) mTickerView.setVisibility(View.GONE);
 
         mKeyguardIconOverflowContainer =
                 (NotificationOverflowContainer) LayoutInflater.from(mContext).inflate(
@@ -1918,7 +1918,7 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
         for (int i = 0; i < N; i++) {
             Entry ent = activeNotifications.get(i);
             if (ent.notification.getScore() < HIDE_ICONS_BELOW_SCORE &&
-                    !NotificationData.showNotificationEvenIfUnprovisioned(ent.notification)) {
+                    !NotificationData.showNotificationEvenIfUnprovisioned(ent.notification) || mHaloTaskerActive) {
                 continue;
             }
             toShow.add(ent.icon);
@@ -2775,7 +2775,7 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
     final int FLIP_DURATION_IN = 125;
     final int FLIP_DURATION = (FLIP_DURATION_IN + FLIP_DURATION_OUT);
 
-    Animator mScrollViewAnim, mClearButtonAnim;
+    Animator mScrollViewAnim, mHaloButtonAnim, mClearButtonAnim;
 
     @Override
     public void animateExpandNotificationsPanel() {
@@ -3288,11 +3288,11 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
     }
 
     @Override
-    protected void tick(StatusBarNotification n, boolean firstTime) {
+    protected void tick(IBinder key, StatusBarNotification n, boolean firstTime) {
         if (!mTickerEnabled) return;
 
         // no ticking in lights-out mode
-        if (!areLightsOn()) return;
+        if (!areLightsOn() && !mHaloActive) return;
 
         // no ticking in Setup
         if (!isDeviceProvisioned()) return;
@@ -3323,6 +3323,10 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
 
         @Override
         public void tickerStarting() {
+            if (!mHaloActive) {
+                mTicking = true;
+                mStatusBarContents.setVisibility(View.GONE);
+			}
             if (!mTickerEnabled) return;
             mTicking = true;
             mStatusBarContents.setVisibility(View.GONE);
@@ -3339,6 +3343,10 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
 
         @Override
         public void tickerDone() {
+            if (!mHaloActive) {
+                mStatusBarContents.setVisibility(View.VISIBLE);
+                mTickerView.setVisibility(View.GONE);
+			}
             if (!mTickerEnabled) return;
             mStatusBarContents.setVisibility(View.VISIBLE);
             mTickerView.setVisibility(View.GONE);
@@ -3367,6 +3375,12 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
             }
             mTickerView.setVisibility(View.GONE);
             // we do not animate the ticker away at this point, just get rid of it (b/6992707)
+            if (!mHaloActive) {
+                mStatusBarContents.setVisibility(View.VISIBLE);
+                mTickerView.setVisibility(View.GONE);
+                mStatusBarContents.startAnimation(loadAnim(com.android.internal.R.anim.fade_in, null));
+                // we do not animate the ticker away at this point, just get rid of it (b/6992707)
+            }
         }
     }
 

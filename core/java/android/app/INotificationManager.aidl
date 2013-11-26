@@ -85,4 +85,10 @@ interface INotificationManager
     oneway void setZenModeCondition(in Condition condition);
     oneway void setAutomaticZenModeConditions(in Uri[] conditionIds);
     Condition[] getAutomaticZenModeConditions();
+    void setHaloPolicyBlack(boolean state);
+    void setHaloStatus(String pkg, boolean status);
+    void setHaloBlacklistStatus(String pkg, boolean status);
+    void setHaloWhitelistStatus(String pkg, boolean status);
+    boolean isHaloPolicyBlack();
+    boolean isPackageAllowedForHalo(String pkg);
 }
