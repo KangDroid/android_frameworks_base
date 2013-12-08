@@ -145,8 +145,10 @@ public class NavigationBarView extends LinearLayout implements NavigationCallbac
         public void onBackAltCleared() {
             // When dismissing ime during unlock, force the back button to run the same appearance
             // animation as home (if we catch this condition early enough).
-            if (!mBackTransitioning && getBackButton().getVisibility() == VISIBLE
-                    && mHomeAppearing && getHomeButton().getAlpha() == 0) {
+            View backView = findViewWithTag(NavbarEditor.NAVBAR_BACK);
+            View homeView = findViewWithTag(NavbarEditor.NAVBAR_HOME);
+            if (!mBackTransitioning && backView != null && backView.getVisibility() == VISIBLE
+                    && mHomeAppearing && homeView != null && homeView.getAlpha() == 0) {
                 getBackButton().setAlpha(0);
                 ValueAnimator a = ObjectAnimator.ofFloat(getBackButton(), "alpha", 0, 1);
                 a.setStartDelay(mStartDelay);
@@ -378,17 +380,24 @@ public class NavigationBarView extends LinearLayout implements NavigationCallbac
 
         mNavigationIconHints = hints;
 		
-		if (button == NavigationCallback.NAVBAR_RECENTS_HINT) {
-            ((ImageView)getRecentsButton()).setImageDrawable(
+        ImageView backView = (ImageView) findViewWithTag(NavbarEditor.NAVBAR_BACK);
+        if (backView != null) {
+            backView.setImageDrawable(null);
+            backView.setImageDrawable(mVertical ? mBackLandIcon : mBackIcon);
+        }
+
+        ((ImageView)getHomeButton()).setImageDrawable(mVertical ? mHomeLandIcon : mHomeIcon);
+        mBackLandIcon.setImeVisible(backAlt);
+        mBackIcon.setImeVisible(backAlt);
+
+
+        ImageView recentView = (ImageView) findViewWithTag(NavbarEditor.NAVBAR_RECENT);
+        if (recentView != null) {
+            recentView.setImageDrawable(
                    (0 != (hints & StatusBarManager.NAVIGATION_HINT_RECENT_ALT))
                             ? (mVertical ? mRecentAltLandIcon : mRecentAltIcon)
                             : (mVertical ? mRecentLandIcon : mRecentIcon));
         }
-        ((ImageView)getBackButton()).setImageDrawable(null);
-        ((ImageView)getBackButton()).setImageDrawable(mVertical ? mBackLandIcon : mBackIcon);
-        ((ImageView)getHomeButton()).setImageDrawable(mVertical ? mHomeLandIcon : mHomeIcon);
-        mBackLandIcon.setImeVisible(backAlt);
-        mBackIcon.setImeVisible(backAlt);
 
         final boolean showImeButton = ((hints & StatusBarManager.NAVIGATION_HINT_IME_SHOWN) != 0);
         getImeSwitchButton().setVisibility(showImeButton ? View.VISIBLE : View.INVISIBLE);
