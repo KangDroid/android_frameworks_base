@@ -3500,6 +3500,12 @@ public final class Settings {
          * @hide
          */
         public static final String NONE_IS_SILENT = "none_is_silent";
+			
+        /**
+         * Settings for clock font style
+         * @hide
+         */
+        public static final String STATUSBAR_CLOCK_FONT_STYLE = "statusbar_clock_font_style";
 
         /**
          * Settings to backup. This is here so that it's in the same place as the settings
