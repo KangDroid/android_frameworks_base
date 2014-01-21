@@ -26,5 +26,8 @@
   <!-- Config.xml entries -->
   <java-symbol type="string" name="config_deviceKeyHandlerLib" />
   <java-symbol type="string" name="config_deviceKeyHandlerClass" />
+  
+  <!-- Hardware key rebinding -->
+  <java-symbol type="integer" name="config_deviceHardwareKeys" />
 	
 </resources>
