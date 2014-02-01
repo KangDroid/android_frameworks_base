@@ -3406,6 +3406,14 @@ public final class Settings {
           */
          public static final String STATUSBAR_CLOCK_FONT_STYLE = "statusbar_clock_font_style";
 
+         /**
+          * Control the display of the action overflow button within app UI.
+          * 0 = use system default
+          * 1 = force on
+          * @hide
+          */
+         public static final String UI_OVERFLOW_BUTTON = "ui_overflow_button";
+		 
        /**
          * Show or hide clock
          * 0 - hide
