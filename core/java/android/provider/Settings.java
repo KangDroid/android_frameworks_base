@@ -3414,6 +3414,12 @@ public final class Settings {
         * @hide
         */
        public static final String LOCKSCREEN_NOTIFICATIONS_EXCLUDED_APPS = "lockscreen_notifications_excluded_apps";
+      
+      /**
+       * Set a custom notification background color
+       * @hide
+       */
+      public static final String LOCKSCREEN_NOTIFICATIONS_COLOR = "lockscreen_notifications_color";
 
 
         /**
@@ -3983,7 +3989,7 @@ public final class Settings {
          */
         public static final String DATA_TO_WIFI_CONNECT_TYPE = "data_to_wifi_connect_type";
 
-         /**
+        /**
          * Settings to backup. This is here so that it's in the same place as the settings
          * keys and easy to update.
          *
