@@ -33,6 +33,7 @@ import android.os.Message;
 import android.os.UserHandle;
 import android.provider.Settings;
 import android.util.AttributeSet;
+import android.view.HapticFeedbackConstants;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,6 +43,7 @@ import android.widget.TextView;
 
 import com.android.systemui.FontSizeUtils;
 import com.android.systemui.R;
+import com.android.systemui.cm.UserContentObserver;
 import com.android.systemui.qs.QSTile.DetailAdapter;
 import com.android.systemui.settings.BrightnessController;
 import com.android.systemui.settings.ToggleSlider;
@@ -53,6 +55,9 @@ import java.util.Collection;
 
 /** View that represents the quick settings tile panel. **/
 public class QSPanel extends ViewGroup {
+    public static final int VIBRATION_DURATION_SHORT = 0;
+    public static final int VIBRATION_DURATION_LONG = 1;
+
     private static final float TILE_ASPECT = 1.2f;
     private static final float TILE_ASPECT_SMALL = 0.8f;
 
@@ -103,6 +108,8 @@ public class QSPanel extends ViewGroup {
 
     private SettingsObserver mSettingsObserver;
 
+    private boolean mShouldVibrate;
+
     public QSPanel(Context context) {
         this(context, null);
     }
@@ -136,8 +143,82 @@ public class QSPanel extends ViewGroup {
             @Override
             public void onClick(View v) {
                 closeDetail();
+                vibrateTile(VIBRATION_DURATION_SHORT);
             }
         });
+
+        final SettingsObserver settingsObserver = new SettingsObserver(new Handler());
+        settingsObserver.observe();
+    }
+
+    private class SettingsObserver extends UserContentObserver {
+
+        SettingsObserver(Handler handler) {
+            super(handler);
+        }
+
+        @Override
+        protected void observe() {
+            super.observe();
+            ContentResolver resolver = mContext.getContentResolver();
+            resolver.registerContentObserver(Settings.Secure.getUriFor(
+                    Settings.Secure.QS_USE_MAIN_TILES),
+                    false, this, UserHandle.USER_ALL);
+            resolver.registerContentObserver(Settings.Secure.getUriFor(
+					Settings.Secure.QS_TILES_VIBRATE),
+                    false, this, UserHandle.USER_ALL);
+            resolver.registerContentObserver(Settings.Secure.getUriFor(
+                    Settings.Secure.QS_SHOW_BRIGHTNESS_SLIDER),
+                    false, this, UserHandle.USER_ALL);
+            resolver.registerContentObserver(Settings.Secure.getUriFor(
+                    Settings.Secure.QS_USE_FOUR_COLUMNS),
+                    false, this, UserHandle.USER_ALL);
+            resolver.registerContentObserver(Settings.System.getUriFor(
+                    Settings.System.QS_TRANSPARENT_SHADE),
+                    false, this, UserHandle.USER_ALL);
+            resolver.registerContentObserver(Settings.System.getUriFor(
+                    Settings.System.QS_COLOR_SWITCH),
+                    false, this, UserHandle.USER_ALL);
+            update();
+
+            onChange(false);
+        }
+
+        @Override
+        protected void unobserve() {
+            super.unobserve();
+            mContext.getContentResolver().unregisterContentObserver(this);
+        }
+
+        @Override
+        protected void update() {
+            ContentResolver resolver = mContext.getContentResolver();
+            mBrightnessSliderEnabled = Settings.Secure.getIntForUser(resolver,
+				Settings.Secure.QS_SHOW_BRIGHTNESS_SLIDER,
+                1, UserHandle.USER_CURRENT) == 1;			
+            mUseFourColumns = Settings.Secure.getIntForUser(resolver,
+				Settings.Secure.QS_USE_FOUR_COLUMNS,
+                0, UserHandle.USER_CURRENT) == 1;			
+            mQSShadeTransparency = Settings.System.getIntForUser(resolver,
+				Settings.System.QS_TRANSPARENT_SHADE,
+                0, UserHandle.USER_CURRENT) == 1;			
+            mQSCSwitch = Settings.System.getIntForUser(resolver,
+				Settings.System.QS_COLOR_SWITCH,
+                0, UserHandle.USER_CURRENT) == 1;			
+            mShouldVibrate = Settings.Secure.getIntForUser(resolver,
+                Settings.Secure.QS_TILES_VIBRATE,
+                1, UserHandle.USER_CURRENT) != 0;
+        }
+    }
+
+    public void vibrateTile(int duration) {
+        if (!mShouldVibrate) return;
+
+        if (VIBRATION_DURATION_SHORT == duration) {
+            performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
+        } else if (VIBRATION_DURATION_LONG == duration) {
+            performHapticFeedback(HapticFeedbackConstants.LONG_PRESS);
+        }
     }
 
     /**
@@ -353,6 +434,7 @@ public class QSPanel extends ViewGroup {
             public void onToggleStateChanged(boolean state) {
                 if (mDetailRecord == r) {
                     fireToggleStateChanged(state);
+                    vibrateTile(VIBRATION_DURATION_SHORT);
                 }
             }
             @Override
@@ -373,18 +455,21 @@ public class QSPanel extends ViewGroup {
             @Override
             public void onClick(View v) {
                 r.tile.click();
+                vibrateTile(VIBRATION_DURATION_SHORT);
             }
         };
         final View.OnClickListener clickSecondary = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 r.tile.secondaryClick();
+                vibrateTile(VIBRATION_DURATION_SHORT);
             }
         };
         final View.OnLongClickListener longClick = new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
                 r.tile.longClick();
+                vibrateTile(VIBRATION_DURATION_LONG);
                 return true;
             }
         };
@@ -448,6 +533,7 @@ public class QSPanel extends ViewGroup {
                 @Override
                 public void onClick(View v) {
                     mHost.startSettingsActivity(settingsIntent);
+                    vibrateTile(VIBRATION_DURATION_LONG);
                 }
             });
 
@@ -708,72 +794,5 @@ public class QSPanel extends ViewGroup {
         void onShowingDetail(QSTile.DetailAdapter detail);
         void onToggleStateChanged(boolean state);
         void onScanStateChanged(boolean state);
-    }
-
-    private class SettingsObserver extends ContentObserver {
-        SettingsObserver(Handler handler) {
-            super(handler);
-        }
-
-        void observe() {
-            ContentResolver resolver = mContext.getContentResolver();
-            resolver.registerContentObserver(Settings.Secure.getUriFor(
-                    Settings.Secure.QS_USE_MAIN_TILES),
-                    false, this, UserHandle.USER_ALL);
-            resolver.registerContentObserver(Settings.Secure.getUriFor(
-                    Settings.Secure.QS_SHOW_BRIGHTNESS_SLIDER),
-                    false, this, UserHandle.USER_ALL);
-            resolver.registerContentObserver(Settings.Secure.getUriFor(
-                    Settings.Secure.QS_USE_FOUR_COLUMNS),
-                    false, this, UserHandle.USER_ALL);
-            resolver.registerContentObserver(Settings.System.getUriFor(
-                    Settings.System.QUICK_SETTINGS_TILES_VIBRATE),
-                    false, this, UserHandle.USER_ALL);
-            resolver.registerContentObserver(Settings.System.getUriFor(
-                    Settings.System.QS_TRANSPARENT_SHADE),
-                    false, this, UserHandle.USER_ALL);
-            resolver.registerContentObserver(Settings.System.getUriFor(
-                    Settings.System.QS_COLOR_SWITCH),
-                    false, this, UserHandle.USER_ALL);
-            update();
-        }
-
-        void unobserve() {
-            ContentResolver resolver = mContext.getContentResolver();
-            resolver.unregisterContentObserver(this);
-        }
-
-        @Override
-        public void onChange(boolean selfChange) {
-            super.onChange(selfChange);
-            update();
-        }
-
-        @Override
-        public void onChange(boolean selfChange, Uri uri) {
-            update();
-        }
-
-        public void update() {
-            ContentResolver resolver = mContext.getContentResolver();
-            mUseMainTiles = Settings.Secure.getIntForUser(
-            mContext.getContentResolver(), Settings.Secure.QS_USE_MAIN_TILES,
-                1, UserHandle.USER_CURRENT) == 1;
-            mBrightnessSliderEnabled = Settings.Secure.getIntForUser(
-            mContext.getContentResolver(), Settings.Secure.QS_SHOW_BRIGHTNESS_SLIDER,
-                1, UserHandle.USER_CURRENT) == 1;
-            mUseFourColumns = Settings.Secure.getIntForUser(
-            mContext.getContentResolver(), Settings.Secure.QS_USE_FOUR_COLUMNS,
-                0, UserHandle.USER_CURRENT) == 1;
-            mVibrationEnabled = Settings.System.getIntForUser(
-            mContext.getContentResolver(), Settings.System.QUICK_SETTINGS_TILES_VIBRATE,
-                0, UserHandle.USER_CURRENT) == 1;
-            mQSShadeTransparency = Settings.System.getIntForUser(
-            mContext.getContentResolver(), Settings.System.QS_TRANSPARENT_SHADE,
-                0, UserHandle.USER_CURRENT) == 1;
-            mQSCSwitch = Settings.System.getIntForUser(
-            mContext.getContentResolver(), Settings.System.QS_COLOR_SWITCH,
-                0, UserHandle.USER_CURRENT) == 1;
-        }
     }
 }
