@@ -6963,6 +6963,12 @@ public final class Settings {
         public static final String QS_USE_FOUR_COLUMNS = "qs_use_four_columns";
 
         /**
+         * Whether to vibrate when quick settings tile is pressed
+         * @hide
+         */
+        public static final String QS_TILES_VIBRATE = "qs_tiles_vibrate";
+
+        /**
          * Custom navring actions
          * @hide
          */
