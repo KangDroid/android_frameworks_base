@@ -1025,17 +1025,17 @@ public final class Settings {
         public static final String VALUE = "value";
 
         protected static boolean putString(ContentResolver resolver, Uri uri,
-                String name, String value) {
+         String name, String value) {
             // The database will take care of replacing duplicates.
             try {
-                ContentValues values = new ContentValues();
-                values.put(NAME, name);
-                values.put(VALUE, value);
-                resolver.insert(uri, values);
-                return true;
+         ContentValues values = new ContentValues();
+         values.put(NAME, name);
+         values.put(VALUE, value);
+         resolver.insert(uri, values);
+         return true;
             } catch (SQLException e) {
-                Log.w(TAG, "Can't set key " + name + " in " + uri, e);
-                return false;
+         Log.w(TAG, "Can't set key " + name + " in " + uri, e);
+         return false;
             }
         }
 
@@ -1066,7 +1066,7 @@ public final class Settings {
         private final String mCallSetCommand;
 
         public NameValueCache(String versionSystemProperty, Uri uri,
-                String getCommand, String setCommand) {
+         String getCommand, String setCommand) {
             mVersionSystemProperty = versionSystemProperty;
             mUri = uri;
             mCallGetCommand = getCommand;
@@ -1076,25 +1076,25 @@ public final class Settings {
         private IContentProvider lazyGetProvider(ContentResolver cr) {
             IContentProvider cp = null;
             synchronized (this) {
-                cp = mContentProvider;
-                if (cp == null) {
-                    cp = mContentProvider = cr.acquireProvider(mUri.getAuthority());
-                }
+         cp = mContentProvider;
+         if (cp == null) {
+             cp = mContentProvider = cr.acquireProvider(mUri.getAuthority());
+         }
             }
             return cp;
         }
 
         public boolean putStringForUser(ContentResolver cr, String name, String value,
-                final int userHandle) {
+         final int userHandle) {
             try {
-                Bundle arg = new Bundle();
-                arg.putString(Settings.NameValueTable.VALUE, value);
-                arg.putInt(CALL_METHOD_USER_KEY, userHandle);
-                IContentProvider cp = lazyGetProvider(cr);
-                cp.call(cr.getPackageName(), mCallSetCommand, name, arg);
+         Bundle arg = new Bundle();
+         arg.putString(Settings.NameValueTable.VALUE, value);
+         arg.putInt(CALL_METHOD_USER_KEY, userHandle);
+         IContentProvider cp = lazyGetProvider(cr);
+         cp.call(cr.getPackageName(), mCallSetCommand, name, arg);
             } catch (RemoteException e) {
-                Log.w(TAG, "Can't set key " + name + " in " + mUri, e);
-                return false;
+         Log.w(TAG, "Can't set key " + name + " in " + mUri, e);
+         return false;
             }
             return true;
         }
@@ -1102,27 +1102,27 @@ public final class Settings {
         public String getStringForUser(ContentResolver cr, String name, final int userHandle) {
             final boolean isSelf = (userHandle == UserHandle.myUserId());
             if (isSelf) {
-                long newValuesVersion = SystemProperties.getLong(mVersionSystemProperty, 0);
+         long newValuesVersion = SystemProperties.getLong(mVersionSystemProperty, 0);
 
-                // Our own user's settings data uses a client-side cache
-                synchronized (this) {
-                    if (mValuesVersion != newValuesVersion) {
-                        if (LOCAL_LOGV || false) {
-                            Log.v(TAG, "invalidate [" + mUri.getLastPathSegment() + "]: current "
-                                    + newValuesVersion + " != cached " + mValuesVersion);
-                        }
+         // Our own user's settings data uses a client-side cache
+         synchronized (this) {
+             if (mValuesVersion != newValuesVersion) {
+                 if (LOCAL_LOGV || false) {
+                     Log.v(TAG, "invalidate [" + mUri.getLastPathSegment() + "]: current "
+                      + newValuesVersion + " != cached " + mValuesVersion);
+                 }
 
-                        mValues.clear();
-                        mValuesVersion = newValuesVersion;
-                    }
+                 mValues.clear();
+                 mValuesVersion = newValuesVersion;
+             }
 
-                    if (mValues.containsKey(name)) {
-                        return mValues.get(name);  // Could be null, that's OK -- negative caching
-                    }
-                }
+             if (mValues.containsKey(name)) {
+                 return mValues.get(name);  // Could be null, that's OK -- negative caching
+             }
+         }
             } else {
-                if (LOCAL_LOGV) Log.v(TAG, "get setting for user " + userHandle
-                        + " by user " + UserHandle.myUserId() + " so skipping cache");
+         if (LOCAL_LOGV) Log.v(TAG, "get setting for user " + userHandle
+                 + " by user " + UserHandle.myUserId() + " so skipping cache");
             }
 
             IContentProvider cp = lazyGetProvider(cr);
@@ -1132,58 +1132,58 @@ public final class Settings {
             // this interface?) then we fall back to the query/table
             // interface.
             if (mCallGetCommand != null) {
-                try {
-                    Bundle args = null;
-                    if (!isSelf) {
-                        args = new Bundle();
-                        args.putInt(CALL_METHOD_USER_KEY, userHandle);
-                    }
-                    Bundle b = cp.call(cr.getPackageName(), mCallGetCommand, name, args);
-                    if (b != null) {
-                        String value = b.getPairValue();
-                        // Don't update our cache for reads of other users' data
-                        if (isSelf) {
-                            synchronized (this) {
-                                mValues.put(name, value);
-                            }
-                        } else {
-                            if (LOCAL_LOGV) Log.i(TAG, "call-query of user " + userHandle
-                                    + " by " + UserHandle.myUserId()
-                                    + " so not updating cache");
-                        }
-                        return value;
-                    }
-                    // If the response Bundle is null, we fall through
-                    // to the query interface below.
-                } catch (RemoteException e) {
-                    // Not supported by the remote side?  Fall through
-                    // to query().
-                }
+         try {
+             Bundle args = null;
+             if (!isSelf) {
+                 args = new Bundle();
+                 args.putInt(CALL_METHOD_USER_KEY, userHandle);
+             }
+             Bundle b = cp.call(cr.getPackageName(), mCallGetCommand, name, args);
+             if (b != null) {
+                 String value = b.getPairValue();
+                 // Don't update our cache for reads of other users' data
+                 if (isSelf) {
+                     synchronized (this) {
+                  mValues.put(name, value);
+                     }
+                 } else {
+                     if (LOCAL_LOGV) Log.i(TAG, "call-query of user " + userHandle
+                      + " by " + UserHandle.myUserId()
+                      + " so not updating cache");
+                 }
+                 return value;
+             }
+             // If the response Bundle is null, we fall through
+             // to the query interface below.
+         } catch (RemoteException e) {
+             // Not supported by the remote side?  Fall through
+             // to query().
+         }
             }
 
             Cursor c = null;
             try {
-                c = cp.query(cr.getPackageName(), mUri, SELECT_VALUE, NAME_EQ_PLACEHOLDER,
-                             new String[]{name}, null, null);
-                if (c == null) {
-                    Log.w(TAG, "Can't get key " + name + " from " + mUri);
-                    return null;
-                }
+         c = cp.query(cr.getPackageName(), mUri, SELECT_VALUE, NAME_EQ_PLACEHOLDER,
+                      new String[]{name}, null, null);
+         if (c == null) {
+             Log.w(TAG, "Can't get key " + name + " from " + mUri);
+             return null;
+         }
 
-                String value = c.moveToNext() ? c.getString(0) : null;
-                synchronized (this) {
-                    mValues.put(name, value);
-                }
-                if (LOCAL_LOGV) {
-                    Log.v(TAG, "cache miss [" + mUri.getLastPathSegment() + "]: " +
-                            name + " = " + (value == null ? "(null)" : value));
-                }
-                return value;
+         String value = c.moveToNext() ? c.getString(0) : null;
+         synchronized (this) {
+             mValues.put(name, value);
+         }
+         if (LOCAL_LOGV) {
+             Log.v(TAG, "cache miss [" + mUri.getLastPathSegment() + "]: " +
+                     name + " = " + (value == null ? "(null)" : value));
+         }
+         return value;
             } catch (RemoteException e) {
-                Log.w(TAG, "Can't get key " + name + " from " + mUri, e);
-                return null;  // Return null, but don't cache it.
+         Log.w(TAG, "Can't get key " + name + " from " + mUri, e);
+         return null;  // Return null, but don't cache it.
             } finally {
-                if (c != null) c.close();
+         if (c != null) c.close();
             }
         }
     }
@@ -1203,10 +1203,10 @@ public final class Settings {
             Uri.parse("content://" + AUTHORITY + "/system");
 
         private static final NameValueCache sNameValueCache = new NameValueCache(
-                SYS_PROP_SETTING_VERSION,
-                CONTENT_URI,
-                CALL_METHOD_GET_SYSTEM,
-                CALL_METHOD_PUT_SYSTEM);
+         SYS_PROP_SETTING_VERSION,
+         CONTENT_URI,
+         CALL_METHOD_GET_SYSTEM,
+         CALL_METHOD_PUT_SYSTEM);
 
         private static final HashSet<String> MOVED_TO_SECURE;
         static {
@@ -1324,16 +1324,16 @@ public final class Settings {
 
         /** @hide */
         public static String getStringForUser(ContentResolver resolver, String name,
-                int userHandle) {
+         int userHandle) {
             if (MOVED_TO_SECURE.contains(name)) {
-                Log.w(TAG, "Setting " + name + " has moved from android.provider.Settings.System"
-                        + " to android.provider.Settings.Secure, returning read-only value.");
-                return Secure.getStringForUser(resolver, name, userHandle);
+         Log.w(TAG, "Setting " + name + " has moved from android.provider.Settings.System"
+                 + " to android.provider.Settings.Secure, returning read-only value.");
+         return Secure.getStringForUser(resolver, name, userHandle);
             }
             if (MOVED_TO_GLOBAL.contains(name) || MOVED_TO_SECURE_THEN_GLOBAL.contains(name)) {
-                Log.w(TAG, "Setting " + name + " has moved from android.provider.Settings.System"
-                        + " to android.provider.Settings.Global, returning read-only value.");
-                return Global.getStringForUser(resolver, name, userHandle);
+         Log.w(TAG, "Setting " + name + " has moved from android.provider.Settings.System"
+                 + " to android.provider.Settings.Global, returning read-only value.");
+         return Global.getStringForUser(resolver, name, userHandle);
             }
             return sNameValueCache.getStringForUser(resolver, name, userHandle);
         }
@@ -1351,16 +1351,16 @@ public final class Settings {
 
         /** @hide */
         public static boolean putStringForUser(ContentResolver resolver, String name, String value,
-                int userHandle) {
+         int userHandle) {
             if (MOVED_TO_SECURE.contains(name)) {
-                Log.w(TAG, "Setting " + name + " has moved from android.provider.Settings.System"
-                        + " to android.provider.Settings.Secure, value is unchanged.");
-                return false;
+         Log.w(TAG, "Setting " + name + " has moved from android.provider.Settings.System"
+                 + " to android.provider.Settings.Secure, value is unchanged.");
+         return false;
             }
             if (MOVED_TO_GLOBAL.contains(name) || MOVED_TO_SECURE_THEN_GLOBAL.contains(name)) {
-                Log.w(TAG, "Setting " + name + " has moved from android.provider.Settings.System"
-                        + " to android.provider.Settings.Global, value is unchanged.");
-                return false;
+         Log.w(TAG, "Setting " + name + " has moved from android.provider.Settings.System"
+                 + " to android.provider.Settings.Global, value is unchanged.");
+         return false;
             }
             return sNameValueCache.putStringForUser(resolver, name, value, userHandle);
         }
@@ -1373,14 +1373,14 @@ public final class Settings {
          */
         public static Uri getUriFor(String name) {
             if (MOVED_TO_SECURE.contains(name)) {
-                Log.w(TAG, "Setting " + name + " has moved from android.provider.Settings.System"
-                    + " to android.provider.Settings.Secure, returning Secure URI.");
-                return Secure.getUriFor(Secure.CONTENT_URI, name);
+         Log.w(TAG, "Setting " + name + " has moved from android.provider.Settings.System"
+             + " to android.provider.Settings.Secure, returning Secure URI.");
+         return Secure.getUriFor(Secure.CONTENT_URI, name);
             }
             if (MOVED_TO_GLOBAL.contains(name) || MOVED_TO_SECURE_THEN_GLOBAL.contains(name)) {
-                Log.w(TAG, "Setting " + name + " has moved from android.provider.Settings.System"
-                        + " to android.provider.Settings.Global, returning read-only global URI.");
-                return Global.getUriFor(Global.CONTENT_URI, name);
+         Log.w(TAG, "Setting " + name + " has moved from android.provider.Settings.System"
+                 + " to android.provider.Settings.Global, returning read-only global URI.");
+         return Global.getUriFor(Global.CONTENT_URI, name);
             }
             return getUriFor(CONTENT_URI, name);
         }
@@ -1407,9 +1407,9 @@ public final class Settings {
         public static int getIntForUser(ContentResolver cr, String name, int def, int userHandle) {
             String v = getStringForUser(cr, name, userHandle);
             try {
-                return v != null ? Integer.parseInt(v) : def;
+         return v != null ? Integer.parseInt(v) : def;
             } catch (NumberFormatException e) {
-                return def;
+         return def;
             }
         }
 
@@ -1432,18 +1432,18 @@ public final class Settings {
          * @return The setting's current value.
          */
         public static int getInt(ContentResolver cr, String name)
-                throws SettingNotFoundException {
+         throws SettingNotFoundException {
             return getIntForUser(cr, name, UserHandle.myUserId());
         }
 
         /** @hide */
         public static int getIntForUser(ContentResolver cr, String name, int userHandle)
-                throws SettingNotFoundException {
+         throws SettingNotFoundException {
             String v = getStringForUser(cr, name, userHandle);
             try {
-                return Integer.parseInt(v);
+         return Integer.parseInt(v);
             } catch (NumberFormatException e) {
-                throw new SettingNotFoundException(name);
+         throw new SettingNotFoundException(name);
             }
         }
 
@@ -1466,7 +1466,7 @@ public final class Settings {
 
         /** @hide */
         public static boolean putIntForUser(ContentResolver cr, String name, int value,
-                int userHandle) {
+         int userHandle) {
             return putStringForUser(cr, name, Integer.toString(value), userHandle);
         }
 
@@ -1490,13 +1490,13 @@ public final class Settings {
 
         /** @hide */
         public static long getLongForUser(ContentResolver cr, String name, long def,
-                int userHandle) {
+         int userHandle) {
             String valString = getStringForUser(cr, name, userHandle);
             long value;
             try {
-                value = valString != null ? Long.parseLong(valString) : def;
+         value = valString != null ? Long.parseLong(valString) : def;
             } catch (NumberFormatException e) {
-                value = def;
+         value = def;
             }
             return value;
         }
@@ -1519,18 +1519,18 @@ public final class Settings {
          * name can't be found or the setting value is not an integer.
          */
         public static long getLong(ContentResolver cr, String name)
-                throws SettingNotFoundException {
+         throws SettingNotFoundException {
             return getLongForUser(cr, name, UserHandle.myUserId());
         }
 
         /** @hide */
         public static long getLongForUser(ContentResolver cr, String name, int userHandle)
-                throws SettingNotFoundException {
+         throws SettingNotFoundException {
             String valString = getStringForUser(cr, name, userHandle);
             try {
-                return Long.parseLong(valString);
+         return Long.parseLong(valString);
             } catch (NumberFormatException e) {
-                throw new SettingNotFoundException(name);
+         throw new SettingNotFoundException(name);
             }
         }
 
@@ -1553,7 +1553,7 @@ public final class Settings {
 
         /** @hide */
         public static boolean putLongForUser(ContentResolver cr, String name, long value,
-                int userHandle) {
+         int userHandle) {
             return putStringForUser(cr, name, Long.toString(value), userHandle);
         }
 
@@ -1577,12 +1577,12 @@ public final class Settings {
 
         /** @hide */
         public static float getFloatForUser(ContentResolver cr, String name, float def,
-                int userHandle) {
+         int userHandle) {
             String v = getStringForUser(cr, name, userHandle);
             try {
-                return v != null ? Float.parseFloat(v) : def;
+         return v != null ? Float.parseFloat(v) : def;
             } catch (NumberFormatException e) {
-                return def;
+         return def;
             }
         }
 
@@ -1605,21 +1605,21 @@ public final class Settings {
          * @return The setting's current value.
          */
         public static float getFloat(ContentResolver cr, String name)
-                throws SettingNotFoundException {
+         throws SettingNotFoundException {
             return getFloatForUser(cr, name, UserHandle.myUserId());
         }
 
         /** @hide */
         public static float getFloatForUser(ContentResolver cr, String name, int userHandle)
-                throws SettingNotFoundException {
+         throws SettingNotFoundException {
             String v = getStringForUser(cr, name, userHandle);
             if (v == null) {
-                throw new SettingNotFoundException(name);
+         throw new SettingNotFoundException(name);
             }
             try {
-                return Float.parseFloat(v);
+         return Float.parseFloat(v);
             } catch (NumberFormatException e) {
-                throw new SettingNotFoundException(name);
+         throw new SettingNotFoundException(name);
             }
         }
 
@@ -1642,7 +1642,7 @@ public final class Settings {
 
         /** @hide */
         public static boolean putFloatForUser(ContentResolver cr, String name, float value,
-                int userHandle) {
+         int userHandle) {
             return putStringForUser(cr, name, Float.toString(value), userHandle);
         }
 
@@ -1660,11 +1660,11 @@ public final class Settings {
 
         /** @hide */
         public static void getConfigurationForUser(ContentResolver cr, Configuration outConfig,
-                int userHandle) {
+         int userHandle) {
             outConfig.fontScale = Settings.System.getFloatForUser(
-                cr, FONT_SCALE, outConfig.fontScale, userHandle);
+         cr, FONT_SCALE, outConfig.fontScale, userHandle);
             if (outConfig.fontScale < 0) {
-                outConfig.fontScale = 1;
+         outConfig.fontScale = 1;
             }
         }
 
@@ -1690,7 +1690,7 @@ public final class Settings {
 
         /** @hide */
         public static boolean putConfigurationForUser(ContentResolver cr, Configuration config,
-                int userHandle) {
+         int userHandle) {
             return Settings.System.putFloatForUser(cr, FONT_SCALE, config.fontScale, userHandle);
         }
 
@@ -1710,7 +1710,7 @@ public final class Settings {
          * @deprecated - Do not use
          */
         public static boolean getShowGTalkServiceStatusForUser(ContentResolver cr,
-                int userHandle) {
+         int userHandle) {
             return getIntForUser(cr, SHOW_GTALK_SERVICE_STATUS, 0, userHandle) != 0;
         }
 
@@ -1726,7 +1726,7 @@ public final class Settings {
          */
         @Deprecated
         public static void setShowGTalkServiceStatusForUser(ContentResolver cr, boolean flag,
-                int userHandle) {
+         int userHandle) {
             putIntForUser(cr, SHOW_GTALK_SERVICE_STATUS, flag ? 1 : 0, userHandle);
         }
 
@@ -1828,7 +1828,7 @@ public final class Settings {
          */
         @Deprecated
         public static final String AIRPLANE_MODE_TOGGLEABLE_RADIOS =
-                Global.AIRPLANE_MODE_TOGGLEABLE_RADIOS;
+         Global.AIRPLANE_MODE_TOGGLEABLE_RADIOS;
 
         /**
          * @deprecated Use {@link android.provider.Settings.Global#WIFI_SLEEP_POLICY} instead
@@ -1847,7 +1847,7 @@ public final class Settings {
          */
         @Deprecated
         public static final int WIFI_SLEEP_POLICY_NEVER_WHILE_PLUGGED =
-                Global.WIFI_SLEEP_POLICY_NEVER_WHILE_PLUGGED;
+         Global.WIFI_SLEEP_POLICY_NEVER_WHILE_PLUGGED;
 
         /**
          * @deprecated Use {@link android.provider.Settings.Global#WIFI_SLEEP_POLICY_NEVER} instead
@@ -2287,7 +2287,7 @@ public final class Settings {
         public static final String TEXT_SHOW_PASSWORD = "show_password";
 
         public static final String SHOW_GTALK_SERVICE_STATUS =
-                "SHOW_GTALK_SERVICE_STATUS";
+         "SHOW_GTALK_SERVICE_STATUS";
 
         /**
          * Name of activity to use for wallpaper on the home screen.
@@ -2406,7 +2406,7 @@ public final class Settings {
          * @hide
          */
         public static final String HIDE_ROTATION_LOCK_TOGGLE_FOR_ACCESSIBILITY =
-                "hide_rotation_lock_toggle_for_accessibility";
+         "hide_rotation_lock_toggle_for_accessibility";
 
         /**
          * Whether the phone vibrates when it is ringing due to an incoming call. This will
@@ -2431,8 +2431,8 @@ public final class Settings {
         /**
          * CDMA only settings
          * DTMF tone type played by the dialer when dialing.
-         *                 0 = Normal
-         *                 1 = Long
+         *          0 = Normal
+         *          1 = Long
          * @hide
          */
         public static final String DTMF_TONE_TYPE_WHEN_DIALING = "dtmf_tone_type";
@@ -2493,76 +2493,76 @@ public final class Settings {
          * @hide
          */
         public static final String NOTIFICATION_LIGHT_PULSE_DEFAULT_COLOR =
-                "notification_light_pulse_default_color";
+         "notification_light_pulse_default_color";
 
         /**
          * How long to flash the notification LED by default
          * @hide
          */
         public static final String NOTIFICATION_LIGHT_PULSE_DEFAULT_LED_ON =
-                "notification_light_pulse_default_led_on";
+         "notification_light_pulse_default_led_on";
 
         /**
          * How long to wait between flashes for the notification LED by default
          * @hide
          */
         public static final String NOTIFICATION_LIGHT_PULSE_DEFAULT_LED_OFF =
-                "notification_light_pulse_default_led_off";
+         "notification_light_pulse_default_led_off";
 
         /**
          * What color to use for the missed call notification LED
          * @hide
          */
         public static final String NOTIFICATION_LIGHT_PULSE_CALL_COLOR =
-                "notification_light_pulse_call_color";
+         "notification_light_pulse_call_color";
 
         /**
          * How long to flash the missed call notification LED
          * @hide
          */
         public static final String NOTIFICATION_LIGHT_PULSE_CALL_LED_ON =
-                "notification_light_pulse_call_led_on";
+         "notification_light_pulse_call_led_on";
 
         /**
          * How long to wait between flashes for the missed call notification LED
          * @hide
          */
         public static final String NOTIFICATION_LIGHT_PULSE_CALL_LED_OFF =
-                "notification_light_pulse_call_led_off";
+         "notification_light_pulse_call_led_off";
         /**
          * What color to use for the voicemail notification LED
          * @hide
          */
         public static final String NOTIFICATION_LIGHT_PULSE_VMAIL_COLOR =
-                "notification_light_pulse_vmail_color";
+         "notification_light_pulse_vmail_color";
 
         /**
          * How long to flash the voicemail notification LED
          * @hide
          */
         public static final String NOTIFICATION_LIGHT_PULSE_VMAIL_LED_ON =
-                "notification_light_pulse_vmail_led_on";
+         "notification_light_pulse_vmail_led_on";
 
         /**
          * How long to wait between flashes for the voicemail notification LED
          * @hide
          */
         public static final String NOTIFICATION_LIGHT_PULSE_VMAIL_LED_OFF =
-                "notification_light_pulse_vmail_led_off";
+         "notification_light_pulse_vmail_led_off";
 
         /**
          * Whether to use the custom LED values for the notification pulse LED.
          * @hide
          */
         public static final String NOTIFICATION_LIGHT_PULSE_CUSTOM_ENABLE =
-                "notification_light_pulse_custom_enable";
+         "notification_light_pulse_custom_enable";
 
         /**
          * Which custom LED values to use for the notification pulse LED.
          * @hide
          */
         public static final String NOTIFICATION_LIGHT_PULSE_CUSTOM_VALUES =
-                "notification_light_pulse_custom_values";
+         "notification_light_pulse_custom_values";
 
         /**
          * Whether the battery light should be enabled (if hardware supports it)
@@ -2621,7 +2621,7 @@ public final class Settings {
          * @hide
          */
         public static final String WINDOW_ORIENTATION_LISTENER_LOG =
-                "window_orientation_listener_log";
+         "window_orientation_listener_log";
 
         /**
          * @deprecated Use {@link android.provider.Settings.Global#POWER_SOUNDS_ENABLED}
@@ -2850,7 +2850,7 @@ public final class Settings {
          * @hide
          */
         public static final String HEADS_UP_USER_ENABLED =
-                "heads_up_user_enabled";
+         "heads_up_user_enabled";
 
         /** @hide */ public static final int HEADS_UP_USER_OFF = 0;
         /** @hide */ public static final int HEADS_UP_USER_ON = 1;
@@ -2868,7 +2868,7 @@ public final class Settings {
          * @hide
          */
         public static final String HEADS_UP_TICKER_ENABLED =
-                "heads_up_ticker_enabled";
+         "heads_up_ticker_enabled";
 
         /** @hide */ public static final int HEADS_UP_TICKER_OFF = 0;
         /** @hide */ public static final int HEADS_UP_TICKER_ON = 1;
@@ -3070,7 +3070,7 @@ public final class Settings {
          * @hide
          */
         public static final String STATUS_BAR_SHOW_BATTERY_PERCENT =
-                "status_bar_show_battery_percent";
+         "status_bar_show_battery_percent";
 
 	    /**
          * Whether to hide the clock, show it in the right or left
@@ -3298,7 +3298,7 @@ public final class Settings {
          * @hide
          */
         public static final String KEY_APP_SWITCH_LONG_PRESS_ACTION =
-                "key_app_switch_long_press_action";
+         "key_app_switch_long_press_action";
 
         /**
          * Action to perform when the app switch key is double tapped. (default: ACTION_NULL)
@@ -3306,7 +3306,7 @@ public final class Settings {
          * @hide
          */
         public static final String KEY_APP_SWITCH_DOUBLE_TAP_ACTION =
-                "key_app_switch_double_tap_action";
+         "key_app_switch_double_tap_action";
 
         /**
          * Action to perform when the camera key is pressed. (default: LAUNCH_CAMERA)
@@ -3321,7 +3321,7 @@ public final class Settings {
          * @hide
          */
         public static final String KEY_CAMERA_LONG_PRESS_ACTION =
-                "key_camera_long_press_action";
+         "key_camera_long_press_action";
 
         /**
          * Action to perform when the camera key is double tapped. (default: ACTION_NULL)
@@ -3329,7 +3329,7 @@ public final class Settings {
          * @hide
          */
         public static final String KEY_CAMERA_DOUBLE_TAP_ACTION =
-                "key_camera_double_tap_action";
+         "key_camera_double_tap_action";
 
         /**
          * Forces formal text input.  1 to replace emoticon key with enter key.
@@ -3409,6 +3409,78 @@ public final class Settings {
          * @hide
          */
         public static final String MENU_VISIBILITY = "menu_visibility";
+		
+        /**
+         * Whether to use slim recents
+         * @hide
+         */
+        public static final String USE_SLIM_RECENTS = "use_slim_recents";
+
+        /**
+         * Whether to only show actually running tasks
+         * @hide
+         */
+        public static final String RECENT_SHOW_RUNNING_TASKS = "show_running_tasks";
+
+        /**
+         * Amount of apps to show in recents
+         * @hide
+         */
+        public static final String RECENTS_MAX_APPS = "recents_max_apps";
+
+        /**
+         * Whether recent panel gravity is left or right (default = Gravity.RIGHT).
+         * @hide
+         */
+        public static final String RECENT_PANEL_GRAVITY = "recent_panel_gravity";
+
+        /**
+         * Size of recent panel view in percent (default = 100).
+         * @hide
+         */
+        public static final String RECENT_PANEL_SCALE_FACTOR = "recent_panel_scale_factor";
+
+        /**
+         * User favorite tasks for recent panel.
+         * @hide
+         */
+        public static final String RECENT_PANEL_FAVORITES = "recent_panel_favorites";
+
+        /**
+         * Recent panel expanded mode (auto = 0, always = 1, never = 2).
+         * default = 0.
+         *
+         * @hide
+         */
+        public static final String RECENT_PANEL_EXPANDED_MODE = "recent_panel_expanded_mode";
+
+        /**
+         * Recent panel: Show topmost task
+         *
+         * @hide
+         */
+        public static final String RECENT_PANEL_SHOW_TOPMOST = "recent_panel_show_topmost";
+
+        /**
+         * Recent panel background color
+         *
+         * @hide
+         */
+        public static final String RECENT_PANEL_BG_COLOR = "recent_panel_bg_color";
+
+        /**
+         * Recent card background color
+         *
+         * @hide
+         */
+        public static final String RECENT_CARD_BG_COLOR = "recent_card_bg_color";
+
+        /**
+         * Recent card text color
+         *
+         * @hide
+         */
+        public static final String RECENT_CARD_TEXT_COLOR = "recent_card_text_color";
 
         /**
          * Settings to backup. This is here so that it's in the same place as the settings
@@ -3455,7 +3527,7 @@ public final class Settings {
             TEXT_AUTO_CAPS,
             TEXT_AUTO_PUNCTUATE,
             TEXT_SHOW_PASSWORD,
-            AUTO_TIME,                  // moved to global
+            AUTO_TIME,           // moved to global
             AUTO_TIME_ZONE,             // moved to global
             TIME_12_24,
             DATE_FORMAT,
@@ -3629,7 +3701,7 @@ public final class Settings {
          */
         @Deprecated
         public static final String WIFI_MOBILE_DATA_TRANSITION_WAKELOCK_TIMEOUT_MS =
-                Global.WIFI_MOBILE_DATA_TRANSITION_WAKELOCK_TIMEOUT_MS;
+         Global.WIFI_MOBILE_DATA_TRANSITION_WAKELOCK_TIMEOUT_MS;
 
         /**
          * @deprecated Use
@@ -3637,7 +3709,7 @@ public final class Settings {
          */
         @Deprecated
         public static final String WIFI_NETWORKS_AVAILABLE_NOTIFICATION_ON =
-                Global.WIFI_NETWORKS_AVAILABLE_NOTIFICATION_ON;
+         Global.WIFI_NETWORKS_AVAILABLE_NOTIFICATION_ON;
 
         /**
          * @deprecated Use
@@ -3645,7 +3717,7 @@ public final class Settings {
          */
         @Deprecated
         public static final String WIFI_NETWORKS_AVAILABLE_REPEAT_DELAY =
-                Global.WIFI_NETWORKS_AVAILABLE_REPEAT_DELAY;
+         Global.WIFI_NETWORKS_AVAILABLE_REPEAT_DELAY;
 
         /**
          * @deprecated Use {@link android.provider.Settings.Global#WIFI_NUM_OPEN_NETWORKS_KEPT}
@@ -3667,7 +3739,7 @@ public final class Settings {
          */
         @Deprecated
         public static final String WIFI_WATCHDOG_ACCEPTABLE_PACKET_LOSS_PERCENTAGE =
-                Secure.WIFI_WATCHDOG_ACCEPTABLE_PACKET_LOSS_PERCENTAGE;
+         Secure.WIFI_WATCHDOG_ACCEPTABLE_PACKET_LOSS_PERCENTAGE;
 
         /**
          * @deprecated Use {@link android.provider.Settings.Secure#WIFI_WATCHDOG_AP_COUNT} instead
@@ -3681,7 +3753,7 @@ public final class Settings {
          */
         @Deprecated
         public static final String WIFI_WATCHDOG_BACKGROUND_CHECK_DELAY_MS =
-                Secure.WIFI_WATCHDOG_BACKGROUND_CHECK_DELAY_MS;
+         Secure.WIFI_WATCHDOG_BACKGROUND_CHECK_DELAY_MS;
 
         /**
          * @deprecated Use
@@ -3689,7 +3761,7 @@ public final class Settings {
          */
         @Deprecated
         public static final String WIFI_WATCHDOG_BACKGROUND_CHECK_ENABLED =
-                Secure.WIFI_WATCHDOG_BACKGROUND_CHECK_ENABLED;
+         Secure.WIFI_WATCHDOG_BACKGROUND_CHECK_ENABLED;
 
         /**
          * @deprecated Use
@@ -3698,7 +3770,7 @@ public final class Settings {
          */
         @Deprecated
         public static final String WIFI_WATCHDOG_BACKGROUND_CHECK_TIMEOUT_MS =
-                Secure.WIFI_WATCHDOG_BACKGROUND_CHECK_TIMEOUT_MS;
+         Secure.WIFI_WATCHDOG_BACKGROUND_CHECK_TIMEOUT_MS;
 
         /**
          * @deprecated Use
@@ -3760,10 +3832,10 @@ public final class Settings {
 
         // Populated lazily, guarded by class object:
         private static final NameValueCache sNameValueCache = new NameValueCache(
-                SYS_PROP_SETTING_VERSION,
-                CONTENT_URI,
-                CALL_METHOD_GET_SECURE,
-                CALL_METHOD_PUT_SECURE);
+         SYS_PROP_SETTING_VERSION,
+         CONTENT_URI,
+         CALL_METHOD_GET_SECURE,
+         CALL_METHOD_PUT_SECURE);
 
         private static ILockSettings sLockSettings = null;
 
@@ -3911,28 +3983,28 @@ public final class Settings {
 
         /** @hide */
         public static String getStringForUser(ContentResolver resolver, String name,
-                int userHandle) {
+         int userHandle) {
             if (MOVED_TO_GLOBAL.contains(name)) {
-                Log.w(TAG, "Setting " + name + " has moved from android.provider.Settings.Secure"
-                        + " to android.provider.Settings.Global.");
-                return Global.getStringForUser(resolver, name, userHandle);
+         Log.w(TAG, "Setting " + name + " has moved from android.provider.Settings.Secure"
+                 + " to android.provider.Settings.Global.");
+         return Global.getStringForUser(resolver, name, userHandle);
             }
 
             if (MOVED_TO_LOCK_SETTINGS.contains(name)) {
-                synchronized (Secure.class) {
-                    if (sLockSettings == null) {
-                        sLockSettings = ILockSettings.Stub.asInterface(
-                                (IBinder) ServiceManager.getService("lock_settings"));
-                        sIsSystemProcess = Process.myUid() == Process.SYSTEM_UID;
-                    }
-                }
-                if (sLockSettings != null && !sIsSystemProcess) {
-                    try {
-                        return sLockSettings.getString(name, "0", userHandle);
-                    } catch (RemoteException re) {
-                        // Fall through
-                    }
-                }
+         synchronized (Secure.class) {
+             if (sLockSettings == null) {
+                 sLockSettings = ILockSettings.Stub.asInterface(
+                  (IBinder) ServiceManager.getService("lock_settings"));
+                 sIsSystemProcess = Process.myUid() == Process.SYSTEM_UID;
+             }
+         }
+         if (sLockSettings != null && !sIsSystemProcess) {
+             try {
+                 return sLockSettings.getString(name, "0", userHandle);
+             } catch (RemoteException re) {
+                 // Fall through
+             }
+         }
             }
 
             return sNameValueCache.getStringForUser(resolver, name, userHandle);
@@ -3951,16 +4023,16 @@ public final class Settings {
 
         /** @hide */
         public static boolean putStringForUser(ContentResolver resolver, String name, String value,
-                int userHandle) {
+         int userHandle) {
             if (LOCATION_MODE.equals(name)) {
-                // HACK ALERT: temporary hack to work around b/10491283.
-                // TODO: once b/10491283 fixed, remove this hack
-                return setLocationModeForUser(resolver, Integer.parseInt(value), userHandle);
+         // HACK ALERT: temporary hack to work around b/10491283.
+         // TODO: once b/10491283 fixed, remove this hack
+         return setLocationModeForUser(resolver, Integer.parseInt(value), userHandle);
             }
             if (MOVED_TO_GLOBAL.contains(name)) {
-                Log.w(TAG, "Setting " + name + " has moved from android.provider.Settings.System"
-                        + " to android.provider.Settings.Global");
-                return Global.putStringForUser(resolver, name, value, userHandle);
+         Log.w(TAG, "Setting " + name + " has moved from android.provider.Settings.System"
+                 + " to android.provider.Settings.Global");
+         return Global.putStringForUser(resolver, name, value, userHandle);
             }
             return sNameValueCache.putStringForUser(resolver, name, value, userHandle);
         }
@@ -3973,9 +4045,9 @@ public final class Settings {
          */
         public static Uri getUriFor(String name) {
             if (MOVED_TO_GLOBAL.contains(name)) {
-                Log.w(TAG, "Setting " + name + " has moved from android.provider.Settings.Secure"
-                        + " to android.provider.Settings.Global, returning global URI.");
-                return Global.getUriFor(Global.CONTENT_URI, name);
+         Log.w(TAG, "Setting " + name + " has moved from android.provider.Settings.Secure"
+                 + " to android.provider.Settings.Global, returning global URI.");
+         return Global.getUriFor(Global.CONTENT_URI, name);
             }
             return getUriFor(CONTENT_URI, name);
         }
@@ -4001,15 +4073,15 @@ public final class Settings {
         /** @hide */
         public static int getIntForUser(ContentResolver cr, String name, int def, int userHandle) {
             if (LOCATION_MODE.equals(name)) {
-                // HACK ALERT: temporary hack to work around b/10491283.
-                // TODO: once b/10491283 fixed, remove this hack
-                return getLocationModeForUser(cr, userHandle);
+         // HACK ALERT: temporary hack to work around b/10491283.
+         // TODO: once b/10491283 fixed, remove this hack
+         return getLocationModeForUser(cr, userHandle);
             }
             String v = getStringForUser(cr, name, userHandle);
             try {
-                return v != null ? Integer.parseInt(v) : def;
+         return v != null ? Integer.parseInt(v) : def;
             } catch (NumberFormatException e) {
-                return def;
+         return def;
             }
         }
 
@@ -4032,23 +4104,23 @@ public final class Settings {
          * @return The setting's current value.
          */
         public static int getInt(ContentResolver cr, String name)
-                throws SettingNotFoundException {
+         throws SettingNotFoundException {
             return getIntForUser(cr, name, UserHandle.myUserId());
         }
 
         /** @hide */
         public static int getIntForUser(ContentResolver cr, String name, int userHandle)
-                throws SettingNotFoundException {
+         throws SettingNotFoundException {
             if (LOCATION_MODE.equals(name)) {
-                // HACK ALERT: temporary hack to work around b/10491283.
-                // TODO: once b/10491283 fixed, remove this hack
-                return getLocationModeForUser(cr, userHandle);
+         // HACK ALERT: temporary hack to work around b/10491283.
+         // TODO: once b/10491283 fixed, remove this hack
+         return getLocationModeForUser(cr, userHandle);
             }
             String v = getStringForUser(cr, name, userHandle);
             try {
-                return Integer.parseInt(v);
+         return Integer.parseInt(v);
             } catch (NumberFormatException e) {
-                throw new SettingNotFoundException(name);
+         throw new SettingNotFoundException(name);
             }
         }
 
@@ -4071,7 +4143,7 @@ public final class Settings {
 
         /** @hide */
         public static boolean putIntForUser(ContentResolver cr, String name, int value,
-                int userHandle) {
+         int userHandle) {
             return putStringForUser(cr, name, Integer.toString(value), userHandle);
         }
 
@@ -4095,13 +4167,13 @@ public final class Settings {
 
         /** @hide */
         public static long getLongForUser(ContentResolver cr, String name, long def,
-                int userHandle) {
+         int userHandle) {
             String valString = getStringForUser(cr, name, userHandle);
             long value;
             try {
-                value = valString != null ? Long.parseLong(valString) : def;
+         value = valString != null ? Long.parseLong(valString) : def;
             } catch (NumberFormatException e) {
-                value = def;
+         value = def;
             }
             return value;
         }
@@ -4124,18 +4196,18 @@ public final class Settings {
          * name can't be found or the setting value is not an integer.
          */
         public static long getLong(ContentResolver cr, String name)
-                throws SettingNotFoundException {
+         throws SettingNotFoundException {
             return getLongForUser(cr, name, UserHandle.myUserId());
         }
 
         /** @hide */
         public static long getLongForUser(ContentResolver cr, String name, int userHandle)
-                throws SettingNotFoundException {
+         throws SettingNotFoundException {
             String valString = getStringForUser(cr, name, userHandle);
             try {
-                return Long.parseLong(valString);
+         return Long.parseLong(valString);
             } catch (NumberFormatException e) {
-                throw new SettingNotFoundException(name);
+         throw new SettingNotFoundException(name);
             }
         }
 
@@ -4158,7 +4230,7 @@ public final class Settings {
 
         /** @hide */
         public static boolean putLongForUser(ContentResolver cr, String name, long value,
-                int userHandle) {
+         int userHandle) {
             return putStringForUser(cr, name, Long.toString(value), userHandle);
         }
 
@@ -4182,12 +4254,12 @@ public final class Settings {
 
         /** @hide */
         public static float getFloatForUser(ContentResolver cr, String name, float def,
-                int userHandle) {
+         int userHandle) {
             String v = getStringForUser(cr, name, userHandle);
             try {
-                return v != null ? Float.parseFloat(v) : def;
+         return v != null ? Float.parseFloat(v) : def;
             } catch (NumberFormatException e) {
-                return def;
+         return def;
             }
         }
 
@@ -4210,21 +4282,21 @@ public final class Settings {
          * @return The setting's current value.
          */
         public static float getFloat(ContentResolver cr, String name)
-                throws SettingNotFoundException {
+         throws SettingNotFoundException {
             return getFloatForUser(cr, name, UserHandle.myUserId());
         }
 
         /** @hide */
         public static float getFloatForUser(ContentResolver cr, String name, int userHandle)
-                throws SettingNotFoundException {
+         throws SettingNotFoundException {
             String v = getStringForUser(cr, name, userHandle);
             if (v == null) {
-                throw new SettingNotFoundException(name);
+         throw new SettingNotFoundException(name);
             }
             try {
-                return Float.parseFloat(v);
+         return Float.parseFloat(v);
             } catch (NumberFormatException e) {
-                throw new SettingNotFoundException(name);
+         throw new SettingNotFoundException(name);
             }
         }
 
@@ -4247,7 +4319,7 @@ public final class Settings {
 
         /** @hide */
         public static boolean putFloatForUser(ContentResolver cr, String name, float value,
-                int userHandle) {
+         int userHandle) {
             return putStringForUser(cr, name, Float.toString(value), userHandle);
         }
 
@@ -4257,7 +4329,7 @@ public final class Settings {
          */
         @Deprecated
         public static final String DEVELOPMENT_SETTINGS_ENABLED =
-                Global.DEVELOPMENT_SETTINGS_ENABLED;
+         Global.DEVELOPMENT_SETTINGS_ENABLED;
 
         /**
          * When the user has enable the option to have a "bug report" command
@@ -4318,7 +4390,7 @@ public final class Settings {
          * of the desired method.
          */
         public static final String SELECTED_INPUT_METHOD_SUBTYPE =
-                "selected_input_method_subtype";
+         "selected_input_method_subtype";
 
         /**
          * Setting to record the history of input method subtype, holding the pair of ID of IME
@@ -4326,13 +4398,13 @@ public final class Settings {
          * @hide
          */
         public static final String INPUT_METHODS_SUBTYPE_HISTORY =
-                "input_methods_subtype_history";
+         "input_methods_subtype_history";
 
         /**
          * Setting to record the visibility of input method selector
          */
         public static final String INPUT_METHOD_SELECTOR_VISIBILITY =
-                "input_method_selector_visibility";
+         "input_method_selector_visibility";
 
         /**
          * The currently selected voice interaction service flattened ComponentName.
@@ -4345,7 +4417,7 @@ public final class Settings {
          * @hide
          */
         public static final String BLUETOOTH_HCI_LOG =
-                "bluetooth_hci_log";
+         "bluetooth_hci_log";
 
         /**
          * @deprecated Use {@link android.provider.Settings.Global#DEVICE_PROVISIONED} instead
@@ -4450,7 +4522,7 @@ public final class Settings {
          * @hide
          */
         public static final String LOCK_BIOMETRIC_WEAK_FLAGS =
-                "lock_biometric_weak_flags";
+         "lock_biometric_weak_flags";
 
         /**
          * Whether lock-to-app will lock the keyguard when exiting.
@@ -4478,7 +4550,7 @@ public final class Settings {
          */
         @Deprecated
         public static final String
-                LOCK_PATTERN_TACTILE_FEEDBACK_ENABLED = "lock_pattern_tactile_feedback_enabled";
+         LOCK_PATTERN_TACTILE_FEEDBACK_ENABLED = "lock_pattern_tactile_feedback_enabled";
 
         /**
          * Determines the width and height of the LockPatternView widget
@@ -4554,7 +4626,7 @@ public final class Settings {
          * @hide
          */
         public static final String LOCK_SCREEN_ALLOW_PRIVATE_NOTIFICATIONS =
-                "lock_screen_allow_private_notifications";
+         "lock_screen_allow_private_notifications";
 
         /**
          * Set by the system to track if the user needs to see the call to action for
@@ -4562,14 +4634,14 @@ public final class Settings {
          * @hide
          */
         public static final String SHOW_NOTE_ABOUT_NOTIFICATION_HIDING =
-                "show_note_about_notification_hiding";
+         "show_note_about_notification_hiding";
 
         /**
          * Set to 1 by the system after trust agents have been initialized.
          * @hide
          */
         public static final String TRUST_AGENTS_INITIALIZED =
-                "trust_agents_initialized";
+         "trust_agents_initialized";
 
         /**
          * The Logging ID (a unique 64-bit value) as a hex string.
@@ -4657,7 +4729,7 @@ public final class Settings {
          * @hide
          */
         public static final String ACCESSIBILITY_HIGH_TEXT_CONTRAST_ENABLED =
-                "high_text_contrast_enabled";
+         "high_text_contrast_enabled";
 
         /**
          * If injection of accessibility enhancing JavaScript screen-reader
@@ -4738,7 +4810,7 @@ public final class Settings {
          * @hide
          */
         public static final String ACCESSIBILITY_DISPLAY_MAGNIFICATION_ENABLED =
-                "accessibility_display_magnification_enabled";
+         "accessibility_display_magnification_enabled";
 
         /**
          * Setting that specifies what the display magnification scale is.
@@ -4750,7 +4822,7 @@ public final class Settings {
          * @hide
          */
         public static final String ACCESSIBILITY_DISPLAY_MAGNIFICATION_SCALE =
-                "accessibility_display_magnification_scale";
+         "accessibility_display_magnification_scale";
 
         /**
          * Setting that specifies whether the display magnification should be
@@ -4767,7 +4839,7 @@ public final class Settings {
          * @hide
          */
         public static final String ACCESSIBILITY_DISPLAY_MAGNIFICATION_AUTO_UPDATE =
-                "accessibility_display_magnification_auto_update";
+         "accessibility_display_magnification_auto_update";
 
         /**
          * Setting that specifies whether timed text (captions) should be
@@ -4786,7 +4858,7 @@ public final class Settings {
          * @hide
          */
         public static final String ACCESSIBILITY_CAPTIONING_ENABLED =
-                "accessibility_captioning_enabled";
+         "accessibility_captioning_enabled";
 
         /**
          * Setting that specifies the language for captions as a locale string,
@@ -4796,7 +4868,7 @@ public final class Settings {
          * @hide
          */
         public static final String ACCESSIBILITY_CAPTIONING_LOCALE =
-                "accessibility_captioning_locale";
+         "accessibility_captioning_locale";
 
         /**
          * Integer property that specifies the preset style for captions, one
@@ -4810,7 +4882,7 @@ public final class Settings {
          * @hide
          */
         public static final String ACCESSIBILITY_CAPTIONING_PRESET =
-                "accessibility_captioning_preset";
+         "accessibility_captioning_preset";
 
         /**
          * Integer property that specifes the background color for captions as a
@@ -4820,7 +4892,7 @@ public final class Settings {
          * @hide
          */
         public static final String ACCESSIBILITY_CAPTIONING_BACKGROUND_COLOR =
-                "accessibility_captioning_background_color";
+         "accessibility_captioning_background_color";
 
         /**
          * Integer property that specifes the foreground color for captions as a
@@ -4830,7 +4902,7 @@ public final class Settings {
          * @hide
          */
         public static final String ACCESSIBILITY_CAPTIONING_FOREGROUND_COLOR =
-                "accessibility_captioning_foreground_color";
+         "accessibility_captioning_foreground_color";
 
         /**
          * Integer property that specifes the edge type for captions, one of:
@@ -4844,7 +4916,7 @@ public final class Settings {
          * @hide
          */
         public static final String ACCESSIBILITY_CAPTIONING_EDGE_TYPE =
-                "accessibility_captioning_edge_type";
+         "accessibility_captioning_edge_type";
 
         /**
          * Integer property that specifes the edge color for captions as a
@@ -4855,7 +4927,7 @@ public final class Settings {
          * @hide
          */
         public static final String ACCESSIBILITY_CAPTIONING_EDGE_COLOR =
-                "accessibility_captioning_edge_color";
+         "accessibility_captioning_edge_color";
 
         /**
          * Integer property that specifes the window color for captions as a
@@ -4865,7 +4937,7 @@ public final class Settings {
          * @hide
          */
         public static final String ACCESSIBILITY_CAPTIONING_WINDOW_COLOR =
-                "accessibility_captioning_window_color";
+         "accessibility_captioning_window_color";
 
         /**
          * String property that specifies the typeface for captions, one of:
@@ -4880,7 +4952,7 @@ public final class Settings {
          * @hide
          */
         public static final String ACCESSIBILITY_CAPTIONING_TYPEFACE =
-                "accessibility_captioning_typeface";
+         "accessibility_captioning_typeface";
 
         /**
          * Floating point property that specifies font scaling for captions.
@@ -4888,13 +4960,13 @@ public final class Settings {
          * @hide
          */
         public static final String ACCESSIBILITY_CAPTIONING_FONT_SCALE =
-                "accessibility_captioning_font_scale";
+         "accessibility_captioning_font_scale";
 
         /**
          * Setting that specifies whether display color inversion is enabled.
          */
         public static final String ACCESSIBILITY_DISPLAY_INVERSION_ENABLED =
-                "accessibility_display_inversion_enabled";
+         "accessibility_display_inversion_enabled";
 
         /**
          * Setting that specifies whether display color space adjustment is
@@ -4903,7 +4975,7 @@ public final class Settings {
          * @hide
          */
         public static final String ACCESSIBILITY_DISPLAY_DALTONIZER_ENABLED =
-                "accessibility_display_daltonizer_enabled";
+         "accessibility_display_daltonizer_enabled";
 
         /**
          * Integer property that specifies the type of color space adjustment to
@@ -4912,7 +4984,7 @@ public final class Settings {
          * @hide
          */
         public static final String ACCESSIBILITY_DISPLAY_DALTONIZER =
-                "accessibility_display_daltonizer";
+         "accessibility_display_daltonizer";
 
         /**
          * The timout for considering a press to be a long press in milliseconds.
@@ -5029,7 +5101,7 @@ public final class Settings {
          */
         @Deprecated
         public static final String WIFI_NETWORKS_AVAILABLE_NOTIFICATION_ON =
-                Global.WIFI_NETWORKS_AVAILABLE_NOTIFICATION_ON;
+         Global.WIFI_NETWORKS_AVAILABLE_NOTIFICATION_ON;
 
         /**
          * @deprecated Use {@link android.provider.Settings.Global#WIFI_NETWORKS_AVAILABLE_REPEAT_DELAY}
@@ -5037,7 +5109,7 @@ public final class Settings {
          */
         @Deprecated
         public static final String WIFI_NETWORKS_AVAILABLE_REPEAT_DELAY =
-                Global.WIFI_NETWORKS_AVAILABLE_REPEAT_DELAY;
+         Global.WIFI_NETWORKS_AVAILABLE_REPEAT_DELAY;
 
         /**
          * @deprecated Use {@link android.provider.Settings.Global#WIFI_NUM_OPEN_NETWORKS_KEPT}
@@ -5045,7 +5117,7 @@ public final class Settings {
          */
         @Deprecated
         public static final String WIFI_NUM_OPEN_NETWORKS_KEPT =
-                Global.WIFI_NUM_OPEN_NETWORKS_KEPT;
+         Global.WIFI_NUM_OPEN_NETWORKS_KEPT;
 
         /**
          * @deprecated Use {@link android.provider.Settings.Global#WIFI_ON}
@@ -5061,7 +5133,7 @@ public final class Settings {
          */
         @Deprecated
         public static final String WIFI_WATCHDOG_ACCEPTABLE_PACKET_LOSS_PERCENTAGE =
-                "wifi_watchdog_acceptable_packet_loss_percentage";
+         "wifi_watchdog_acceptable_packet_loss_percentage";
 
         /**
          * The number of access points required for a network in order for the
@@ -5077,7 +5149,7 @@ public final class Settings {
          */
         @Deprecated
         public static final String WIFI_WATCHDOG_BACKGROUND_CHECK_DELAY_MS =
-                "wifi_watchdog_background_check_delay_ms";
+         "wifi_watchdog_background_check_delay_ms";
 
         /**
          * Whether the Wi-Fi watchdog is enabled for background checking even
@@ -5086,7 +5158,7 @@ public final class Settings {
          */
         @Deprecated
         public static final String WIFI_WATCHDOG_BACKGROUND_CHECK_ENABLED =
-                "wifi_watchdog_background_check_enabled";
+         "wifi_watchdog_background_check_enabled";
 
         /**
          * The timeout for a background ping
@@ -5094,7 +5166,7 @@ public final class Settings {
          */
         @Deprecated
         public static final String WIFI_WATCHDOG_BACKGROUND_CHECK_TIMEOUT_MS =
-                "wifi_watchdog_background_check_timeout_ms";
+         "wifi_watchdog_background_check_timeout_ms";
 
         /**
          * The number of initial pings to perform that *may* be ignored if they
@@ -5164,7 +5236,7 @@ public final class Settings {
          */
         @Deprecated
         public static final String WIFI_MOBILE_DATA_TRANSITION_WAKELOCK_TIMEOUT_MS =
-                Global.WIFI_MOBILE_DATA_TRANSITION_WAKELOCK_TIMEOUT_MS;
+         Global.WIFI_MOBILE_DATA_TRANSITION_WAKELOCK_TIMEOUT_MS;
 
         /**
          * The number of milliseconds to hold on to a PendingIntent based request. This delay gives
@@ -5174,7 +5246,7 @@ public final class Settings {
          * @hide
          */
         public static final String CONNECTIVITY_RELEASE_PENDING_INTENT_DELAY_MS =
-                "connectivity_release_pending_intent_delay_ms";
+         "connectivity_release_pending_intent_delay_ms";
 
         /**
          * Whether background data usage is allowed.
@@ -5193,17 +5265,17 @@ public final class Settings {
          * The value is a space-separated list of origins.
          */
         public static final String ALLOWED_GEOLOCATION_ORIGINS
-                = "allowed_geolocation_origins";
+         = "allowed_geolocation_origins";
 
         /**
          * The preferred TTY mode     0 = TTy Off, CDMA default
-         *                            1 = TTY Full
-         *                            2 = TTY HCO
-         *                            3 = TTY VCO
+         *                     1 = TTY Full
+         *                     2 = TTY HCO
+         *                     3 = TTY VCO
          * @hide
          */
         public static final String PREFERRED_TTY_MODE =
-                "preferred_tty_mode";
+         "preferred_tty_mode";
 
         /**
          * Whether the enhanced voice privacy mode is enabled.
@@ -5277,7 +5349,7 @@ public final class Settings {
          * @hide
          */
         public static final String SEARCH_GLOBAL_SEARCH_ACTIVITY =
-                "search_global_search_activity";
+         "search_global_search_activity";
 
         /**
          * The number of promoted sources in GlobalSearch.
@@ -5299,14 +5371,14 @@ public final class Settings {
          * @hide
          */
         public static final String SEARCH_WEB_RESULTS_OVERRIDE_LIMIT =
-                "search_web_results_override_limit";
+         "search_web_results_override_limit";
         /**
          * The number of milliseconds that GlobalSearch will wait for suggestions from
          * promoted sources before continuing with all other sources.
          * @hide
          */
         public static final String SEARCH_PROMOTED_SOURCE_DEADLINE_MILLIS =
-                "search_promoted_source_deadline_millis";
+         "search_promoted_source_deadline_millis";
         /**
          * The number of milliseconds before GlobalSearch aborts search suggesiton queries.
          * @hide
@@ -5328,19 +5400,19 @@ public final class Settings {
          * @hide
          */
         public static final String SEARCH_MAX_SOURCE_EVENT_AGE_MILLIS =
-                "search_max_source_event_age_millis";
+         "search_max_source_event_age_millis";
         /**
          * The minimum number of impressions needed to rank a source in GlobalSearch.
          * @hide
          */
         public static final String SEARCH_MIN_IMPRESSIONS_FOR_SOURCE_RANKING =
-                "search_min_impressions_for_source_ranking";
+         "search_min_impressions_for_source_ranking";
         /**
          * The minimum number of clicks needed to rank a source in GlobalSearch.
          * @hide
          */
         public static final String SEARCH_MIN_CLICKS_FOR_SOURCE_RANKING =
-                "search_min_clicks_for_source_ranking";
+         "search_min_clicks_for_source_ranking";
         /**
          * The maximum number of shortcuts shown by GlobalSearch.
          * @hide
@@ -5351,38 +5423,38 @@ public final class Settings {
          * @hide
          */
         public static final String SEARCH_QUERY_THREAD_CORE_POOL_SIZE =
-                "search_query_thread_core_pool_size";
+         "search_query_thread_core_pool_size";
         /**
          * The maximum size of the thread pool for suggestion queries in GlobalSearch.
          * @hide
          */
         public static final String SEARCH_QUERY_THREAD_MAX_POOL_SIZE =
-                "search_query_thread_max_pool_size";
+         "search_query_thread_max_pool_size";
         /**
          * The size of the core thread pool for shortcut refreshing in GlobalSearch.
          * @hide
          */
         public static final String SEARCH_SHORTCUT_REFRESH_CORE_POOL_SIZE =
-                "search_shortcut_refresh_core_pool_size";
+         "search_shortcut_refresh_core_pool_size";
         /**
          * The maximum size of the thread pool for shortcut refreshing in GlobalSearch.
          * @hide
          */
         public static final String SEARCH_SHORTCUT_REFRESH_MAX_POOL_SIZE =
-                "search_shortcut_refresh_max_pool_size";
+         "search_shortcut_refresh_max_pool_size";
         /**
          * The maximun time that excess threads in the GlobalSeach thread pools will
          * wait before terminating.
          * @hide
          */
         public static final String SEARCH_THREAD_KEEPALIVE_SECONDS =
-                "search_thread_keepalive_seconds";
+         "search_thread_keepalive_seconds";
         /**
          * The maximum number of concurrent suggestion queries to each source.
          * @hide
          */
         public static final String SEARCH_PER_SOURCE_CONCURRENT_QUERY_LIMIT =
-                "search_per_source_concurrent_query_limit";
+         "search_per_source_concurrent_query_limit";
 
         /**
          * Whether or not alert sounds are played on MountService events. (0 = false, 1 = true)
@@ -5447,7 +5519,7 @@ public final class Settings {
          * @hide
          */
         public static final String SELECTED_SPELL_CHECKER_SUBTYPE =
-                "selected_spell_checker_subtype";
+         "selected_spell_checker_subtype";
 
         /**
          * The {@link ComponentName} string whether spell checker is enabled or not.
@@ -5484,7 +5556,7 @@ public final class Settings {
          * @hide
          */
         public static final int INCALL_POWER_BUTTON_BEHAVIOR_DEFAULT =
-                INCALL_POWER_BUTTON_BEHAVIOR_SCREEN_OFF;
+         INCALL_POWER_BUTTON_BEHAVIOR_SCREEN_OFF;
 
         /**
          * Whether the device should wake when the wake gesture sensor detects motion.
@@ -5612,7 +5684,7 @@ public final class Settings {
          * @hide
          */
         public static final String LOCK_SCREEN_SHOW_NOTIFICATIONS =
-                "lock_screen_show_notifications";
+         "lock_screen_show_notifications";
 
         /**
          * List of TV inputs that are currently hidden. This is a string
@@ -5638,7 +5710,7 @@ public final class Settings {
          * @hide
          */
         public static final String USB_AUDIO_AUTOMATIC_ROUTING_DISABLED =
-                "usb_audio_automatic_routing_disabled";
+         "usb_audio_automatic_routing_disabled";
 
         /**
          * The timeout in milliseconds before the device fully goes to sleep after
@@ -5711,11 +5783,11 @@ public final class Settings {
          * @hide
          */
         public static final String[] SETTINGS_TO_BACKUP = {
-            BUGREPORT_IN_POWER_MENU,                            // moved to global
+            BUGREPORT_IN_POWER_MENU,                     // moved to global
             ALLOW_MOCK_LOCATION,
             PARENTAL_CONTROL_ENABLED,
             PARENTAL_CONTROL_REDIRECT_URL,
-            USB_MASS_STORAGE_ENABLED,                           // moved to global
+            USB_MASS_STORAGE_ENABLED,                    // moved to global
             ACCESSIBILITY_DISPLAY_MAGNIFICATION_ENABLED,
             ACCESSIBILITY_DISPLAY_MAGNIFICATION_SCALE,
             ACCESSIBILITY_DISPLAY_MAGNIFICATION_AUTO_UPDATE,
@@ -5744,8 +5816,8 @@ public final class Settings {
             TTS_ENABLED_PLUGINS,
             TTS_DEFAULT_LOCALE,
             WIFI_NETWORKS_AVAILABLE_NOTIFICATION_ON,            // moved to global
-            WIFI_NETWORKS_AVAILABLE_REPEAT_DELAY,               // moved to global
-            WIFI_NUM_OPEN_NETWORKS_KEPT,                        // moved to global
+            WIFI_NETWORKS_AVAILABLE_REPEAT_DELAY,        // moved to global
+            WIFI_NUM_OPEN_NETWORKS_KEPT,                 // moved to global
             MOUNT_PLAY_NOTIFICATION_SND,
             MOUNT_UMS_AUTOSTART,
             MOUNT_UMS_PROMPT,
@@ -5803,7 +5875,7 @@ public final class Settings {
         @Deprecated
         public static final boolean isLocationProviderEnabledForUser(ContentResolver cr, String provider, int userId) {
             String allowedProviders = Settings.Secure.getStringForUser(cr,
-                    LOCATION_PROVIDERS_ALLOWED, userId);
+             LOCATION_PROVIDERS_ALLOWED, userId);
             return TextUtils.delimitedStringContains(allowedProviders, ',', provider);
         }
 
@@ -5816,7 +5888,7 @@ public final class Settings {
          */
         @Deprecated
         public static final void setLocationProviderEnabled(ContentResolver cr,
-                String provider, boolean enabled) {
+         String provider, boolean enabled) {
             setLocationProviderEnabledForUser(cr, provider, enabled, UserHandle.myUserId());
         }
 
@@ -5834,18 +5906,18 @@ public final class Settings {
          */
         @Deprecated
         public static final boolean setLocationProviderEnabledForUser(ContentResolver cr,
-                String provider, boolean enabled, int userId) {
+         String provider, boolean enabled, int userId) {
             synchronized (mLocationSettingsLock) {
-                // to ensure thread safety, we write the provider name with a '+' or '-'
-                // and let the SettingsProvider handle it rather than reading and modifying
-                // the list of enabled providers.
-                if (enabled) {
-                    provider = "+" + provider;
-                } else {
-                    provider = "-" + provider;
-                }
-                return putStringForUser(cr, Settings.Secure.LOCATION_PROVIDERS_ALLOWED, provider,
-                        userId);
+         // to ensure thread safety, we write the provider name with a '+' or '-'
+         // and let the SettingsProvider handle it rather than reading and modifying
+         // the list of enabled providers.
+         if (enabled) {
+             provider = "+" + provider;
+         } else {
+             provider = "-" + provider;
+         }
+         return putStringForUser(cr, Settings.Secure.LOCATION_PROVIDERS_ALLOWED, provider,
+                 userId);
             }
         }
 
@@ -5862,40 +5934,40 @@ public final class Settings {
          * @throws IllegalArgumentException if mode is not one of the supported values
          */
         private static final boolean setLocationModeForUser(ContentResolver cr, int mode,
-                int userId) {
+         int userId) {
             synchronized (mLocationSettingsLock) {
-                boolean gps = false;
-                boolean network = false;
-                switch (mode) {
-                    case LOCATION_MODE_OFF:
-                        break;
-                    case LOCATION_MODE_SENSORS_ONLY:
-                        gps = true;
-                        break;
-                    case LOCATION_MODE_BATTERY_SAVING:
-                        network = true;
-                        break;
-                    case LOCATION_MODE_HIGH_ACCURACY:
-                        gps = true;
-                        network = true;
-                        break;
-                    default:
-                        throw new IllegalArgumentException("Invalid location mode: " + mode);
-                }
-                // Note it's important that we set the NLP mode first. The Google implementation
-                // of NLP clears its NLP consent setting any time it receives a
-                // LocationManager.PROVIDERS_CHANGED_ACTION broadcast and NLP is disabled. Also,
-                // it shows an NLP consent dialog any time it receives the broadcast, NLP is
-                // enabled, and the NLP consent is not set. If 1) we were to enable GPS first,
-                // 2) a setup wizard has its own NLP consent UI that sets the NLP consent setting,
-                // and 3) the receiver happened to complete before we enabled NLP, then the Google
-                // NLP would detect the attempt to enable NLP and show a redundant NLP consent
-                // dialog. Then the people who wrote the setup wizard would be sad.
-                boolean nlpSuccess = Settings.Secure.setLocationProviderEnabledForUser(
-                        cr, LocationManager.NETWORK_PROVIDER, network, userId);
-                boolean gpsSuccess = Settings.Secure.setLocationProviderEnabledForUser(
-                        cr, LocationManager.GPS_PROVIDER, gps, userId);
-                return gpsSuccess && nlpSuccess;
+         boolean gps = false;
+         boolean network = false;
+         switch (mode) {
+             case LOCATION_MODE_OFF:
+                 break;
+             case LOCATION_MODE_SENSORS_ONLY:
+                 gps = true;
+                 break;
+             case LOCATION_MODE_BATTERY_SAVING:
+                 network = true;
+                 break;
+             case LOCATION_MODE_HIGH_ACCURACY:
+                 gps = true;
+                 network = true;
+                 break;
+             default:
+                 throw new IllegalArgumentException("Invalid location mode: " + mode);
+         }
+         // Note it's important that we set the NLP mode first. The Google implementation
+         // of NLP clears its NLP consent setting any time it receives a
+         // LocationManager.PROVIDERS_CHANGED_ACTION broadcast and NLP is disabled. Also,
+         // it shows an NLP consent dialog any time it receives the broadcast, NLP is
+         // enabled, and the NLP consent is not set. If 1) we were to enable GPS first,
+         // 2) a setup wizard has its own NLP consent UI that sets the NLP consent setting,
+         // and 3) the receiver happened to complete before we enabled NLP, then the Google
+         // NLP would detect the attempt to enable NLP and show a redundant NLP consent
+         // dialog. Then the people who wrote the setup wizard would be sad.
+         boolean nlpSuccess = Settings.Secure.setLocationProviderEnabledForUser(
+                 cr, LocationManager.NETWORK_PROVIDER, network, userId);
+         boolean gpsSuccess = Settings.Secure.setLocationProviderEnabledForUser(
+                 cr, LocationManager.GPS_PROVIDER, gps, userId);
+         return gpsSuccess && nlpSuccess;
             }
         }
 
@@ -5910,19 +5982,19 @@ public final class Settings {
          */
         private static final int getLocationModeForUser(ContentResolver cr, int userId) {
             synchronized (mLocationSettingsLock) {
-                boolean gpsEnabled = Settings.Secure.isLocationProviderEnabledForUser(
-                        cr, LocationManager.GPS_PROVIDER, userId);
-                boolean networkEnabled = Settings.Secure.isLocationProviderEnabledForUser(
-                        cr, LocationManager.NETWORK_PROVIDER, userId);
-                if (gpsEnabled && networkEnabled) {
-                    return LOCATION_MODE_HIGH_ACCURACY;
-                } else if (gpsEnabled) {
-                    return LOCATION_MODE_SENSORS_ONLY;
-                } else if (networkEnabled) {
-                    return LOCATION_MODE_BATTERY_SAVING;
-                } else {
-                    return LOCATION_MODE_OFF;
-                }
+         boolean gpsEnabled = Settings.Secure.isLocationProviderEnabledForUser(
+                 cr, LocationManager.GPS_PROVIDER, userId);
+         boolean networkEnabled = Settings.Secure.isLocationProviderEnabledForUser(
+                 cr, LocationManager.NETWORK_PROVIDER, userId);
+         if (gpsEnabled && networkEnabled) {
+             return LOCATION_MODE_HIGH_ACCURACY;
+         } else if (gpsEnabled) {
+             return LOCATION_MODE_SENSORS_ONLY;
+         } else if (networkEnabled) {
+             return LOCATION_MODE_BATTERY_SAVING;
+         } else {
+             return LOCATION_MODE_OFF;
+         }
             }
         }
     }
@@ -5956,7 +6028,7 @@ public final class Settings {
          * @hide
          */
         public static final String ENABLE_ACCESSIBILITY_GLOBAL_GESTURE_ENABLED =
-                "enable_accessibility_global_gesture_enabled";
+         "enable_accessibility_global_gesture_enabled";
 
         /**
          * Whether Airplane Mode is on.
@@ -6118,7 +6190,7 @@ public final class Settings {
          * @hide
          */
         public static final String WIRELESS_CHARGING_STARTED_SOUND =
-                "wireless_charging_started_sound";
+         "wireless_charging_started_sound";
 
         /**
          * Whether we keep the device on while the device is plugged in.
@@ -6165,24 +6237,24 @@ public final class Settings {
 
         /**
          * CDMA Cell Broadcast SMS
-         *                            0 = CDMA Cell Broadcast SMS disabled
-         *                            1 = CDMA Cell Broadcast SMS enabled
+         *                     0 = CDMA Cell Broadcast SMS disabled
+         *                     1 = CDMA Cell Broadcast SMS enabled
          * @hide
          */
         public static final String CDMA_CELL_BROADCAST_SMS =
-                "cdma_cell_broadcast_sms";
+         "cdma_cell_broadcast_sms";
 
         /**
          * The CDMA roaming mode 0 = Home Networks, CDMA default
-         *                       1 = Roaming on Affiliated networks
-         *                       2 = Roaming on any networks
+         *                1 = Roaming on Affiliated networks
+         *                2 = Roaming on any networks
          * @hide
          */
         public static final String CDMA_ROAMING_MODE = "roaming_settings";
 
         /**
          * The CDMA subscription mode 0 = RUIM/SIM (default)
-         *                                1 = NV
+         *                  1 = NV
          * @hide
          */
         public static final String CDMA_SUBSCRIPTION_MODE = "subscription_mode";
@@ -6253,7 +6325,7 @@ public final class Settings {
         * @hide
         */
        public static final String DOWNLOAD_MAX_BYTES_OVER_MOBILE =
-               "download_manager_max_bytes_over_mobile";
+        "download_manager_max_bytes_over_mobile";
 
        /**
         * The recommended maximum size, in bytes, of a download that the download manager should
@@ -6262,7 +6334,7 @@ public final class Settings {
         * @hide
         */
        public static final String DOWNLOAD_RECOMMENDED_MAX_BYTES_OVER_MOBILE =
-               "download_manager_recommended_max_bytes_over_mobile";
+        "download_manager_recommended_max_bytes_over_mobile";
 
        /**
         * @deprecated Use {@link android.provider.Settings.Secure#INSTALL_NON_MARKET_APPS} instead
@@ -6291,7 +6363,7 @@ public final class Settings {
         * @hide
         */
        public static final String HDMI_CONTROL_AUTO_WAKEUP_ENABLED =
-               "hdmi_control_auto_wakeup_enabled";
+        "hdmi_control_auto_wakeup_enabled";
 
        /**
         * Whether TV will also turn off other CEC devices when it goes to standby mode.
@@ -6299,7 +6371,7 @@ public final class Settings {
         * @hide
         */
        public static final String HDMI_CONTROL_AUTO_DEVICE_OFF_ENABLED =
-               "hdmi_control_auto_device_off_enabled";
+        "hdmi_control_auto_device_off_enabled";
 
        /**
         * Whether TV will switch to MHL port when a mobile device is plugged in.
@@ -6439,7 +6511,7 @@ public final class Settings {
         * @hide
         */
        public static final String PDP_WATCHDOG_POLL_INTERVAL_MS =
-               "pdp_watchdog_poll_interval_ms";
+        "pdp_watchdog_poll_interval_ms";
 
        /**
         * The interval in milliseconds at which to check packet counts on the
@@ -6448,7 +6520,7 @@ public final class Settings {
         * @hide
         */
        public static final String PDP_WATCHDOG_LONG_POLL_INTERVAL_MS =
-               "pdp_watchdog_long_poll_interval_ms";
+        "pdp_watchdog_long_poll_interval_ms";
 
        /**
         * The interval in milliseconds at which to check packet counts on the
@@ -6457,7 +6529,7 @@ public final class Settings {
         * @hide
         */
        public static final String PDP_WATCHDOG_ERROR_POLL_INTERVAL_MS =
-               "pdp_watchdog_error_poll_interval_ms";
+        "pdp_watchdog_error_poll_interval_ms";
 
        /**
         * The number of outgoing packets sent without seeing an incoming packet
@@ -6466,7 +6538,7 @@ public final class Settings {
         * @hide
         */
        public static final String PDP_WATCHDOG_TRIGGER_PACKET_COUNT =
-               "pdp_watchdog_trigger_packet_count";
+        "pdp_watchdog_trigger_packet_count";
 
        /**
         * The number of polls to perform (at {@link #PDP_WATCHDOG_ERROR_POLL_INTERVAL_MS})
@@ -6475,7 +6547,7 @@ public final class Settings {
         * @hide
         */
        public static final String PDP_WATCHDOG_ERROR_POLL_COUNT =
-               "pdp_watchdog_error_poll_count";
+        "pdp_watchdog_error_poll_count";
 
        /**
         * The number of failed PDP reset attempts before moving to something more
@@ -6483,7 +6555,7 @@ public final class Settings {
         * @hide
         */
        public static final String PDP_WATCHDOG_MAX_PDP_RESET_FAIL_COUNT =
-               "pdp_watchdog_max_pdp_reset_fail_count";
+        "pdp_watchdog_max_pdp_reset_fail_count";
 
        /**
         * A positive value indicates how often the SamplingProfiler
@@ -6499,14 +6571,14 @@ public final class Settings {
         * @hide
         */
        public static final String SETUP_PREPAID_DATA_SERVICE_URL =
-               "setup_prepaid_data_service_url";
+        "setup_prepaid_data_service_url";
 
        /**
         * URL to attempt a GET on to see if this is a prepay device
         * @hide
         */
        public static final String SETUP_PREPAID_DETECTION_TARGET_URL =
-               "setup_prepaid_detection_target_url";
+        "setup_prepaid_detection_target_url";
 
        /**
         * Host to check for a redirect to after an attempt to GET
@@ -6515,7 +6587,7 @@ public final class Settings {
         * @hide
         */
        public static final String SETUP_PREPAID_DETECTION_REDIR_HOST =
-               "setup_prepaid_detection_redir_host";
+        "setup_prepaid_detection_redir_host";
 
        /**
         * The interval in milliseconds at which to check the number of SMS sent out without asking
@@ -6524,7 +6596,7 @@ public final class Settings {
         * @hide
         */
        public static final String SMS_OUTGOING_CHECK_INTERVAL_MS =
-               "sms_outgoing_check_interval_ms";
+        "sms_outgoing_check_interval_ms";
 
        /**
         * The number of outgoing SMS sent without asking for user permit (of {@link
@@ -6533,7 +6605,7 @@ public final class Settings {
         * @hide
         */
        public static final String SMS_OUTGOING_CHECK_MAX_COUNT =
-               "sms_outgoing_check_max_count";
+        "sms_outgoing_check_max_count";
 
        /**
         * Used to disable SMS short code confirmation - defaults to true.
@@ -6598,7 +6670,7 @@ public final class Settings {
          * @hide
          */
         public static final String WEBVIEW_DATA_REDUCTION_PROXY_KEY =
-                "webview_data_reduction_proxy_key";
+         "webview_data_reduction_proxy_key";
 
        /**
         * Whether Wifi display is enabled/disabled
@@ -6613,7 +6685,7 @@ public final class Settings {
         * @hide
         */
        public static final String WIFI_DISPLAY_CERTIFICATION_ON =
-               "wifi_display_certification_on";
+        "wifi_display_certification_on";
 
        /**
         * WPS Configuration method used by Wifi display, this setting only
@@ -6640,19 +6712,19 @@ public final class Settings {
         * {@link android.provider.Settings.Secure#WIFI_NETWORKS_AVAILABLE_REPEAT_DELAY} time.
         */
        public static final String WIFI_NETWORKS_AVAILABLE_NOTIFICATION_ON =
-               "wifi_networks_available_notification_on";
+        "wifi_networks_available_notification_on";
        /**
         * {@hide}
         */
        public static final String WIMAX_NETWORKS_AVAILABLE_NOTIFICATION_ON =
-               "wimax_networks_available_notification_on";
+        "wimax_networks_available_notification_on";
 
        /**
         * Delay (in seconds) before repeating the Wi-Fi networks available notification.
         * Connecting to a network will reset the timer.
         */
        public static final String WIFI_NETWORKS_AVAILABLE_REPEAT_DELAY =
-               "wifi_networks_available_repeat_delay";
+        "wifi_networks_available_repeat_delay";
 
        /**
         * 802.11 country code in ISO 3166 format
@@ -6667,7 +6739,7 @@ public final class Settings {
         * @hide
         */
        public static final String WIFI_FRAMEWORK_SCAN_INTERVAL_MS =
-               "wifi_framework_scan_interval_ms";
+        "wifi_framework_scan_interval_ms";
 
        /**
         * The interval in milliseconds after which Wi-Fi is considered idle.
@@ -6693,7 +6765,7 @@ public final class Settings {
         * @hide
         */
        public static final String WIFI_SCAN_ALWAYS_AVAILABLE =
-                "wifi_scan_always_enabled";
+         "wifi_scan_always_enabled";
 
        /**
         * Used to save the Wifi_ON state prior to tethering.
@@ -6709,28 +6781,28 @@ public final class Settings {
         * @hide
         */
        public static final String WIFI_SUPPLICANT_SCAN_INTERVAL_MS =
-               "wifi_supplicant_scan_interval_ms";
+        "wifi_supplicant_scan_interval_ms";
 
         /**
          * whether frameworks handles wifi auto-join
          * @hide
          */
        public static final String WIFI_ENHANCED_AUTO_JOIN =
-                "wifi_enhanced_auto_join";
+         "wifi_enhanced_auto_join";
 
         /**
          * whether settings show RSSI
          * @hide
          */
         public static final String WIFI_NETWORK_SHOW_RSSI =
-                "wifi_network_show_rssi";
+         "wifi_network_show_rssi";
 
         /**
         * The interval in milliseconds to scan at supplicant when p2p is connected
         * @hide
         */
        public static final String WIFI_SCAN_INTERVAL_WHEN_P2P_CONNECTED_MS =
-               "wifi_scan_interval_p2p_connected_ms";
+        "wifi_scan_interval_p2p_connected_ms";
 
        /**
         * Whether the Wi-Fi watchdog is enabled.
@@ -6743,7 +6815,7 @@ public final class Settings {
         * @hide
         */
        public static final String WIFI_WATCHDOG_POOR_NETWORK_TEST_ENABLED =
-               "wifi_watchdog_poor_network_test_enabled";
+        "wifi_watchdog_poor_network_test_enabled";
 
        /**
         * Setting to turn on suspend optimizations at screen off on Wi-Fi. Enabled by default and
@@ -6751,7 +6823,7 @@ public final class Settings {
         * @hide
         */
        public static final String WIFI_SUSPEND_OPTIMIZATIONS_ENABLED =
-               "wifi_suspend_optimizations_enabled";
+        "wifi_suspend_optimizations_enabled";
 
        /**
         * The maximum number of times we will retry a connection to an access
@@ -6799,7 +6871,7 @@ public final class Settings {
         * @hide
         */
        public static final String WIFI_EPHEMERAL_OUT_OF_RANGE_TIMEOUT_MS =
-               "wifi_ephemeral_out_of_range_timeout_ms";
+        "wifi_ephemeral_out_of_range_timeout_ms";
 
        /**
         * The number of milliseconds to delay when checking for data stalls during
@@ -6807,7 +6879,7 @@ public final class Settings {
         * @hide
         */
        public static final String DATA_STALL_ALARM_NON_AGGRESSIVE_DELAY_IN_MS =
-               "data_stall_alarm_non_aggressive_delay_in_ms";
+        "data_stall_alarm_non_aggressive_delay_in_ms";
 
        /**
         * The number of milliseconds to delay when checking for data stalls during
@@ -6815,14 +6887,14 @@ public final class Settings {
         * @hide
         */
        public static final String DATA_STALL_ALARM_AGGRESSIVE_DELAY_IN_MS =
-               "data_stall_alarm_aggressive_delay_in_ms";
+        "data_stall_alarm_aggressive_delay_in_ms";
 
        /**
         * The number of milliseconds to allow the provisioning apn to remain active
         * @hide
         */
        public static final String PROVISIONING_APN_ALARM_DELAY_IN_MS =
-               "provisioning_apn_alarm_delay_in_ms";
+        "provisioning_apn_alarm_delay_in_ms";
 
        /**
         * The interval in milliseconds at which to check gprs registration
@@ -6832,7 +6904,7 @@ public final class Settings {
         * @hide
         */
        public static final String GPRS_REGISTER_CHECK_PERIOD_MS =
-               "gprs_register_check_period_ms";
+        "gprs_register_check_period_ms";
 
        /**
         * Nonzero causes Log.wtf() to crash.
@@ -6872,7 +6944,7 @@ public final class Settings {
          * @hide
          */
         public static final String
-                BATTERY_DISCHARGE_DURATION_THRESHOLD = "battery_discharge_duration_threshold";
+         BATTERY_DISCHARGE_DURATION_THRESHOLD = "battery_discharge_duration_threshold";
 
         /** @hide */
         public static final String BATTERY_DISCHARGE_THRESHOLD = "battery_discharge_threshold";
@@ -6960,7 +7032,7 @@ public final class Settings {
          * @hide
          */
         public static final String
-                DISK_FREE_CHANGE_REPORTING_THRESHOLD = "disk_free_change_reporting_threshold";
+         DISK_FREE_CHANGE_REPORTING_THRESHOLD = "disk_free_change_reporting_threshold";
 
         /**
          * Minimum percentage of free storage on the device that is used to
@@ -6972,7 +7044,7 @@ public final class Settings {
          * @hide
          */
         public static final String
-                SYS_STORAGE_THRESHOLD_PERCENTAGE = "sys_storage_threshold_percentage";
+         SYS_STORAGE_THRESHOLD_PERCENTAGE = "sys_storage_threshold_percentage";
 
         /**
          * Maximum byte size of the low storage threshold. This is to ensure
@@ -6983,7 +7055,7 @@ public final class Settings {
          * @hide
          */
         public static final String
-                SYS_STORAGE_THRESHOLD_MAX_BYTES = "sys_storage_threshold_max_bytes";
+         SYS_STORAGE_THRESHOLD_MAX_BYTES = "sys_storage_threshold_max_bytes";
 
         /**
          * Minimum bytes of free storage on the device before the data partition
@@ -6993,7 +7065,7 @@ public final class Settings {
          * @hide
          */
         public static final String
-                SYS_STORAGE_FULL_THRESHOLD_BYTES = "sys_storage_full_threshold_bytes";
+         SYS_STORAGE_FULL_THRESHOLD_BYTES = "sys_storage_full_threshold_bytes";
 
         /**
          * The maximum reconnect delay for short network outages or when the
@@ -7002,7 +7074,7 @@ public final class Settings {
          * @hide
          */
         public static final String
-                SYNC_MAX_RETRY_DELAY_IN_SECONDS = "sync_max_retry_delay_in_seconds";
+         SYNC_MAX_RETRY_DELAY_IN_SECONDS = "sync_max_retry_delay_in_seconds";
 
         /**
          * The number of milliseconds to delay before sending out
@@ -7021,7 +7093,7 @@ public final class Settings {
          */
 
         public static final String CONNECTIVITY_SAMPLING_INTERVAL_IN_SECONDS =
-                "connectivity_sampling_interval_in_seconds";
+         "connectivity_sampling_interval_in_seconds";
 
         /**
          * The series of successively longer delays used in retrying to download PAC file.
@@ -7038,7 +7110,7 @@ public final class Settings {
          * @hide
          */
         public static final String
-                CAPTIVE_PORTAL_DETECTION_ENABLED = "captive_portal_detection_enabled";
+         CAPTIVE_PORTAL_DETECTION_ENABLED = "captive_portal_detection_enabled";
 
         /**
          * The server used for captive portal detection upon a new conection. A
@@ -7078,7 +7150,7 @@ public final class Settings {
          * @hide
          */
         public static final String
-                INET_CONDITION_DEBOUNCE_UP_DELAY = "inet_condition_debounce_up_delay";
+         INET_CONDITION_DEBOUNCE_UP_DELAY = "inet_condition_debounce_up_delay";
 
         /**
          * ms during which to consume extra events related to Inet connection
@@ -7087,11 +7159,11 @@ public final class Settings {
          * @hide
          */
         public static final String
-                INET_CONDITION_DEBOUNCE_DOWN_DELAY = "inet_condition_debounce_down_delay";
+         INET_CONDITION_DEBOUNCE_DOWN_DELAY = "inet_condition_debounce_down_delay";
 
         /** {@hide} */
         public static final String
-                READ_EXTERNAL_STORAGE_ENFORCED_DEFAULT = "read_external_storage_enforced_default";
+         READ_EXTERNAL_STORAGE_ENFORCED_DEFAULT = "read_external_storage_enforced_default";
 
         /**
          * Host name and port for global http proxy. Uses ':' seperator for
@@ -7123,14 +7195,14 @@ public final class Settings {
          * @hide
          */
         public static final String
-                GLOBAL_HTTP_PROXY_EXCLUSION_LIST = "global_http_proxy_exclusion_list";
+         GLOBAL_HTTP_PROXY_EXCLUSION_LIST = "global_http_proxy_exclusion_list";
 
         /**
          * The location PAC File for the proxy.
          * @hide
          */
         public static final String
-                GLOBAL_HTTP_PROXY_PAC = "global_proxy_pac_url";
+         GLOBAL_HTTP_PROXY_PAC = "global_proxy_pac_url";
 
         /**
          * Enables the UI setting to allow the user to specify the global HTTP
@@ -7149,16 +7221,16 @@ public final class Settings {
 
         /** {@hide} */
         public static final String
-                BLUETOOTH_HEADSET_PRIORITY_PREFIX = "bluetooth_headset_priority_";
+         BLUETOOTH_HEADSET_PRIORITY_PREFIX = "bluetooth_headset_priority_";
         /** {@hide} */
         public static final String
-                BLUETOOTH_A2DP_SINK_PRIORITY_PREFIX = "bluetooth_a2dp_sink_priority_";
+         BLUETOOTH_A2DP_SINK_PRIORITY_PREFIX = "bluetooth_a2dp_sink_priority_";
         /** {@hide} */
         public static final String
-                BLUETOOTH_INPUT_DEVICE_PRIORITY_PREFIX = "bluetooth_input_device_priority_";
+         BLUETOOTH_INPUT_DEVICE_PRIORITY_PREFIX = "bluetooth_input_device_priority_";
         /** {@hide} */
         public static final String
-                BLUETOOTH_MAP_PRIORITY_PREFIX = "bluetooth_map_priority_";
+         BLUETOOTH_MAP_PRIORITY_PREFIX = "bluetooth_map_priority_";
 
         /**
          * Get the key that retrieves a bluetooth headset's priority.
@@ -7229,8 +7301,8 @@ public final class Settings {
         /**
          * CDMA only settings
          * Emergency Tone  0 = Off
-         *                 1 = Alert
-         *                 2 = Vibrate
+         *          1 = Alert
+         *          2 = Vibrate
          * @hide
          */
         public static final String EMERGENCY_TONE = "emergency_tone";
@@ -7245,17 +7317,17 @@ public final class Settings {
 
         /**
          * The preferred network mode   7 = Global
-         *                              6 = EvDo only
-         *                              5 = CDMA w/o EvDo
-         *                              4 = CDMA / EvDo auto
-         *                              3 = GSM / WCDMA auto
-         *                              2 = WCDMA only
-         *                              1 = GSM only
-         *                              0 = GSM / WCDMA preferred
+         *                6 = EvDo only
+         *                5 = CDMA w/o EvDo
+         *                4 = CDMA / EvDo auto
+         *                3 = GSM / WCDMA auto
+         *                2 = WCDMA only
+         *                1 = GSM only
+         *                0 = GSM / WCDMA preferred
          * @hide
          */
         public static final String PREFERRED_NETWORK_MODE =
-                "preferred_network_mode";
+         "preferred_network_mode";
 
         /**
          * Setting to 1 will hide carrier network settings.
@@ -7263,7 +7335,7 @@ public final class Settings {
          * @hide
          */
         public static final String HIDE_CARRIER_NETWORK_SETTINGS =
-                "hide_carrier_network_settings";
+         "hide_carrier_network_settings";
 
         /**
          * Name of an application package to be debugged.
@@ -7344,14 +7416,14 @@ public final class Settings {
          * @hide
          */
         public static final String SMS_SHORT_CODES_UPDATE_CONTENT_URL =
-                "sms_short_codes_content_url";
+         "sms_short_codes_content_url";
 
         /**
          * URL for sms short code update metadata
          * @hide
          */
         public static final String SMS_SHORT_CODES_UPDATE_METADATA_URL =
-                "sms_short_codes_metadata_url";
+         "sms_short_codes_metadata_url";
 
         /**
          * URL for cert pinlist updates
@@ -7370,14 +7442,14 @@ public final class Settings {
          * @hide
          */
         public static final String INTENT_FIREWALL_UPDATE_CONTENT_URL =
-                "intent_firewall_content_url";
+         "intent_firewall_content_url";
 
         /**
          * URL for intent firewall update metadata
          * @hide
          */
         public static final String INTENT_FIREWALL_UPDATE_METADATA_URL =
-                "intent_firewall_metadata_url";
+         "intent_firewall_metadata_url";
 
         /**
          * SELinux enforcement status. If 0, permissive; if 1, enforcing.
@@ -7450,7 +7522,7 @@ public final class Settings {
          * @hide
          */
         public static final String HEADS_UP_NOTIFICATIONS_ENABLED =
-                "heads_up_notifications_enabled";
+         "heads_up_notifications_enabled";
 
         /** @hide */ public static final int HEADS_UP_OFF = 0;
         /** @hide */ public static final int HEADS_UP_ON = 1;
@@ -7576,10 +7648,10 @@ public final class Settings {
 
         // Populated lazily, guarded by class object:
         private static NameValueCache sNameValueCache = new NameValueCache(
-                    SYS_PROP_SETTING_VERSION,
-                    CONTENT_URI,
-                    CALL_METHOD_GET_GLOBAL,
-                    CALL_METHOD_PUT_GLOBAL);
+             SYS_PROP_SETTING_VERSION,
+             CONTENT_URI,
+             CALL_METHOD_GET_GLOBAL,
+             CALL_METHOD_PUT_GLOBAL);
 
         // Certain settings have been moved from global to the per-user secure namespace
         private static final HashSet<String> MOVED_TO_SECURE;
@@ -7600,11 +7672,11 @@ public final class Settings {
 
         /** @hide */
         public static String getStringForUser(ContentResolver resolver, String name,
-                int userHandle) {
+         int userHandle) {
             if (MOVED_TO_SECURE.contains(name)) {
-                Log.w(TAG, "Setting " + name + " has moved from android.provider.Settings.Global"
-                        + " to android.provider.Settings.Secure, returning read-only value.");
-                return Secure.getStringForUser(resolver, name, userHandle);
+         Log.w(TAG, "Setting " + name + " has moved from android.provider.Settings.Global"
+                 + " to android.provider.Settings.Secure, returning read-only value.");
+         return Secure.getStringForUser(resolver, name, userHandle);
             }
             return sNameValueCache.getStringForUser(resolver, name, userHandle);
         }
@@ -7617,22 +7689,22 @@ public final class Settings {
          * @return true if the value was set, false on database errors
          */
         public static boolean putString(ContentResolver resolver,
-                String name, String value) {
+         String name, String value) {
             return putStringForUser(resolver, name, value, UserHandle.myUserId());
         }
 
         /** @hide */
         public static boolean putStringForUser(ContentResolver resolver,
-                String name, String value, int userHandle) {
+         String name, String value, int userHandle) {
             if (LOCAL_LOGV) {
-                Log.v(TAG, "Global.putString(name=" + name + ", value=" + value
-                        + " for " + userHandle);
+         Log.v(TAG, "Global.putString(name=" + name + ", value=" + value
+                 + " for " + userHandle);
             }
             // Global and Secure have the same access policy so we can forward writes
             if (MOVED_TO_SECURE.contains(name)) {
-                Log.w(TAG, "Setting " + name + " has moved from android.provider.Settings.Global"
-                        + " to android.provider.Settings.Secure, value is unchanged.");
-                return Secure.putStringForUser(resolver, name, value, userHandle);
+         Log.w(TAG, "Setting " + name + " has moved from android.provider.Settings.Global"
+                 + " to android.provider.Settings.Secure, value is unchanged.");
+         return Secure.putStringForUser(resolver, name, value, userHandle);
             }
             return sNameValueCache.putStringForUser(resolver, name, value, userHandle);
         }
@@ -7664,9 +7736,9 @@ public final class Settings {
         public static int getInt(ContentResolver cr, String name, int def) {
             String v = getString(cr, name);
             try {
-                return v != null ? Integer.parseInt(v) : def;
+         return v != null ? Integer.parseInt(v) : def;
             } catch (NumberFormatException e) {
-                return def;
+         return def;
             }
         }
 
@@ -7689,12 +7761,12 @@ public final class Settings {
          * @return The setting's current value.
          */
         public static int getInt(ContentResolver cr, String name)
-                throws SettingNotFoundException {
+         throws SettingNotFoundException {
             String v = getString(cr, name);
             try {
-                return Integer.parseInt(v);
+         return Integer.parseInt(v);
             } catch (NumberFormatException e) {
-                throw new SettingNotFoundException(name);
+         throw new SettingNotFoundException(name);
             }
         }
 
@@ -7733,9 +7805,9 @@ public final class Settings {
             String valString = getString(cr, name);
             long value;
             try {
-                value = valString != null ? Long.parseLong(valString) : def;
+         value = valString != null ? Long.parseLong(valString) : def;
             } catch (NumberFormatException e) {
-                value = def;
+         value = def;
             }
             return value;
         }
@@ -7758,12 +7830,12 @@ public final class Settings {
          * name can't be found or the setting value is not an integer.
          */
         public static long getLong(ContentResolver cr, String name)
-                throws SettingNotFoundException {
+         throws SettingNotFoundException {
             String valString = getString(cr, name);
             try {
-                return Long.parseLong(valString);
+         return Long.parseLong(valString);
             } catch (NumberFormatException e) {
-                throw new SettingNotFoundException(name);
+         throw new SettingNotFoundException(name);
             }
         }
 
@@ -7801,9 +7873,9 @@ public final class Settings {
         public static float getFloat(ContentResolver cr, String name, float def) {
             String v = getString(cr, name);
             try {
-                return v != null ? Float.parseFloat(v) : def;
+         return v != null ? Float.parseFloat(v) : def;
             } catch (NumberFormatException e) {
-                return def;
+         return def;
             }
         }
 
@@ -7826,15 +7898,15 @@ public final class Settings {
          * @return The setting's current value.
          */
         public static float getFloat(ContentResolver cr, String name)
-                throws SettingNotFoundException {
+         throws SettingNotFoundException {
             String v = getString(cr, name);
             if (v == null) {
-                throw new SettingNotFoundException(name);
+         throw new SettingNotFoundException(name);
             }
             try {
-                return Float.parseFloat(v);
+         return Float.parseFloat(v);
             } catch (NumberFormatException e) {
-                throw new SettingNotFoundException(name);
+         throw new SettingNotFoundException(name);
             }
         }
 
@@ -7900,7 +7972,7 @@ public final class Settings {
           * @hide
          */
         public static final String[] MULTI_SIM_USER_PREFERRED_SUBS = {"user_preferred_sub1",
-                "user_preferred_sub2","user_preferred_sub3"};
+         "user_preferred_sub2","user_preferred_sub3"};
     }
 
     /**
@@ -7989,23 +8061,23 @@ public final class Settings {
             Intent intent = null;
 
             Cursor c = cr.query(CONTENT_URI,
-                    sIntentProjection, sShortcutSelection,
-                    new String[] { String.valueOf((int) shortcut) }, ORDERING);
+             sIntentProjection, sShortcutSelection,
+             new String[] { String.valueOf((int) shortcut) }, ORDERING);
             // Keep trying until we find a valid shortcut
             try {
-                while (intent == null && c.moveToNext()) {
-                    try {
-                        String intentURI = c.getString(c.getColumnIndexOrThrow(INTENT));
-                        intent = Intent.parseUri(intentURI, 0);
-                    } catch (java.net.URISyntaxException e) {
-                        // The stored URL is bad...  ignore it.
-                    } catch (IllegalArgumentException e) {
-                        // Column not found
-                        Log.w(TAG, "Intent column not found", e);
-                    }
-                }
+         while (intent == null && c.moveToNext()) {
+             try {
+                 String intentURI = c.getString(c.getColumnIndexOrThrow(INTENT));
+                 intent = Intent.parseUri(intentURI, 0);
+             } catch (java.net.URISyntaxException e) {
+                 // The stored URL is bad...  ignore it.
+             } catch (IllegalArgumentException e) {
+                 // Column not found
+                 Log.w(TAG, "Intent column not found", e);
+             }
+         }
             } finally {
-                if (c != null) c.close();
+         if (c != null) c.close();
             }
 
             return intent;
@@ -8026,17 +8098,17 @@ public final class Settings {
          * @return The unique content URL for the new bookmark entry.
          */
         public static Uri add(ContentResolver cr,
-                                           Intent intent,
-                                           String title,
-                                           String folder,
-                                           char shortcut,
-                                           int ordering)
+                             Intent intent,
+                             String title,
+                             String folder,
+                             char shortcut,
+                             int ordering)
         {
             // If a shortcut is supplied, and it is already defined for
             // another bookmark, then remove the old definition.
             if (shortcut != 0) {
-                cr.delete(CONTENT_URI, sShortcutSelection,
-                        new String[] { String.valueOf((int) shortcut) });
+         cr.delete(CONTENT_URI, sShortcutSelection,
+                 new String[] { String.valueOf((int) shortcut) });
             }
 
             ContentValues values = new ContentValues();
@@ -8078,25 +8150,25 @@ public final class Settings {
             int titleColumn = cursor.getColumnIndex(TITLE);
             int intentColumn = cursor.getColumnIndex(INTENT);
             if (titleColumn == -1 || intentColumn == -1) {
-                throw new IllegalArgumentException(
-                        "The cursor must contain the TITLE and INTENT columns.");
+         throw new IllegalArgumentException(
+                 "The cursor must contain the TITLE and INTENT columns.");
             }
 
             String title = cursor.getString(titleColumn);
             if (!TextUtils.isEmpty(title)) {
-                return title;
+         return title;
             }
 
             String intentUri = cursor.getString(intentColumn);
             if (TextUtils.isEmpty(intentUri)) {
-                return "";
+         return "";
             }
 
             Intent intent;
             try {
-                intent = Intent.parseUri(intentUri, 0);
+         intent = Intent.parseUri(intentUri, 0);
             } catch (URISyntaxException e) {
-                return "";
+         return "";
             }
 
             PackageManager packageManager = context.getPackageManager();
