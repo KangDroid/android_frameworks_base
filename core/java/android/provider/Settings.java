@@ -1970,6 +1970,12 @@ public final class Settings {
          */
         @Deprecated
         public static final String NEXT_ALARM_FORMATTED = "next_alarm_formatted";
+		
+        /**
+         * ToastAnimation
+         * @hide
+         */
+         public static final String TOAST_ANIMATION = "toast_animation";
 
         /**
          * Scaling factor for fonts, float.
