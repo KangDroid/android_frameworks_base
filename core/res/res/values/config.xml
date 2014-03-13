@@ -2386,5 +2386,4 @@
 
     <!-- Config to disable showing ringtones from removable storage -->
     <bool name="config_excludeRingtonesFromRemovableStorage">false</bool>
-
 </resources>

@@ -62,6 +62,7 @@ public class QSConstants {
     public static final String TILE_HEADS_UP = "heads_up";
     public static final String TILE_APPSIDEBAR = "toggleAppSideBar";
     public static final String TILE_SLIM_FLOATS = "slim_floats";
+    //public static final String TILE_ONTHEGO = "toggleOnTheGo";
 
     public static final String DYNAMIC_TILE_NEXT_ALARM = "next_alarm";
     public static final String DYNAMIC_TILE_IME_SELECTOR = "ime_selector";
