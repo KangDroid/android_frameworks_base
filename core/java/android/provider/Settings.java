@@ -3389,6 +3389,12 @@ public final class Settings {
          */
         public static final String RECENTS_SHOW_HIDE_SEARCH_BAR = "recents_show_hide_search_bar";
 		 
+        /**
+         * Display second in the Clock
+         * @hide
+         */
+        public static final String CLOCK_USE_SECOND = "clock_use_second";  
+		 
          /**
           * Width and height of output vide expressed in WxH
           * @hide
