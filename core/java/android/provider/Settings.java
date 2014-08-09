@@ -4523,6 +4523,12 @@ public final class Settings {
          * @hide
          */
         public static final String PIE_IME_CONTROL = "pie_ime_control";
+			
+        /**
+         * Pie trigger sensitivity
+         * @hide
+         */
+        public static final String PIE_TRIGGER_SENSITIVITY = "pie_trigger_sensitivity";
 
         /**
          * Settings to backup. This is here so that it's in the same place as the settings
