@@ -2056,6 +2056,12 @@ public final class Settings {
          * @hide
          */
         public static final String SHOW_ALARM_ICON = "show_alarm_icon";
+		
+       /**
+        * Enable/Disable screenshot sound
+        * @hide
+        */
+       public static final String SCREENSHOT_SOUND = "screenshot_sound";
 
 		/**
          * ListView Animations
