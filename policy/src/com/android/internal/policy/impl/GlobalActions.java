@@ -362,6 +362,11 @@ class GlobalActions implements DialogInterface.OnDismissListener, DialogInterfac
                 public boolean showBeforeProvisioning() {
                     return false;
                 }
+
+                public CharSequence getLabelForAccessibility(Context context) {
+                    return null;
+                }
+
             });
 
         mAdapter = new MyAdapter();
