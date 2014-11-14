@@ -68,4 +68,28 @@
     <string name="app_ops_use_voice_volume">control the voice call volume</string>
     <string name="app_ops_write_mms">write an MMS message</string>
     <string name="app_ops_write_sms">write an SMS message</string>
+	
+    <!-- Names of default profiles. -->
+    <string name="profileNameDefault">Default</string>
+    <string name="profileNameWork">Work</string>
+    <string name="profileNameHome">Home</string>
+    <string name="profileNameSilent">Silent</string>
+    <string name="profileNameNight">Night</string>
+    <string name="profileNameAutomobile">Automobile</string>
+
+    <!-- Names of application groups. -->
+    <string name="profileGroupPhone">Phone</string>
+    <string name="profileGroupCalendar">Calendar</string>
+    <string name="profileGroupGmail">Gmail</string>
+    <string name="profileGroupEmail">Email</string>
+    <string name="profileGroupSMS">SMS</string>
+
+    <!-- Name of wildcard profile. -->
+    <string name="wildcardProfile">Other</string>
+
+     <!-- The item label for the no profile selection item. -->
+     <string name="profile_none">None</string>
+
+     <!-- The title of the profile picker dialog. -->
+     <string name="profile_picker_title">Profiles</string>
 </resources>

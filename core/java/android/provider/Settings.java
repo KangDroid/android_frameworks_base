@@ -2247,6 +2247,12 @@ public final class Settings {
         public static final String NOTIFICATION_SOUND = "notification_sound";
 
         /**
+         * Show the pending notification counts as overlays on the status bar
+         * @hide
+         */
+        public static final String SYSTEM_PROFILES_ENABLED = "system_profiles_enabled";
+
+        /**
          * A {@link Uri} that will point to the current default notification
          * sound at any given time.
          *
@@ -3735,7 +3741,8 @@ public final class Settings {
             LOCK_TO_APP_ENABLED,
             NOTIFICATION_SOUND,
             STATUS_BAR_BATTERY_STYLE,
-            STATUS_BAR_SHOW_BATTERY_PERCENT
+            STATUS_BAR_SHOW_BATTERY_PERCENT,
+            SYSTEM_PROFILES_ENABLED
         };
 
         /**
@@ -5430,6 +5437,12 @@ public final class Settings {
          */
         public static final String CONNECTIVITY_RELEASE_PENDING_INTENT_DELAY_MS =
          "connectivity_release_pending_intent_delay_ms";
+
+        /**
+         * Whether the Wimax should be on.  Only the WiMAX service should touch this.
+         * @hide
+         */
+        public static final String WIMAX_ON = "wimax_on";
 
         /**
          * Whether background data usage is allowed.
