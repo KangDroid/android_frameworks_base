@@ -5925,6 +5925,12 @@ public final class Settings {
         */
        public static final String DEVELOPMENT_SHORTCUT = "development_shortcut";
 
+		/**
+         * Whether newly installed apps should run with privacy guard by default
+         * @hide
+         */
+        public static final String PRIVACY_GUARD_DEFAULT = "privacy_guard_default";
+
         /**
          * This are the settings to be backed up.
          *
@@ -5977,7 +5983,8 @@ public final class Settings {
             UI_NIGHT_MODE,
             SLEEP_TIMEOUT,
             ADVANCED_REBOOT,
-            DEVELOPMENT_SHORTCUT
+            DEVELOPMENT_SHORTCUT,
+            PRIVACY_GUARD_DEFAULT
         };
 
         /**
