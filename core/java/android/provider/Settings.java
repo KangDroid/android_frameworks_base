@@ -3147,13 +3147,6 @@ public final class Settings {
          */
         public static final String STATUS_BAR_AM_PM = "status_bar_am_pm";
 
-	/**
-         * Animate-flip Quick Settings Panel Tiles on click
-         *
-         * @hide
-         */
-        public static final String QUICK_SETTINGS_TILES_FLIP = "quick_settings_tiles_flip";
-
         public static final String NOTIF_ALPHA = "notif_alpha";
 
 	/**
