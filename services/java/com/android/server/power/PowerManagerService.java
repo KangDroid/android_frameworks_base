@@ -1,4 +1,4 @@
-/*
+Settings/*
  * Copyright (C) 2007 The Android Open Source Project
  * Copyright (c) 2012-2013, The Linux Foundation. All rights reserved.
  *
@@ -593,11 +593,11 @@ public final class PowerManagerService extends IPowerManager.Stub
             resolver.registerContentObserver(Settings.System.getUriFor(
                     Settings.System.PROXIMITY_ON_WAKE),
                     false, mSettingsObserver, UserHandle.USER_ALL);
-            resolver.registerContentObserver(Settings.KDP.getUriFor(
-                    Settings.KDP.WAKELOCK_BLOCKING_ENABLED),
+            resolver.registerContentObserver(Settings.Settings.getUriFor(
+                    Settings.Settings.WAKELOCK_BLOCKING_ENABLED),
                     false, mSettingsObserver, UserHandle.USER_ALL);
-            resolver.registerContentObserver(Settings.KDP.getUriFor(
-                    Settings.KDP.WAKELOCK_BLOCKING_LIST),
+            resolver.registerContentObserver(Settings.Settings.getUriFor(
+                    Settings.Settings.WAKELOCK_BLOCKING_LIST),
                     false, mSettingsObserver, UserHandle.USER_ALL);
 
             // Go.
@@ -660,12 +660,12 @@ public final class PowerManagerService extends IPowerManager.Stub
         mProximityWakeEnabled = Settings.System.getInt(resolver,
                 Settings.System.PROXIMITY_ON_WAKE, 0) == 1;
 
-        mWakeLockBlockingEnabled = Settings.KDP.getIntForUser(resolver,
-                Settings.KDP.WAKELOCK_BLOCKING_ENABLED,
+        mWakeLockBlockingEnabled = Settings.Settings.getIntForUser(resolver,
+                Settings.Settings.WAKELOCK_BLOCKING_ENABLED,
                 0, UserHandle.USER_CURRENT);
 
-        String blockedWakelockList = Settings.KDP.getStringForUser(resolver,
-                Settings.KDP.WAKELOCK_BLOCKING_LIST,
+        String blockedWakelockList = Settings.Settings.getStringForUser(resolver,
+                Settings.Settings.WAKELOCK_BLOCKING_LIST,
                 UserHandle.USER_CURRENT);
         setBlockedWakeLocks(blockedWakelockList);
 
