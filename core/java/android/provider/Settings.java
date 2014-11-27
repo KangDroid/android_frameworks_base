@@ -3321,6 +3321,19 @@ public final class Settings {
          * @hide
          */
         public static final String HALO_UNLOCK_PING = "halo_unlock_ping";
+		
+
+        /**
+        * Enable blocking wakelock
+        * @hide
+        */
+       public static final String WAKELOCK_BLOCKING_ENABLED = "wakelock_blocking_enabled";
+
+       /**
+        * List of wakelock blocks selected
+        * @hide
+        */
+       public static final String WAKELOCK_BLOCKING_LIST = "wakelock_blocking_list";
 
         /**
          * Display style of the status bar battery information
@@ -8120,18 +8133,6 @@ public final class Settings {
             String prefKey = MULTI_SIM_SUB_NAME + "_" + imsi;
             Settings.Global.putString(context.getContentResolver(), prefKey, name);
         }
-
-         /**
-         * Enable blocking wakelock
-         * @hide
-         */
-        public static final String WAKELOCK_BLOCKING_ENABLED = "wakelock_blocking_enabled";
-
-        /**
-         * List of wakelock blocks selected
-         * @hide
-         */
-        public static final String WAKELOCK_BLOCKING_LIST = "wakelock_blocking_list";
 
     }
 
