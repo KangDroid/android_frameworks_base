@@ -48,4 +48,5 @@ interface IKeyguardService {
     oneway void launchApplicationWidget();
     oneway void onBootCompleted();
     oneway void setBackgroundBitmap(in Bitmap bmp);
+    oneway void dispatchButtonClick(int buttonId);
 }

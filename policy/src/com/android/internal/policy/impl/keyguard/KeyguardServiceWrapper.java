@@ -210,6 +210,10 @@ public class KeyguardServiceWrapper implements IKeyguardService {
     }
 
 
+    public void dispatchButtonClick(int buttonId) {
+        // Not used by PhoneWindowManager.  See code in {@link NavigationBarView}
+    }
+
     public void launchCamera() {
         // Not used by PhoneWindowManager.  See code in {@link NavigationBarView}
     }
