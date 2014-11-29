@@ -90,11 +90,11 @@ public class PlatLogoActivity extends Activity {
         letter.setTextSize(mIsCM ? 150 : 300);
         letter.setTextColor(0xFFFFFFFF);
         letter.setGravity(Gravity.CENTER);
-        letter.setText(mIsCM ? "CM" : "K");
+        letter.setText(mIsCM ? "ACKDP" : "K");
 
-        String cmVersion = SystemProperties.get("ro.cm.version");
-        if (cmVersion != null) {
-            cmVersion = cmVersion.replaceAll("([0-9\\.]+?)-.*", "$1");
+        String ackdpVersion = SystemProperties.get("ro.ackdp.version");
+        if (ackdpVersion != null) {
+            ackdpVersion = ackdpVersion.replaceAll("([0-9\\.]+?)-.*", "$1");
         }
 
         p = (int) (4 * metrics.density);
@@ -105,7 +105,7 @@ public class PlatLogoActivity extends Activity {
         tv.setPadding(p, p, p, p);
         tv.setTextColor(0xFFFFFFFF);
         tv.setGravity(Gravity.CENTER);
-        tv.setText(mIsCM ? "CyanogenMod " + cmVersion : "ANDROID " + Build.VERSION.RELEASE);
+        tv.setText(mIsCM ? "ACKDP " + ackdpVersion : "ANDROID " + Build.VERSION.RELEASE);
         tv.setVisibility(View.INVISIBLE);
 
         mContent.addView(bg);
