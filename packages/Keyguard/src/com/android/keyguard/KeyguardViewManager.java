@@ -179,11 +179,11 @@ public class KeyguardViewManager {
 
         void observe() {
             ContentResolver resolver = mContext.getContentResolver();
-            resolver.registerContentObserver(Settings.PAC.getUriFor(
+            resolver.registerContentObserver(Settings.System.getUriFor(
                     Settings.System.LOCKSCREEN_SEE_THROUGH), false, this);
-            resolver.registerContentObserver(Settings.PAC.getUriFor(
+            resolver.registerContentObserver(Settings.System.getUriFor(
                     Settings.System.LOCKSCREEN_BLUR_RADIUS), false, this);
-            resolver.registerContentObserver(Settings.PAC.getUriFor(
+            resolver.registerContentObserver(Settings.System.getUriFor(
                     Settings.System.LOCKSCREEN_NOTIFICATIONS), false, this);
         }
 
