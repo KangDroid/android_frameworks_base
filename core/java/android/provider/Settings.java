@@ -3479,6 +3479,12 @@ public final class Settings {
          */
         @ChaosLab(name="GestureAnywhere", classification=Classification.NEW_FIELD)
         public static final String GESTURE_ANYWHERE_SHOW_TRIGGER = "gesture_anywhere_show_trigger";
+		
+		/**
+		 * Clear Recents in navbar enabler
+	         * @hide
+	         */
+	        public static final String CLEAR_ALL_RECENTS_NAVBAR_ENABLED = "clear_all_recents_navbar_enabled";
 
         /**
          * The delay when killing the app on long press takes place
