@@ -3236,11 +3236,16 @@ public final class Settings {
         public static final String STATUS_BAR_CLOCK = "status_bar_clock";
 
         /**
+         * Boolean value on whether to show weather in the statusbar
+         */
+        public static final String STATUS_BAR_SHOW_WEATHER = "status_bar_show_weather";
+
+        /**
          * AM/PM Style for clock options
          * 0 - Normal AM/PM
          * 1 - Small AM/PM
          * 2 - No AM/PM
-         * @hide
+         * @hide 
          */
         public static final String STATUSBAR_CLOCK_AM_PM_STYLE = "statusbar_clock_am_pm_style";
 
