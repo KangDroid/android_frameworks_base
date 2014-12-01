@@ -5860,6 +5860,13 @@ public final class Settings {
          */
         public static final String LAST_SYSTEM_UI_FLAGS = "last_system_ui_flags";
 
+		/**
+        * Whether to display a menu containing 'Wipe data', 'Force close' and other options
+        * in the notification area and in the recent app list
+        * @hide
+        */
+       public static final String DEVELOPMENT_SHORTCUT = "development_shortcut";
+
         /**
          * This are the settings to be backed up.
          *
@@ -5911,7 +5918,8 @@ public final class Settings {
             MOUNT_UMS_NOTIFY_ENABLED,
             UI_NIGHT_MODE,
             SLEEP_TIMEOUT,
-            ADVANCED_REBOOT
+            ADVANCED_REBOOT,
+            DEVELOPMENT_SHORTCUT
         };
 
         /**
