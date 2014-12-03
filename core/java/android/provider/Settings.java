@@ -2122,6 +2122,13 @@ public final class Settings {
          * @hide
          */
         public static final String STATUS_BAR_TICKER_ENABLED = "status_bar_ticker_enabled";
+		
+		/**
+         * Quick Settings Smart Pulldown
+         *
+         * @hide
+         */
+        public static final String QS_SMART_PULLDOWN = "qs_smart_pulldown";
 
         /**
          * Control whether the process CPU usage meter should be shown.
