@@ -3774,11 +3774,6 @@ public class Intent implements Parcelable, Cloneable {
      * in mutil window scenarios.
      */
     public static final int FLAG_FLOATING_WINDOW = 0x00002000;
-    /**
-     * If set, this intent will always match start up as a floating window
-     * in mutil window scenarios.
-     */
-    public static final int FLAG_FLOATING_WINDOW = 0x00002000;
 
      /**
 	 * set in an Intent passed to {@link Context#startActivity Context.startActivity()},

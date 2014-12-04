@@ -19,6 +19,7 @@ package android.inputmethodservice;
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 
+import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.Dialog;
 import android.content.Context;
@@ -34,6 +35,7 @@ import android.os.ServiceManager;
 import android.os.IBinder;
 import android.os.ResultReceiver;
 import android.os.SystemClock;
+import android.os.Handler;
 import android.provider.Settings;
 import android.text.InputType;
 import android.text.Layout;
@@ -317,6 +319,7 @@ public class InputMethodService extends AbstractInputMethodService {
     
     View mInputView;
     boolean mIsInputViewShown;
+    Handler mHandler;
     
     int mStatusIcon;
     int mBackDisposition;
