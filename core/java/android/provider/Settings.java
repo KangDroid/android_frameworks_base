@@ -3104,6 +3104,12 @@ public final class Settings {
          * @hide
          */
         public static final String STATUS_BAR_DATE_STYLE = "status_bar_date_style";
+		
+        /**
+         * Show the pending notification counts as overlays on the status bar
+         * @hide
+         */
+        public static final String STATUS_BAR_NOTIF_COUNT = "status_bar_notif_count";
 
         /**
          * Settings to backup. This is here so that it's in the same place as the settings
