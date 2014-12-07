@@ -6539,35 +6539,7 @@ public abstract class AbsListView extends AdapterView<ListAdapter> implements Te
                         scrap.get(j).forceLayout();
                     }
                 }
-    }
 
-    /**
-     * For our text watcher that is associated with the text filter.  Does
-     * nothing.
-     */
-    @Override
-    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-    }
-
-    /**
-     * For our text watcher that is associated with the text filter. Performs
-     * the actual filtering as the text changes, and takes care of hiding and
-     * showing the popup displaying the currently entered filter text.
-     */
-    @Override
-    public void onTextChanged(CharSequence s, int start, int before, int count) {
-        if (isTextFilterEnabled()) {
-            createTextFilter(true);
-            int length = s.length();
-            boolean showing = mPopup.isShowing();
-            if (!showing && length > 0) {
-                // Show the filter popup if necessary
-                showPopup();
-                mFiltered = true;
-            } else if (showing && length == 0) {
-                // Remove the filter popup if the user has cleared all text
-                dismissPopup();
-                mFiltered = false;
             }
             if (mTransientStateViews != null) {
                 final int count = mTransientStateViews.size();
