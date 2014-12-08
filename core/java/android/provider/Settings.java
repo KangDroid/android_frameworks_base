@@ -3574,7 +3574,7 @@ public final class Settings {
          * @hide
          */
         public static final String SLIM_ACTION_FLOATS = "slim_action_floats";
-		
+
         /**
          * Whether to dim the navigation bar icons after inactivity
          * @hide
@@ -3611,6 +3611,21 @@ public final class Settings {
          * @hide
          */
         public static final String DIM_NAV_BUTTONS_TOUCH_ANYWHERE = "dim_nav_buttons_touch_anywhere";
+			
+        /**
+         * Defines the shortcuts to be shown on lockscreen
+         * Usage is like this: target:icon|target:icon|target:icon
+         * if :icon is not set, default application icon will be used
+         * @hide
+         */
+        public static final String LOCKSCREEN_SHORTCUTS = "lockscreen_shortcuts";
+
+        /**
+         * Whether shorcuts open with normal or longpress
+         * @hide
+         */
+        public static final String LOCKSCREEN_SHORTCUTS_LONGPRESS =
+                "lockscreen_shortcuts_longpress";
 
         /**
          * Settings to backup. This is here so that it's in the same place as the settings
