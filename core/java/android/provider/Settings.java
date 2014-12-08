@@ -3425,7 +3425,24 @@ public final class Settings {
          * @hide
          */
         public static final String STATUS_BAR_CLOCK = "status_bar_clock";
+	   
+         /**
+         * Network traffic inactivity threshold (default is 10 kBs)
+         * @hide
+         */
+        public static final String NETWORK_TRAFFIC_AUTOHIDE_THRESHOLD = "network_traffic_autohide_threshold";
 
+        /**
+         * Whether or not to hide the network traffic indicator when there is no activity
+         * @hide
+         */
+        public static final String NETWORK_TRAFFIC_AUTOHIDE = "network_traffic_autohide";        
+        /**
+         * Display second in the Clock
+         * @hide
+         */
+         
+        public static final String CLOCK_USE_SECOND = "clock_use_second";
         /**
          * AM/PM Style for clock options
          * 0 - Normal AM/PM
@@ -3443,23 +3460,13 @@ public final class Settings {
          * @hide
          */
         public static final String STATUSBAR_CLOCK_STYLE = "statusbar_clock_style";
-        
-        /**
-         * Network traffic indicator, goes from least to greatest significant bitwise
-         * 0 = Display up-stream traffic if set
-         * 1 = Display down-stream traffic if set
-         * 2 = Show as Byte/s if set
-         * 16-31 = Refresh interval(ms)  min: 250  max: 32750  default: 1000
-         * @hide
-         */
-        public static final String NETWORK_TRAFFIC_STATE = "network_traffic_state"; 
 
         /**
          * Setting for clock color
          * @hide
          */
         public static final String STATUSBAR_CLOCK_COLOR = "statusbar_clock_color";
-
+		
         /**
          * Shows custom date before clock time
          * 0 - No Date
@@ -3684,6 +3691,16 @@ public final class Settings {
          * @hide
          */
         public static final String LISTVIEW_ANIMATION = "listview_animation";
+
+       /**
+         * Network traffic indicator, goes from least to greatest significant bitwise
+         * 0 = Display up-stream traffic if set
+         * 1 = Display down-stream traffic if set
+         * 2 = Show as Byte/s if set
+         * 16-31 = Refresh interval(ms) min: 250 max: 32750 default: 1000
+         * @hide
+         */
+        public static final String NETWORK_TRAFFIC_STATE = "network_traffic_state";
 
         /**
          * ListView Interpolators
