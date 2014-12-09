@@ -105,7 +105,7 @@ public class ActionHelper {
     }
 
     // General methods to retrieve the correct icon for the respective action.
-    public static Drawable getButtonIconImage(Context context,
+    public static Drawable getActionIconImage(Context context,
             String clickAction, String customIcon) {
         int resId = -1;
         Drawable d = null;
