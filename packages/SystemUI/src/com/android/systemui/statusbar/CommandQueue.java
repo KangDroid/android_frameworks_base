@@ -60,6 +60,8 @@ public class CommandQueue extends IStatusBar.Stub {
     private static final int MSG_SHOW_SCREEN_PIN_REQUEST    = 18 << MSG_SHIFT;
 	private static final int MSG_START_CUSTOM_INTENT_AFTER_KEYGUARD = 19 << MSG_SHIFT;
     private static final int MSG_SET_PIE_TRIGGER_MASK               = 20 << MSG_SHIFT;
+    private static final int MSG_HIDE_HEADS_UP_CANDIDATE            = 21 << MSG_SHIFT;
+    private static final int MSG_HIDE_HEADS_UP                      = 22 << MSG_SHIFT;
 
     public static final int FLAG_EXCLUDE_NONE = 0;
     public static final int FLAG_EXCLUDE_SEARCH_PANEL = 1 << 0;
@@ -105,6 +107,8 @@ public class CommandQueue extends IStatusBar.Stub {
         public void showScreenPinningRequest();
         public void showCustomIntentAfterKeyguard(Intent intent);
         public void setPieTriggerMask(int newMask, boolean lock);
+        public void hideHeadsUpCandidate(String packageName);
+        public void scheduleHeadsUpClose();
     }
 
     public CommandQueue(Callbacks callbacks, StatusBarIconList list) {
@@ -276,6 +280,21 @@ public class CommandQueue extends IStatusBar.Stub {
             m.sendToTarget();
         }
     }
+	
+    public void hideHeadsUpCandidate(String packageName) {
+        synchronized (mList) {
+            mHandler.removeMessages(MSG_HIDE_HEADS_UP_CANDIDATE);
+            mHandler.obtainMessage(MSG_HIDE_HEADS_UP_CANDIDATE,
+                0, 0, packageName).sendToTarget();
+        }
+    }
+
+    public void scheduleHeadsUpClose() {
+        synchronized (mList) {
+            mHandler.removeMessages(MSG_HIDE_HEADS_UP);
+            mHandler.sendEmptyMessage(MSG_HIDE_HEADS_UP);
+        }
+    }
 
     private final class H extends Handler {
         public void handleMessage(Message msg) {
@@ -369,6 +388,12 @@ public class CommandQueue extends IStatusBar.Stub {
                 case MSG_SET_PIE_TRIGGER_MASK:
                     mCallbacks.setPieTriggerMask(msg.arg1, msg.arg2 != 0);
 					break;
+                case MSG_HIDE_HEADS_UP_CANDIDATE:
+                    mCallbacks.hideHeadsUpCandidate((String) msg.obj);
+                    break;
+                case MSG_HIDE_HEADS_UP:
+                    mCallbacks.scheduleHeadsUpClose();
+                    break;
             }
         }
     }

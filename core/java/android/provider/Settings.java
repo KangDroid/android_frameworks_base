@@ -2317,7 +2317,25 @@ public final class Settings {
         public static final String QS_USE_MAIN_TILES = Secure.QS_USE_MAIN_TILES;
 
         /**
+<<<<<<< HEAD
          * Defines the status and navigation bar color is battery safe mode is enabled.
+=======
+         * Defines global heads up snooze time if user want to snooze it.
+         *
+         * @hide
+         */
+        public static final String HEADS_UP_SNOOZE_TIME = "heads_up_snooze_time";
+
+        /**
+         * Defines the global heads up notification decay
+         *
+         * @hide
+         */
+        public static final String HEADS_UP_NOTIFCATION_DECAY = "heads_up_notification_decay";
+
+        /**
+         * Quick Settings Smart Pulldown
+>>>>>>> b7e92cc... Frameworks: Slim heads up customizations for LP (1/2)
          *
          * @hide
          */

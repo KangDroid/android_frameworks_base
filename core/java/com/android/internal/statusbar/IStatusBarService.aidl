@@ -65,4 +65,6 @@ interface IStatusBarService
     void cancelPreloadRecentApps();
     void showCustomIntentAfterKeyguard(inout Intent intent);
     void setPieTriggerMask(int newMask, boolean lock);
+    void hideHeadsUpCandidate(String packageName);
+    void scheduleHeadsUpClose();
 }
