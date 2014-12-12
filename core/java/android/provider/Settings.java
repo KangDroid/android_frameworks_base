@@ -2020,6 +2020,20 @@ public final class Settings {
          */
         public static final String LISTVIEW_INTERPOLATOR = "listview_interpolator";
 		
+         /**
+         * Defines global heads up snooze time if user want to snooze it.
+         *
+         * @hide
+         */
+        public static final String HEADS_UP_SNOOZE_TIME = "heads_up_snooze_time";
+
+        /**
+         * Defines the global heads up notification decay
+         *
+         * @hide
+         */
+        public static final String HEADS_UP_NOTIFCATION_DECAY = "heads_up_notification_decay";
+		
         /**
          * Defines the shortcuts to be shown on lockscreen
          * Usage is like this: target:icon|target:icon|target:icon
