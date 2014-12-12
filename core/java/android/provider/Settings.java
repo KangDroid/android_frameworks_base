@@ -3664,7 +3664,13 @@ public final class Settings {
          * @hide
          */
         public static final String HFM_DISABLE_ADS = "hfm_disable_ads";
-
+        
+       /**
+        * Network stats Color style
+        * @hide
+        */
+       public static final String NETWORK_TRAFFIC_COLOR = "network_traffic_color";
+       
         /**
          * Whether navigation bar is placed on the left side in landscape mode
          * @hide
