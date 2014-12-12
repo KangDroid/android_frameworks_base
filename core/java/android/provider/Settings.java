@@ -2006,14 +2006,6 @@ public final class Settings {
          */
         public static final String LISTVIEW_INTERPOLATOR = "listview_interpolator";
 
-
-
-        /**
-         * Boolean value on whether to show weather in the statusbar
-         */
-        public static final String STATUS_BAR_SHOW_WEATHER = "status_bar_show_weather";
-
-
        /**
         * ToastAnimation
         * @hide
@@ -5492,6 +5484,12 @@ public final class Settings {
          * @hide
          */
         public static final String DEVELOPMENT_SHORTCUT = "development_shortcut";
+
+
+        /**
+         * Boolean value on whether to show weather in the statusbar
+         */
+        public static final String STATUS_BAR_SHOW_WEATHER = "status_bar_show_weather";
 
         /**
          * Global stats collection
