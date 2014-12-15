@@ -2777,6 +2777,12 @@ public final class Settings {
         public static final String USE_EDGE_SERVICE_FOR_GESTURES = "edge_service_for_gestures";
         
         /**
+         *
+         * @hide
+         */
+        public static final String ANIMATION_CONTROLS_NO_SCROLL = "animation_controls_no_scroll";        
+        
+        /**
          * Determine custom scroll friction.
          * @hide
          */
@@ -2804,7 +2810,7 @@ public final class Settings {
          * Show the pending notification counts as overlays on the status bar
          * @hide
          */
-        public static final String STATUS_BAR_NOTIF_COUNT = "status_bar_notif_count";
+        public static final String STATUS_BAR_SHOW_NOTIF_COUNT = "status_bar_show_notif_count";
 
         /**
          * Control the type of rotation which can be performed using the accelerometer
@@ -3444,6 +3450,12 @@ public final class Settings {
          */
         public static final String DOUBLE_TAP_SLEEP_GESTURE = "double_tap_sleep_gesture";
 
+		/**
+		 * Boolean value on whether to show weather in the statusbar
+		 * @hide
+		 */
+        public static final String STATUS_BAR_EXPANDED_HEADER_SHOW_WEATHER = "status_bar_expanded_header_show_weather";
+		
         /**
          * Whether to show the weather location on the header of the expanded status bar
          * @hide
@@ -3478,12 +3490,6 @@ public final class Settings {
          * @hide
          */
         public static final String RECENTS_SHOW_HIDE_SEARCH_BAR = "recents_show_hide_search_bar";
-		 
-        /**
-         * Display second in the Clock
-         * @hide
-         */
-        public static final String CLOCK_USE_SECOND = "clock_use_second";  
 		 
          /**
           * Width and height of output vide expressed in WxH
