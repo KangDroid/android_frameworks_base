@@ -2859,12 +2859,36 @@ public final class Settings {
          * @hide
          */
         public static final String USE_EDGE_SERVICE_FOR_GESTURES = "edge_service_for_gestures";
+        
+        /**
+         * Determine custom scroll friction.
+         * @hide
+         */
+        public static final String CUSTOM_SCROLL_FRICTION = "custom_scroll_friction";
+
+        /**
+         * Determine custom fling velocity.
+         * @hide
+         */
+        public static final String CUSTOM_FLING_VELOCITY = "custom_fling_velocity";
+
+        /**
+         * Determine custom overscroll distance.
+         * @hide
+         */
+        public static final String CUSTOM_OVERSCROLL_DISTANCE = "custom_overscroll_distance";
+
+        /**
+         * Determine custom overfling distance.
+         * @hide
+         */
+        public static final String CUSTOM_OVERFLING_DISTANCE = "custom_overfling_distance";        
 
         /**
          * Show the pending notification counts as overlays on the status bar
          * @hide
          */
-        public static final String STATUS_BAR_NOTIF_COUNT = "status_bar_notif_count";
+        public static final String STATUS_BAR_SHOW_NOTIF_COUNT = "status_bar_show_notif_count";
 
         /**
          * Control the type of rotation which can be performed using the accelerometer
@@ -3896,6 +3920,18 @@ public final class Settings {
          * @hide
          */
         public static final String STATUS_BAR_NOTIF_COUNT_TEXT_COLOR = "status_bar_notif_count_text_color";
+		
+        /**
+         *
+         * @hide
+         */
+        public static final String ANIMATION_CONTROLS_NO_SCROLL = "animation_controls_no_scroll";        
+		
+		/**
+		 * Boolean value on whether to show weather in the statusbar
+		 * @hide
+		 */
+        public static final String STATUS_BAR_EXPANDED_HEADER_SHOW_WEATHER = "status_bar_expanded_header_show_weather";
 
         /**
          * Settings to backup. This is here so that it's in the same place as the settings
