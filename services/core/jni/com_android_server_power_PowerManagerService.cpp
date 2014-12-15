@@ -170,6 +170,13 @@ static void nativeSetPowerProfile(JNIEnv *env, jobject clazz, jint profile) {
     }
 }
 
+static void nativeSendPowerHintString(JNIEnv *env, jclass clazz, jint hintId, jstring data) {
+    ScopedUtfChars name(env, data);
+
+    if (gPowerModule && gPowerModule->powerHint) {
+        gPowerModule->powerHint(gPowerModule, (power_hint_t)hintId, (void*)name.c_str());
+    }
+}
 
 // ----------------------------------------------------------------------------
 
@@ -191,6 +198,8 @@ static JNINativeMethod gPowerManagerServiceMethods[] = {
             (void*) nativeCpuBoost },
     { "nativeSetPowerProfile", "(I)V",
             (void*) nativeSetPowerProfile },
+    { "nativeSendPowerHintString", "(ILjava/lang/String;)V",
+            (void*) nativeSendPowerHintString },
 };
 
 #define FIND_CLASS(var, className) \
