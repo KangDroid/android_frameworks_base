@@ -85,6 +85,7 @@
         <item>@string/app_ops_delete_mms</item>
         <item>@string/app_ops_delete_contacts</item>
         <item>@string/app_ops_delete_call_log</item>
+        <item>@string/app_ops_su</item>
     </string-array>
 
 </resources>
