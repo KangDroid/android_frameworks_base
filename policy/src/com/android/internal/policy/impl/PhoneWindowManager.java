@@ -746,7 +746,6 @@ public class PhoneWindowManager implements WindowManagerPolicy {
 			resolver.registerContentObserver(Settings.System.getUriFor(
                     Settings.System.NAVIGATION_BAR_HEIGHT), false, this,
                     UserHandle.USER_ALL);
->>>>>>> beb0c4f... navigation bar: custom height
             updateSettings();
         }
 
