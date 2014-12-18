@@ -3309,6 +3309,11 @@ public final class Settings {
          * @hide
          */
         public static final String NAVIGATION_BAR_HEIGHT = "navigation_bar_height";
+	/**
+         * Width of navigation bar buttons
+         * @hide
+         */
+        public static final String NAVIGATION_BAR_WIDTH = "navigation_bar_width";
 
         /**
          * Whether to use gesture anywhere feature.
