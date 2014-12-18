@@ -1641,8 +1641,6 @@ public class PhoneWindowManager implements WindowManagerPolicy {
 	    // navigation bar custom height
             int  mNavigationBarHeight = Settings.System.getInt(resolver,
                     Settings.System.NAVIGATION_BAR_HEIGHT, 48);
-            int  mNavigationBarWidth = Settings.System.getInt(resolver,
-                    Settings.System.NAVIGATION_BAR_WIDTH, 48);
             mNavigationBarHeightForRotation[mPortraitRotation] =
             mNavigationBarHeightForRotation[mUpsideDownRotation] =
                     mNavigationBarHeight * DisplayMetrics.DENSITY_DEVICE/DisplayMetrics.DENSITY_DEFAULT;
@@ -1651,14 +1649,9 @@ public class PhoneWindowManager implements WindowManagerPolicy {
                     mNavigationBarHeight * DisplayMetrics.DENSITY_DEVICE/DisplayMetrics.DENSITY_DEFAULT;
             mNavigationBarWidthForRotation[mPortraitRotation] =
             mNavigationBarWidthForRotation[mUpsideDownRotation] =
-				NavigationBarWidth * DisplayMetrics.DENSITY_DEVICE/DisplayMetrics.DENSITY_DEFAULT;
             mNavigationBarWidthForRotation[mLandscapeRotation] =
             mNavigationBarWidthForRotation[mSeascapeRotation] =
-				mNavigationBarWidth * DisplayMetrics.DENSITY_DEVICE/DisplayMetrics.DENSITY_DEFAULT;
-			
-			(mNavigationBarHeight - 6) * DisplayMetrics.DENSITY_DEVICE/DisplayMetrics.DENSITY_DEFAULT;
                 (mNavigationBarHeight - 6) * DisplayMetrics.DENSITY_DEVICE/DisplayMetrics.DENSITY_DEFAULT;
-
 
             final boolean useEdgeService = Settings.System.getIntForUser(resolver,
                     Settings.System.USE_EDGE_SERVICE_FOR_GESTURES, 1, UserHandle.USER_CURRENT) == 1;
