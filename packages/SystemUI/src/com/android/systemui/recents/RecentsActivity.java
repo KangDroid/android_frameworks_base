@@ -187,6 +187,15 @@ public class RecentsActivity extends Activity implements RecentsView.RecentsView
         }
     });
 
+    public void setRecentHints(boolean show) {
+        // Check if we need to enable alternate drawable for recent apps key
+        if(mNavigationCallback == null) return; // Multiuser is not allowed
+        int navigationHints = mNavigationCallback.getNavigationIconHints();
+        mNavigationCallback.setNavigationIconHints(NavigationBarView.NAVBAR_RECENTS_HINT,
+        show ? (navigationHints | StatusBarManager.NAVIGATION_HINT_RECENT_ALT)
+        : (navigationHints & ~StatusBarManager.NAVIGATION_HINT_RECENT_ALT), true);
+    }
+
     public static void setNavigationBarView(NavigationBarView nav) {
         mNavigationBarView = nav;
     }
@@ -297,7 +306,18 @@ public class RecentsActivity extends Activity implements RecentsView.RecentsView
         return mVisible;
     }
 
-  }
+    private void updateNavigationBarIcon() {
+        if (mVisible) {
+            if (root != null) {
+                setRecentHints(root.hasTasks());
+            } else {
+                setRecentHints(false);
+            }
+        } else {
+            // It's nothing
+            setRecentHints(false);
+        }
+    }
 
     /** Attempts to allocate and bind the search bar app widget */
     void bindSearchBarAppWidget() {
@@ -525,6 +545,15 @@ public class RecentsActivity extends Activity implements RecentsView.RecentsView
 
         // Mark Recents as visible
         mVisible = true;
+
+        updateNavigationBarIcon();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        updateNavigationBarIcon();
     }
 
     @Override

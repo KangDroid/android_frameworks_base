@@ -72,8 +72,10 @@ public class NavigationBarView extends LinearLayout implements NavigationCallbac
     int mDisabledFlags = 0;
     int mNavigationIconHints = 0;
 
-    private BackButtonDrawable mBackIcon, mBackLandIcon;
-    private Drawable mRecentIcon, mRecentLandIcon, mRecentAltIcon, mRecentAltLandIcon;
+
+    private Drawable mBackIcon, mBackLandIcon, mBackAltIcon, mBackAltLandIcon,
+            mRecentIcon, mRecentLandIcon,
+            mRecentAltIcon, mRecentAltLandIcon;
 
     private NavigationBarViewTaskSwitchHelper mTaskSwitchHelper;
     private DelegateViewHelper mDelegateHelper;
@@ -291,10 +293,14 @@ public class NavigationBarView extends LinearLayout implements NavigationCallbac
     }
 
     public void setNavigationIconHints(int hints) {
-        setNavigationIconHints(hints, false);
+        setNavigationIconHints(NavigationCallback.NAVBAR_BACK_HINT, hints, false);
     }
 
     public void setNavigationIconHints(int hints, boolean force) {
+        setNavigationIconHints(NavigationCallback.NAVBAR_BACK_HINT, hints, force);
+    }
+
+    public void setNavigationIconHints(int button, int hints, boolean force) {
         if (!force && hints == mNavigationIconHints) return;
         final boolean backAlt = (hints & StatusBarManager.NAVIGATION_HINT_BACK_ALT) != 0;
         if ((mNavigationIconHints & StatusBarManager.NAVIGATION_HINT_BACK_ALT) != 0 && !backAlt) {
@@ -302,18 +308,23 @@ public class NavigationBarView extends LinearLayout implements NavigationCallbac
         }
         if (DEBUG) {
             android.widget.Toast.makeText(getContext(),
-                "Navigation icon hints = " + hints,
+                "Navigation icon hints = " + hints+" button = "+button,
                 500).show();
         }
-		
+
         mNavigationIconHints = hints;
-		
-        ((ImageView)getBackButton()).setImageDrawable(null);
-        ((ImageView)getBackButton()).setImageDrawable(mVertical ? mBackLandIcon : mBackIcon);
-        mBackLandIcon.setImeVisible(backAlt);
-        mBackIcon.setImeVisible(backAlt);
-		
-		((ImageView)getRecentsButton()).setImageDrawable(mVertical ? mRecentLandIcon : mRecentIcon);
+
+        if(button == NavigationCallback.NAVBAR_BACK_HINT) {
+            ((ImageView)getBackButton()).setImageDrawable(
+                    (0 != (hints & StatusBarManager.NAVIGATION_HINT_BACK_ALT))
+                            ? (mVertical ? mBackAltLandIcon : mBackAltIcon)
+                            : (mVertical ? mBackLandIcon : mBackIcon));
+        } else if (button == NavigationCallback.NAVBAR_RECENTS_HINT) {
+            ((ImageView)getRecentsButton()).setImageDrawable(
+                    (0 != (hints & StatusBarManager.NAVIGATION_HINT_RECENT_ALT))
+                            ? (mVertical ? mRecentAltLandIcon : mRecentAltIcon)
+                            : (mVertical ? mRecentLandIcon : mRecentIcon));
+        }
 
         final boolean showImeButton = ((hints & StatusBarManager.NAVIGATION_HINT_IME_SHOWN) != 0);
         getImeSwitchButton().setVisibility(showImeButton ? View.VISIBLE : View.INVISIBLE);
@@ -322,6 +333,10 @@ public class NavigationBarView extends LinearLayout implements NavigationCallbac
 
 
         setDisabledFlags(mDisabledFlags, true);
+    }
+
+    public int getNavigationIconHints() {
+        return mNavigationIconHints;
     }
 
     public void setDisabledFlags(int disabledFlags) {
@@ -452,6 +467,9 @@ public class NavigationBarView extends LinearLayout implements NavigationCallbac
         updateTaskSwitchHelper();
 
         setNavigationIconHints(mNavigationIconHints, true);
+        // Reset recents hints after reorienting
+        ((ImageView)getRecentsButton()).setImageDrawable(mVertical
+           ? mRecentLandIcon : mRecentIcon);
     }
 
     private void updateTaskSwitchHelper() {
