@@ -30,5 +30,3 @@
     <item android:state_pressed="true"
         android:drawable="@drawable/ic_tasklist_killall_pressed" />
 </selector>
-
-
