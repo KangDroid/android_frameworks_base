@@ -1040,12 +1040,18 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
 
             mCarrierLabel = (TextView)mStatusBarWindow.findViewById(R.id.carrier_label);
             mSubsLabel = (TextView)mStatusBarWindow.findViewById(R.id.subs_label);
-            mShowCarrierInPanel = (mCarrierLabel != null);
+			
+	        if (mCarrierLabel != null) {
+	            mCarrierLabel.setVisibility(View.VISIBLE);
+	            mHideLabels = Settings.System.getIntForUser(mContext.getContentResolver(),
+	                    Settings.System.NOTIFICATION_HIDE_LABELS,
+	                    LABELS_SHOW_ALL, UserHandle.USER_CURRENT);
+	            if (DEBUG) Log.v(TAG, "carrierlabel=" + mCarrierLabel
+	                    + " show=" + (mHideLabels != LABELS_HIDE_ALL));
 
-            if (DEBUG) Log.v(TAG, "carrierlabel=" + mCarrierLabel + " show=" +
-                                    mShowCarrierInPanel + "operator label=" + mSubsLabel);
-            if (mShowCarrierInPanel) {
-                mCarrierLabel.setVisibility(mCarrierLabelVisible ? View.VISIBLE : View.INVISIBLE);
+	            if (mNetworkController != null) {
+	                mNetworkController.setHideLablesMode(mHideLabels);
+	            }
 
                 // for mobile devices, we always show mobile connection info here (SPN/PLMN)
                 // for other devices, we show whatever network is connected
