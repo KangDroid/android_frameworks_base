@@ -1037,7 +1037,8 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
             signalClusterKeyguard.setNetworkController(mMSimNetworkController);
 
             mMSimNetworkController.addEmergencyLabelView(mHeader);
-
+			mCarrierAndWifiView = mStatusBarWindow.findViewById(R.id.carrier_wifi);
+	        mWifiView = mStatusBarWindow.findViewById(R.id.wifi_view);
             mCarrierLabel = (TextView)mStatusBarWindow.findViewById(R.id.carrier_label);
             mSubsLabel = (TextView)mStatusBarWindow.findViewById(R.id.subs_label);
 			
