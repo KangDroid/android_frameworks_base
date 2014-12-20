@@ -1993,7 +1993,7 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
             makeVisible =
             !(emergencyCallsShownElsewhere && mMSimNetworkController.isEmergencyOnly())
             && mStackScroller.getHeight() < (mNotificationPanel.getHeight()
-                    - mCarrierLabelHeight - mStatusBarHeaderHeight)
+                    - mCarrierAndWifiViewHeight - mStatusBarHeaderHeight)
             && mStackScroller.getVisibility() == View.VISIBLE
             && mState != StatusBarState.KEYGUARD;
         } else {
