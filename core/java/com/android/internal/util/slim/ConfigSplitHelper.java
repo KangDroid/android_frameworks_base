@@ -21,6 +21,7 @@ import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.util.Log;
 
+import com.android.internal.util.slim.AppHelper;
 import java.util.ArrayList;
 
 public class ConfigSplitHelper {
