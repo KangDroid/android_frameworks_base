@@ -8979,6 +8979,12 @@ public final class Settings {
             return putStringForUser(cr, name, value ? "1" : "0", userHandle);
         }
 
+        /**
+         * Timeout for ambient display notification
+         * @hide
+         */
+        public static final String DOZE_TIMEOUT = "doze_timeout";
+
     }
 
     /**
