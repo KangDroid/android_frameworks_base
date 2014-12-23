@@ -3582,6 +3582,13 @@ public final class Settings {
          * @hide
          */
         public static final String NETWORK_TRAFFIC_AUTOHIDE_THRESHOLD = "network_traffic_autohide_threshold";
+		 
+        /**
+         * Timeout for ambient display notification
+         * @hide
+         */
+        public static final String DOZE_TIMEOUT = "doze_timeout";
+
 
         /**
          * Whether or not to hide the network traffic indicator when there is no activity
