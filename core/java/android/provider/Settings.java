@@ -3358,6 +3358,12 @@ public final class Settings {
          */
         public static final String RECENTS_SHOW_HIDE_SEARCH_BAR = "recents_show_hide_search_bar";
 
+         /**
+          * Settings for clock font style
+          * @hide
+          */
+         public static final String STATUSBAR_CLOCK_FONT_STYLE = "statusbar_clock_font_style";
+
        /**
          * Show or hide clock
          * 0 - hide

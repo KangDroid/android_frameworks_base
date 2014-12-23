@@ -2184,7 +2184,7 @@ public abstract class BaseStatusBar extends SystemUI implements
         boolean keyguardIsShowing = keyguard.isShowingAndNotOccluded()
                 && keyguard.isInputRestricted();
 
-        boolean interrupt = (isFullscreen || (isHighPriority && isNoisy)
+        boolean interrupt = (isFullscreen || (isHighPriority && isNoisy))
                 && isAllowed
                 && !accessibilityForcesLaunch
                 && mPowerManager.isScreenOn()
