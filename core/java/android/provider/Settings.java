@@ -3504,7 +3504,6 @@ public final class Settings {
          *
          * @hide
          */
-<<<<<<< HEAD
         public static final String VOLUME_KEYS_CONTROL_MEDIA_STREAM = "volume_keys_control_media_stream";
 
         /**
