@@ -1368,7 +1368,9 @@ public class NotificationManagerService extends SystemService {
         @Override
         public void registerListener(final INotificationListener listener,
                 final ComponentName component, final int userid) {
-            enforceSystemOrSystemUI("INotificationManager.registerListener");
+        final int permission = mContext.checkCallingPermission(
+                android.Manifest.permission.SYSTEM_NOTIFICATION_LISTENER);
+        if (permission == PackageManager.PERMISSION_DENIED) enforceSystemOrSystemUI("INotificationManager.registerListener");
             mListeners.registerService(listener, component, userid);
         }
 
