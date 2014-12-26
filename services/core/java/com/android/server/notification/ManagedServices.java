@@ -319,9 +319,11 @@ abstract public class ManagedServices {
         for (ManagedServiceInfo info : toRemove) {
             final ComponentName component = info.component;
             final int oldUser = info.userid;
-            Slog.v(TAG, "disabling " + getCaption() + " for user "
-                    + oldUser + ": " + component);
-            unregisterService(component, info.userid);
+            if (!info.isSystem) {
+	            Slog.v(TAG, "disabling " + getCaption() + " for user "
+	                    + oldUser + ": " + component);
+                unregisterService(component, info.userid);
+            }
         }
 
         for (int i = 0; i < nUserIds; ++i) {
