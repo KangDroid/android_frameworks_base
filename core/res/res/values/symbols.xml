@@ -2240,6 +2240,8 @@
   <java-symbol type="style" name="Animation.Toast.Fade" />
   <java-symbol type="style" name="Animation.Toast.SlideRight" />
   <java-symbol type="style" name="Animation.Toast.SlideLeft" />
+  <java-symbol type="style" name="Animation.Toast.SlideRightLeft" />
+  <java-symbol type="style" name="Animation.Toast.SlideLeftRight" />
   <java-symbol type="style" name="Animation.Toast.Xylon" />
   <java-symbol type="style" name="Animation.Toast.Toko" />
   <java-symbol type="style" name="Animation.Toast.Tn" />
