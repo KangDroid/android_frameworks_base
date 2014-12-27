@@ -541,6 +541,11 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
                     mCarrierAndWifiView.setVisibility(View.INVISIBLE);
                 }
                 updateCarrierAndWifiLabelVisibility(false);
+
+            if (mNavigationBarView != null) {
+                boolean navLeftInLandscape = Settings.System.getInt(resolver,
+                        Settings.System.NAVBAR_LEFT_IN_LANDSCAPE, 0) == 1;
+                mNavigationBarView.setLeftInLandscape(navLeftInLandscape);
             }
 /*
             boolean showInsidePercent = Settings.System.getIntForUser(resolver,
