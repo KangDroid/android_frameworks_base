@@ -11,4 +11,5 @@
     <string name="wifi_address_changed">Wi\u2011Fi SSID changed to <xliff:g id="name">%s</xliff:g></string>
     <string name="wifi_changed_ticker">Wi\u2011Fi SSID: <xliff:g id="name">%s</xliff:g></string>
 
+	<string name="gestures_message">Draw your gesture here</string>
 </resources>
