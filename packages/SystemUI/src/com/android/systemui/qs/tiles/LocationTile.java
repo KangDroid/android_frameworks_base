@@ -32,6 +32,7 @@ import com.android.systemui.statusbar.policy.LocationController.LocationSettings
 
 /** Quick settings tile: Location **/
 public class LocationTile extends QSTile<QSTile.BooleanState> {
+    private static final Intent LOCATION_SETTINGS = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
 
     private final AnimationIcon mEnable =
             new AnimationIcon(R.drawable.ic_signal_location_enable_animation);
@@ -80,6 +81,11 @@ public class LocationTile extends QSTile<QSTile.BooleanState> {
         }
         mEnable.setAllowAnimation(true);
         mDisable.setAllowAnimation(true);
+    }
+
+    @Override
+    protected void handleLongClick() {
+        mHost.startSettingsActivity(LOCATION_SETTINGS);
     }
 
     @Override
