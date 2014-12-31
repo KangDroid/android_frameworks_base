@@ -69,4 +69,8 @@
     <!-- TRDS -->
     <string name="quick_settings_trds_label">TRDS</string>
 
+    <!-- Heads up toast -->
+    <string name="heads_up_enabled">Heads up notifications are enabled</string>
+    <string name="heads_up_disabled">Heads up notifications are disabled</string>
+
 </resources>
