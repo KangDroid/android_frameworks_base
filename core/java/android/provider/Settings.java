@@ -3618,6 +3618,13 @@ public final class Settings {
          */
          
         public static final String CLOCK_USE_SECOND = "clock_use_second";
+		
+        /** Whether to collapse panel when quick settings tile is pressed.
+         *
+         * @hide
+         */
+        public static final String QUICK_SETTINGS_COLLAPSE_PANEL = "quick_settings_collapse_panel";
+
         /**
          * AM/PM Style for clock options
          * 0 - Normal AM/PM
