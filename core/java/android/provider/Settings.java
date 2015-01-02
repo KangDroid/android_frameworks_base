@@ -3632,6 +3632,19 @@ public final class Settings {
          * @hide
          */
         public static final String STATUS_BAR_SHOW_NOTIF_COUNT = "status_bar_show_notif_count";
+		
+        /**
+         * List of QS tile names
+         * @hide
+         */
+        public static final String QS_TILES = "sysui_qs_tiles";
+
+        /**
+         * Use "main" tiles on the first row of the quick settings panel
+         * 0 = no, 1 = yes
+         * @hide
+         */
+        public static final String QS_USE_MAIN_TILES = "sysui_qs_main_tiles";
 
         /**
          * Settings to backup. This is here so that it's in the same place as the settings
