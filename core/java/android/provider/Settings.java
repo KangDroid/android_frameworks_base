@@ -3355,10 +3355,10 @@ public final class Settings {
         public static final String DOUBLE_TAP_SLEEP_GESTURE = "double_tap_sleep_gesture";
 
         /**
-         * Boolean value on whether to show weather in the statusbar
+         * Whether to show the weather location on the header of the expanded status bar
          * @hide
          */
-        public static final String STATUS_BAR_SHOW_WEATHER = "status_bar_show_weather";
+        public static final String STATUS_BAR_EXPANDED_HEADER_SHOW_WEATHER_LOCATION = "status_bar_expanded_header_show_weather_location";
 
         /**
           * Volume keys control cursor in text fields (default is 0)
@@ -3423,7 +3423,7 @@ public final class Settings {
           * @hide
           */
          public static final String STATUSBAR_CLOCK_FONT_STYLE = "statusbar_clock_font_style";
-
+		 
          /**
           * Control the display of the action overflow button within app UI.
           * 0 = use system default
@@ -3806,6 +3806,18 @@ public final class Settings {
          * @hide
          */
         public static final String HEADS_UP_BLACKLIST_VALUES = "heads_up_blacklist_values";
+
+        /**
+         * Color of the text on the header of the expanded status bar
+         * @hide
+         */
+        public static final String STATUS_BAR_EXPANDED_HEADER_TEXT_COLOR = "status_bar_expanded_header_text_color";
+
+        /**
+         * Color of the icons on the header of the expanded status bar
+         * @hide
+         */
+        public static final String STATUS_BAR_EXPANDED_HEADER_ICON_COLOR = "status_bar_expanded_header_icon_color";
 
         /**
          * Settings to backup. This is here so that it's in the same place as the settings
