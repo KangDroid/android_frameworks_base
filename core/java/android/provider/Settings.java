@@ -3140,6 +3140,18 @@ public final class Settings {
          * @hide
          */
         public static final String STATUS_BAR_NOTIF_COUNT_TEXT_COLOR = "status_bar_notif_count_text_color";
+		
+        /**
+         * Color of the text on the header of the expanded status bar
+         * @hide
+         */
+        public static final String STATUS_BAR_EXPANDED_HEADER_TEXT_COLOR = "status_bar_expanded_header_text_color";
+
+        /**
+         * Color of the icons on the header of the expanded status bar
+         * @hide
+         */
+        public static final String STATUS_BAR_EXPANDED_HEADER_ICON_COLOR = "status_bar_expanded_header_icon_color"; 
 
         /**
          * Settings to backup. This is here so that it's in the same place as the settings
