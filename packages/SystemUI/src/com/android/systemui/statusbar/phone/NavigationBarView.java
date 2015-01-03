@@ -340,6 +340,7 @@ public class NavigationBarView extends LinearLayout implements NavigationCallbac
         }
         ((ImageView)getBackButton()).setImageDrawable(null);
         ((ImageView)getBackButton()).setImageDrawable(mVertical ? mBackLandIcon : mBackIcon);
+        ((ImageView)getRecentsButton()).setImageDrawable(mVertical ? mRecentLandIcon : mRecentIcon);
         mBackLandIcon.setImeVisible(backAlt);
         mBackIcon.setImeVisible(backAlt);
 
