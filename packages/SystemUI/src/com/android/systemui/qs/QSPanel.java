@@ -394,22 +394,21 @@ public class QSPanel extends ViewGroup {
         int r = -1;
         int c = -1;
         int rows = 0;
+        boolean rowIsDual = false;
         for (TileRecord record : mRecords) {
             if (record.tileView.getVisibility() == GONE) continue;
             // wrap to next column if we've reached the max # of columns
-            if (r == 0 && c == 1) {
-                r = 1;
-                c = 0;
-            } else if (r == -1 || c == (mColumns - 1)) {
+            // also don't allow dual + single tiles on the same row
+            if (r == -1 || c == (mColumns - 1) || rowIsDual != record.tile.supportsDualTargets()) {
                 r++;
                 c = 0;
+                rowIsDual = record.tile.supportsDualTargets();
             } else {
                 c++;
             }
             record.row = r;
             record.col = c;
             rows = r + 1;
-
         }
 
         for (TileRecord record : mRecords) {
@@ -442,11 +441,6 @@ public class QSPanel extends ViewGroup {
                 mBrightnessPaddingTop + mBrightnessView.getMeasuredHeight());
         boolean isRtl = getLayoutDirection() == LAYOUT_DIRECTION_RTL;
         for (TileRecord record : mRecords) {
-            if(record.row == 0) {
-                record.tile.setLargeTile(true);
-            } else {
-                record.tile.setLargeTile(false);
-            }
             if (record.tileView.getVisibility() == GONE) continue;
             final int cols = getColumnCount(record.row);
             final int cw = record.row == 0 ? mLargeCellWidth : mCellWidth;
