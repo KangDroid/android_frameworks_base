@@ -464,7 +464,7 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
             resolver.registerContentObserver(Settings.Secure.getUriFor(
                     Settings.Secure.RECENTS_LONG_PRESS_ACTIVITY), false, this);
             resolver.registerContentObserver(Settings.System.getUriFor(
-                    Settings.System.STATUS_BAR_TICKER_ENABLED),
+                    Settings.System.STATUS_BAR_SHOW_TICKER),
                     false, this, UserHandle.USER_ALL);
             resolver.registerContentObserver(Settings.System.getUriFor(
                     Settings.System.STATUS_BAR_CARRIER), false, this,
@@ -496,13 +496,13 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
                     }
 
             } else if (uri.equals(Settings.System.getUriFor(
-                    Settings.System.STATUS_BAR_TICKER_ENABLED))) {
-                    mTickerEnabled = Settings.System.getIntForUser(
-                            mContext.getContentResolver(),
-                            Settings.System.STATUS_BAR_TICKER_ENABLED,
-                            mContext.getResources().getBoolean(R.bool.enable_ticker)
-                            ? 1 : 0, UserHandle.USER_CURRENT) == 1;
-                    initTickerView();
+			Settings.System.STATUS_BAR_SHOW_TICKER))) {
+                mTickerEnabled = Settings.System.getIntForUser(
+                        mContext.getContentResolver(),
+                        Settings.System.STATUS_BAR_SHOW_TICKER,
+                        mContext.getResources().getBoolean(R.bool.enable_ticker)
+                        ? 1 : 0, UserHandle.USER_CURRENT) == 1;
+                initTickerView();
             }
             update();
 		}
@@ -1048,7 +1048,7 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
         mKeyguardBottomArea.setKeyguardIndicationController(mKeyguardIndicationController);
 
         mTickerEnabled = Settings.System.getIntForUser(mContext.getContentResolver(),
-                    Settings.System.STATUS_BAR_TICKER_ENABLED,
+                    Settings.System.STATUS_BAR_SHOW_TICKER,
                     mContext.getResources().getBoolean(R.bool.enable_ticker)
                             ? 1 : 0, UserHandle.USER_CURRENT) == 1;
         initTickerView();
