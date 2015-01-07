@@ -62,6 +62,7 @@ public abstract class QSTile<TState extends State> implements Listenable {
     protected final TState mState = newTileState();
     private final TState mTmpState = newTileState();
     private boolean mAnnounceNextStateChange;
+    protected boolean mLargeTile = false;
 
     abstract protected TState newTileState();
     abstract protected void handleClick();
@@ -74,7 +75,7 @@ public abstract class QSTile<TState extends State> implements Listenable {
     }
 
     public boolean supportsDualTargets() {
-        return false;
+        return mLargeTile;
     }
 
     public Host getHost() {
@@ -109,6 +110,10 @@ public abstract class QSTile<TState extends State> implements Listenable {
 
     public void secondaryClick() {
         mHandler.sendEmptyMessage(H.SECONDARY_CLICK);
+    }
+
+    public void longClick() {
+        mHandler.sendEmptyMessage(H.LONG_CLICK);
     }
 
     public void showDetail(boolean show) {
@@ -151,6 +156,10 @@ public abstract class QSTile<TState extends State> implements Listenable {
     }
 
     protected void handleSecondaryClick() {
+        // optional
+    }
+
+    protected void handleLongClick() {
         // optional
     }
 
@@ -221,6 +230,7 @@ public abstract class QSTile<TState extends State> implements Listenable {
         private static final int TOGGLE_STATE_CHANGED = 7;
         private static final int SCAN_STATE_CHANGED = 8;
         private static final int DESTROY = 9;
+        private static final int LONG_CLICK = 10;
 
         private H(Looper looper) {
             super(looper);
@@ -258,6 +268,9 @@ public abstract class QSTile<TState extends State> implements Listenable {
                 } else if (msg.what == DESTROY) {
                     name = "handleDestroy";
                     handleDestroy();
+                } else if (msg.what == LONG_CLICK) {
+                    name = "handleLongClick";
+                    handleLongClick();
                 } else {
                     throw new IllegalArgumentException("Unknown msg: " + msg.what);
                 }
@@ -407,5 +420,9 @@ public abstract class QSTile<TState extends State> implements Listenable {
             rt.insert(rt.length() - 1, ",wideOverlayIcon=" + isOverlayIconWide);
             return rt;
         }
+    }
+
+    public void setmLargeTile(boolean mLargeTile) {
+        this.mLargeTile = mLargeTile;
     }
 }

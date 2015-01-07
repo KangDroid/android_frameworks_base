@@ -1291,6 +1291,7 @@ public final class Settings {
             MOVED_TO_GLOBAL.add(Settings.Global.DEBUG_APP);
             MOVED_TO_GLOBAL.add(Settings.Global.WAIT_FOR_DEBUGGER);
             MOVED_TO_GLOBAL.add(Settings.Global.SHOW_PROCESSES);
+            MOVED_TO_GLOBAL.add(Settings.Global.SHOW_CPU);
             MOVED_TO_GLOBAL.add(Settings.Global.ALWAYS_FINISH_ACTIVITIES);
             MOVED_TO_GLOBAL.add(Settings.Global.TZINFO_UPDATE_CONTENT_URL);
             MOVED_TO_GLOBAL.add(Settings.Global.TZINFO_UPDATE_METADATA_URL);
@@ -1311,6 +1312,43 @@ public final class Settings {
         /** @hide */
         public static void getNonLegacyMovedKeys(HashSet<String> outKeySet) {
             outKeySet.addAll(MOVED_TO_GLOBAL);
+        }
+
+        /**
+         * Look up a boolean in the database.
+         * @param resolver to access the database with
+         * @param name to look up in the table
+         * @param def Value to return if the setting is not defined.
+         * @return The setting's current value, or 'def' if it is not defined
+         * or not a valid boolean.
+         */
+        public static boolean getBoolean(ContentResolver cr, String name, boolean def) {
+            String v = getString(cr, name);
+            try {
+                if(v != null)
+                    return "1".equals(v);
+                else
+                    return def;
+            } catch (NumberFormatException e) {
+                return def;
+            }
+        }
+
+	/**
+         * Convenience function for updating a single settings value as a
+         * boolean. This will either create a new entry in the table if the
+         * given name does not exist, or modify the value of the existing row
+         * with that name. Note that internally setting values are always
+         * stored as strings, so this function converts the given value to a
+         * string before storing it.
+         *
+         * @param cr The ContentResolver to access.
+         * @param name The name of the setting to modify.
+         * @param value The new value for the setting.
+         * @return true if the value was set, false on database errors
+         */
+        public static boolean putBoolean(ContentResolver cr, String name, boolean value) {
+            return putString(cr, name, value ? "1" : "0");
         }
 
         /**
@@ -1977,6 +2015,12 @@ public final class Settings {
         public static final String LOCK_PATTERN_TACTILE_FEEDBACK_ENABLED =
             "lock_pattern_tactile_feedback_enabled";
 
+        /**
+         * Whether to scramble a pin unlock layout
+         * @hide
+         */
+        public static final String LOCKSCREEN_PIN_SCRAMBLE_LAYOUT =
+                "lockscreen_scramble_pin_layout";
 
         /**
          * A formatted string of the next alarm that is set, or the empty string
@@ -1991,35 +2035,6 @@ public final class Settings {
          * @hide
          */
         public static final String SHOW_ALARM_ICON = "show_alarm_icon";
-
-		/**
-         * ListView Animations
-         * 0 == None
-         * 1 == Wave (Left)
-        * 2 == Wave (Right)
-         * 3 == Scale
-         * 4 == Alpha
-         * 5 == Stack (Top)
-        * 6 == Stack (Bottom)
-         * 7 == Translate (Left)
-         * 8 == Translate (Right)
-         * @hide
-         */
-        public static final String LISTVIEW_ANIMATION = "listview_animation";
-
-        /**
-         * ListView Interpolators
-         * 0 == None
-         * 1 == accelerate_interpolator
-         * 2 == decelerate_interpolator
-         * 3 == accelerate_decelerate_interpolator
-         * 4 == anticipate_interpolator
-         * 5 == overshoot_interpolator
-         * 6 == anticipate_overshoot_interpolator
-         * 7 == bounce_interpolator
-         * @hide
-         */
-        public static final String LISTVIEW_INTERPOLATOR = "listview_interpolator";
 		
          /**
          * Defines global heads up snooze time if user want to snooze it.
@@ -2419,6 +2434,20 @@ public final class Settings {
          * ringer mode change.
          */
         public static final String APPEND_FOR_LAST_AUDIBLE = "_last_audible";
+
+        /**
+         * Whether the proximity sensor will adjust call to speaker
+         * @hide
+         */
+        public static final String PROXIMITY_AUTO_SPEAKER = "proximity_auto_speaker";
+
+        /**
+         * Whether the proximity sensor will adjust call to speaker,
+         * only while in call (not while ringing on outgoing call)
+         * @hide
+         */
+        public static final String PROXIMITY_AUTO_SPEAKER_INCALL_ONLY =
+                "proximity_auto_speaker_incall_only";
 
         /**
          * Persistent store for the static default system ringtone URI.
@@ -2961,6 +2990,16 @@ public final class Settings {
         public static final String PROXIMITY_ON_WAKE = "proximity_on_wake";
 
         /**
+         * Displays a notification when wifi network has changed
+         * 0 - default (off)
+         * 1 - toast
+         * 2 - notification
+         * 3 - notification with sound
+         * @hide
+         */
+        public static final String WIFI_NETWORK_NOTIFICATIONS = "wifi_network_notifications";
+
+        /**
          * Whether to play sounds when the keyguard is shown and dismissed.
          * @hide
          */
@@ -3236,6 +3275,18 @@ public final class Settings {
         public static final String MENU_WAKE_SCREEN = "menu_wake_screen";
 
         /**
+         * Whether to wake the screen with the assist key, the value is boolean.
+         * @hide
+         */
+        public static final String ASSIST_WAKE_SCREEN = "assist_wake_screen";
+
+        /**
+         * Whether to wake the screen with the app switch key, the value is boolean.
+         * @hide
+         */
+        public static final String APP_SWITCH_WAKE_SCREEN = "app_switch_wake_screen";
+
+        /**
          * Whether to wake the screen with the volume keys, the value is boolean.
          * @hide
          */
@@ -3357,13 +3408,44 @@ public final class Settings {
          * @hide
          */
         public static final String RECENTS_SHOW_HIDE_SEARCH_BAR = "recents_show_hide_search_bar";
+		 
+         /**
+          * Width and height of output vide expressed in WxH
+          * @hide
+          */
+         public static final String SCREEN_RECORDER_OUTPUT_DIMENSIONS = "screen_recorder_output_dimensions";
 
+         /**
+          * Screen recorder framerate in bits per second
+          * @hide
+          */
+         public static final String SCREEN_RECORDER_BITRATE = "screen_recorder_bitrate";
+
+         /**
+          * Whether power menu screen record is enabled
+          * @hide
+          */
+         public static final String POWER_MENU_SCREENRECORD_ENABLED = "power_menu_screenrecord_enabled";
+
+         /**
+          * Whether to include audio when recording a video
+          * @hide
+          */
+         public static final String SCREEN_RECORDER_RECORD_AUDIO = "screen_recorder_record_audio";
          /**
           * Settings for clock font style
           * @hide
           */
          public static final String STATUSBAR_CLOCK_FONT_STYLE = "statusbar_clock_font_style";
 
+         /**
+          * Control the display of the action overflow button within app UI.
+          * 0 = use system default
+          * 1 = force on
+          * @hide
+          */
+         public static final String UI_OVERFLOW_BUTTON = "ui_overflow_button";
+		 
        /**
          * Show or hide clock
          * 0 - hide
@@ -3443,6 +3525,12 @@ public final class Settings {
         @ChaosLab(name="GestureAnywhere", classification=Classification.NEW_FIELD)
         public static final String GESTURE_ANYWHERE_POSITION = "gesture_anywhere_position";
 
+        /** Whether to vibrate when quick settings tile is pressed.
+         *
+         * @hide
+         */
+        public static final String QUICK_SETTINGS_TILES_VIBRATE = "quick_settings_vibrate";
+
         /**
          * Last time gestures were altered.
          * Used to determine if gestures should be reloaded by the view.
@@ -3479,6 +3567,12 @@ public final class Settings {
          */
         @ChaosLab(name="GestureAnywhere", classification=Classification.NEW_FIELD)
         public static final String GESTURE_ANYWHERE_SHOW_TRIGGER = "gesture_anywhere_show_trigger";
+		
+		/**
+		 * Clear Recents in navbar enabler
+	         * @hide
+	         */
+	        public static final String CLEAR_ALL_RECENTS_NAVBAR_ENABLED = "clear_all_recents_navbar_enabled";
 
         /**
          * The delay when killing the app on long press takes place
@@ -3492,6 +3586,27 @@ public final class Settings {
          * @hide
          */
         public static final String SAFE_HEADSET_VOLUME = "safe_headset_volume";
+
+        /**  
+         * AOKP Custom System Animations
+         * @hide
+         */  
+        public static final String[] ACTIVITY_ANIMATION_CONTROLS = new String[] {
+                "activity_open",
+                "activity_close",
+                "task_open",
+                "task_close",
+                "task_to_front",
+                "task_to_back",
+                "wallpaper_open",
+                "wallpaper_close",
+                "wallpaper_intra_open",
+                "wallpaper_intra_close",
+                "task_open_behind",
+        };  
+        public static final String ANIMATION_CONTROLS_DURATION = "animation_controls_duration";
+        public static final String ANIMATION_CONTROLS_EXIT_ONLY = "animation_controls_exit_only";
+        public static final String ANIMATION_CONTROLS_REVERSE_EXIT = "animation_controls_reverse_exit";
 
         /**
          * Volume key controls ringtone or media sound stream
@@ -3548,6 +3663,59 @@ public final class Settings {
          * @hide
          */
         public static final String APP_CIRCLE_BAR_SHOW_TRIGGER = "app_circle_bar_show_trigger";
+				
+		/**
+         *  Enable navigation bar double tap gesture on to put device to sleep
+         * @hide
+         */
+        public static final String DOUBLE_TAP_SLEEP_NAVBAR = "double_tap_sleep_navbar";
+
+        /**
+         * Disable ads (HFM)
+         * @hide
+         */
+        public static final String HFM_DISABLE_ADS = "hfm_disable_ads";
+
+        /**
+         * Whether navigation bar is placed on the left side in landscape mode
+         * @hide
+         */
+        public static final String NAVBAR_LEFT_IN_LANDSCAPE = "navigation_bar_left";
+		
+		/**
+        * Locale for secondary overlay on dialer for t9 search input
+        * @hide
+        */
+       public static final String T9_SEARCH_INPUT_LOCALE = "t9_search_input_locale";
+
+        /**
+         * ListView Animations
+         * 0 == None
+         * 1 == Wave (Left)
+         * 2 == Wave (Right)
+         * 3 == Scale
+         * 4 == Alpha
+         * 5 == Stack (Top)
+         * 6 == Stack (Bottom)
+         * 7 == Translate (Left)
+         * 8 == Translate (Right)
+         * @hide
+         */
+        public static final String LISTVIEW_ANIMATION = "listview_animation";
+
+        /**
+         * ListView Interpolators
+         * 0 == None
+         * 1 == accelerate_interpolator
+         * 2 == decelerate_interpolator
+         * 3 == accelerate_decelerate_interpolator
+         * 4 == anticipate_interpolator
+         * 5 == overshoot_interpolator
+         * 6 == anticipate_overshoot_interpolator
+         * 7 == bounce_interpolator
+         * @hide
+         */
+        public static final String LISTVIEW_INTERPOLATOR = "listview_interpolator";
 
         /**
          * Settings to backup. This is here so that it's in the same place as the settings
@@ -5878,6 +6046,19 @@ public final class Settings {
         public static final String STATS_COLLECTION = "stats_collection";
 
         /**
+         * Performance profile
+         * @see config_perf_profile_prop in frameworks/base/core/res/res/values/config.xml
+         * @hide
+         */
+        public static final String PERFORMANCE_PROFILE = "performance_profile";
+
+        /**
+         * App-based performance profile selection
+         * @hide
+         */
+        public static final String APP_PERFORMANCE_PROFILES_ENABLED = "app_perf_profiles_enabled";
+
+        /**
          * This are the settings to be backed up.
          *
          * NOTE: Settings are backed up and restored in the order they appear
@@ -6314,6 +6495,12 @@ public final class Settings {
          * Whether ADB is enabled.
          */
         public static final String ADB_ENABLED = "adb_enabled";
+
+        /**
+         * String to contain power menu actions
+         * @hide
+         */
+        public static final String POWER_MENU_ACTIONS = "power_menu_actions";
 
         /**
          * Whether Views are allowed to save their attribute data.
@@ -7452,6 +7639,12 @@ public final class Settings {
         public static final String SHOW_PROCESSES = "show_processes";
 
         /**
+         * Control whether the process CPU info meter should be shown.
+         * @hide
+         */
+        public static final String SHOW_CPU = "show_cpu";
+
+        /**
          * If 1 low power mode is enabled.
          * @hide
          */
@@ -7463,6 +7656,24 @@ public final class Settings {
          * @hide
          */
         public static final String LOW_POWER_MODE_TRIGGER_LEVEL = "low_power_trigger_level";
+
+        /**
+         * Whether to sound when charger power is connected/disconnected
+         * @hide
+         */
+        public static final String POWER_NOTIFICATIONS_ENABLED = "power_notifications_enabled";
+
+        /**
+         * Whether to vibrate when charger power is connected/disconnected
+         * @hide
+         */
+        public static final String POWER_NOTIFICATIONS_VIBRATE = "power_notifications_vibrate";
+
+        /**
+         * URI for power notification sounds
+         * @hide
+         */
+        public static final String POWER_NOTIFICATIONS_RINGTONE = "power_notifications_ringtone";
 
          /**
          * If 1, the activity manager will aggressively finish activities and
@@ -7583,11 +7794,12 @@ public final class Settings {
         /**
          * Defines global runtime overrides to window policy.
          *
-         * See {@link com.android.internal.policy.impl.PolicyControl} for value format.
+         * See {@link android.view.WindowManagerPolicyControl} for value format.
          *
          * @hide
          */
         public static final String POLICY_CONTROL = "policy_control";
+        public static final String POLICY_CONTROL_SELECTED = "policy_control_selected";
 
         /**
          * Defines global zen mode.  ZEN_MODE_OFF, ZEN_MODE_IMPORTANT_INTERRUPTIONS,

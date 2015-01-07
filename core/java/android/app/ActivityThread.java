@@ -2126,18 +2126,6 @@ public final class ActivityThread {
         return mActivities.get(token).activity;
     }
 
-    protected void performFinishFloating() {
-        synchronized (mPackages) {
-            Activity a = null;
-            for (ActivityClientRecord ar : mActivities.values()) {
-                a = ar.activity;
-                if (a != null && !a.mFinished && a.getWindow() != null && a.getWindow().mIsFloatingWindow) {
-                    a.finish();
-                }
-            }
-        }
-    }
-
     public final void sendActivityResult(
             IBinder token, String id, int requestCode,
             int resultCode, Intent data) {
@@ -2959,7 +2947,12 @@ public final class ActivityThread {
                 r.state = null;
                 r.persistentState = null;
             } catch (Exception e) {
-                // Unable to resume activity
+                if (!mInstrumentation.onException(r.activity, e)) {
+                    throw new RuntimeException(
+                        "Unable to resume activity "
+                        + r.intent.getComponent().toShortString()
+                        + ": " + e.toString(), e);
+                }
             }
         }
         return r;
@@ -4168,22 +4161,24 @@ public final class ActivityThread {
     final void handleDispatchPackageBroadcast(int cmd, String[] packages) {
         boolean hasPkgInfo = false;
         if (packages != null) {
-            for (int i=packages.length-1; i>=0; i--) {
-                //Slog.i(TAG, "Cleaning old package: " + packages[i]);
-                if (!hasPkgInfo) {
-                    WeakReference<LoadedApk> ref;
-                    ref = mPackages.get(packages[i]);
-                    if (ref != null && ref.get() != null) {
-                        hasPkgInfo = true;
-                    } else {
-                        ref = mResourcePackages.get(packages[i]);
+            synchronized (mResourcesManager) {
+                for (int i=packages.length-1; i>=0; i--) {
+                    //Slog.i(TAG, "Cleaning old package: " + packages[i]);
+                    if (!hasPkgInfo) {
+                        WeakReference<LoadedApk> ref;
+                        ref = mPackages.get(packages[i]);
                         if (ref != null && ref.get() != null) {
                             hasPkgInfo = true;
+                        } else {
+                            ref = mResourcePackages.get(packages[i]);
+                            if (ref != null && ref.get() != null) {
+                                hasPkgInfo = true;
+                            }
                         }
                     }
+                    mPackages.remove(packages[i]);
+                    mResourcePackages.remove(packages[i]);
                 }
-                mPackages.remove(packages[i]);
-                mResourcePackages.remove(packages[i]);
             }
         }
         ApplicationPackageManager.handlePackageBroadcast(cmd, packages,

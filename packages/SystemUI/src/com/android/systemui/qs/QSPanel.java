@@ -25,8 +25,10 @@ import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Handler;
 import android.os.Message;
+import android.os.Vibrator;
+import android.os.UserHandle;
+import android.provider.Settings;
 import android.util.AttributeSet;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -78,6 +80,8 @@ public class QSPanel extends ViewGroup {
     private QSFooter mFooter;
     private boolean mGridContentVisible = true;
 
+    protected Vibrator mVibrator;
+
     public QSPanel(Context context) {
         this(context, null);
     }
@@ -100,6 +104,7 @@ public class QSPanel extends ViewGroup {
         addView(mBrightnessView);
         addView(mFooter.getView());
         mClipper = new QSDetailClipper(mDetail);
+        mVibrator = (Vibrator) mContext.getSystemService(Context.VIBRATOR_SERVICE);
         updateResources();
 
         mBrightnessController = new BrightnessController(getContext(),
@@ -112,6 +117,18 @@ public class QSPanel extends ViewGroup {
                 closeDetail();
             }
         });
+    }
+
+    public boolean isVibrationEnabled() {
+        return (Settings.System.getIntForUser(mContext.getContentResolver(),
+                Settings.System.QUICK_SETTINGS_TILES_VIBRATE, 0, UserHandle.USER_CURRENT) == 1);
+    }
+
+    public void vibrateTile(int duration) {
+        if (!isVibrationEnabled()) { return; }
+        if (mVibrator != null) {
+            if (mVibrator.hasVibrator()) { mVibrator.vibrate(duration); }
+        }
     }
 
     private void updateDetailText() {
@@ -288,15 +305,25 @@ public class QSPanel extends ViewGroup {
             @Override
             public void onClick(View v) {
                 r.tile.click();
+                vibrateTile(20);
             }
         };
         final View.OnClickListener clickSecondary = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 r.tile.secondaryClick();
+                vibrateTile(20);
             }
         };
-        r.tileView.init(click, clickSecondary);
+        final View.OnLongClickListener clickLong = new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                r.tile.longClick();
+                vibrateTile(20);
+                return true;
+            }
+        };
+        r.tileView.init(click, clickSecondary, clickLong);
         r.tile.setListening(mListening);
         callback.onStateChanged(r.tile.getState());
         r.tile.refreshState();
@@ -387,21 +414,22 @@ public class QSPanel extends ViewGroup {
         int r = -1;
         int c = -1;
         int rows = 0;
-        boolean rowIsDual = false;
         for (TileRecord record : mRecords) {
             if (record.tileView.getVisibility() == GONE) continue;
             // wrap to next column if we've reached the max # of columns
-            // also don't allow dual + single tiles on the same row
-            if (r == -1 || c == (mColumns - 1) || rowIsDual != record.tile.supportsDualTargets()) {
+            if (r == 0 && c == 1) {
+                r = 1;
+                c = 0;
+            } else if (r == -1 || c == (mColumns - 1)) {
                 r++;
                 c = 0;
-                rowIsDual = record.tile.supportsDualTargets();
             } else {
                 c++;
             }
             record.row = r;
             record.col = c;
             rows = r + 1;
+
         }
 
         for (TileRecord record : mRecords) {
@@ -434,6 +462,11 @@ public class QSPanel extends ViewGroup {
                 mBrightnessPaddingTop + mBrightnessView.getMeasuredHeight());
         boolean isRtl = getLayoutDirection() == LAYOUT_DIRECTION_RTL;
         for (TileRecord record : mRecords) {
+            if (record.row == 0) {
+                record.tile.setmLargeTile(true);
+            } else {
+                record.tile.setmLargeTile(false);
+            }
             if (record.tileView.getVisibility() == GONE) continue;
             final int cols = getColumnCount(record.row);
             final int cw = record.row == 0 ? mLargeCellWidth : mCellWidth;

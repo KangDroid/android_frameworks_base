@@ -1586,6 +1586,15 @@ public class Intent implements Parcelable, Cloneable {
      */
     public static final String ACTION_CLOSE_SYSTEM_DIALOGS = "android.intent.action.CLOSE_SYSTEM_DIALOGS";
     /**
+     * Broadcast Action: Update preferences for the power menu dialog.  This is to provide a
+     * way for the preferences that need to be enabled/disabled to update because they were
+     * toggled elsewhere in the settings (ie profiles, immersive desktop, etc) so we don't have
+     * to do constant lookups while we wait for the menu to be created. Getting the values once
+     * when necessary is enough.
+     *@hide
+     */
+    public static final String UPDATE_POWER_MENU = "android.intent.action.UPDATE_POWER_MENU";
+    /**
      * Broadcast Action: Trigger the download and eventual installation
      * of a package.
      * <p>Input: {@link #getData} is the URI of the package file to download.
@@ -3797,15 +3806,6 @@ public class Intent implements Parcelable, Cloneable {
      * saw.   This can only be used in conjunction with {@link #FLAG_ACTIVITY_NEW_TASK}.
      */
     public static final int FLAG_ACTIVITY_TASK_ON_HOME = 0X00004000;
-	
-	/**
-    * If set, this intent will always match start up as a floating window
-    * in multi window scenarios.
-    *
-    * @hide
-    */
-   public static final int FLAG_FLOATING_WINDOW = 0x00002000;
-	
     /**
      * By default a document created by {@link #FLAG_ACTIVITY_NEW_DOCUMENT} will
      * have its entry in recent tasks removed when the user closes it (with back

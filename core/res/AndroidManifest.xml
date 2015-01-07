@@ -73,6 +73,7 @@
     <protected-broadcast android:name="android.intent.action.USER_BACKGROUND" />
     <protected-broadcast android:name="android.intent.action.USER_FOREGROUND" />
     <protected-broadcast android:name="android.intent.action.USER_SWITCHED" />
+    <protected-broadcast android:name="android.intent.action.SU_SESSION_CHANGED" />
 
     <protected-broadcast android:name="android.os.action.POWER_SAVE_MODE_CHANGED" />
     <protected-broadcast android:name="android.os.action.POWER_SAVE_MODE_CHANGING" />
@@ -2753,14 +2754,6 @@
         android:description="@string/permdesc_accessNotifications"
         android:protectionLevel="signature|system" />
 
-    <!-- Internal permission protecting access to internal notification listener
-        @hide
-    -->
-    <permission android:name="android.permission.SYSTEM_NOTIFICATION_LISTENER"
-        android:label="@string/permlab_accessNotifications"
-        android:description="@string/permdesc_accessNotifications"
-        android:protectionLevel="signature|system" />
-
     <!-- Allows access to keyguard secure storage.  Only allowed for system processes.
         @hide -->
     <permission android:name="android.permission.ACCESS_KEYGUARD_SECURE_STORAGE"
@@ -2908,6 +2901,12 @@
         android:label="@string/permlab_useHardwareFramework"
         android:description="@string/permdesc_useHardwareFramework"
         android:protectionLevel="signature" />
+
+    <!-- Allows an application to record the screen.
+         @hide This is not a third-party API (intended for system apps). -->
+    <permission android:name="android.permission.RECORD_SCREEN"
+        android:label="@string/permlab_recordScreen"
+        android:description="@string/permdesc_recordScreen" />
 
     <!-- The system process is explicitly the only one allowed to launch the
          confirmation UI for full backup/restore -->
