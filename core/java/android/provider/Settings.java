@@ -3408,7 +3408,7 @@ public final class Settings {
          * @hide
          */
         public static final String RECENTS_SHOW_HIDE_SEARCH_BAR = "recents_show_hide_search_bar";
-		 
+
          /**
           * Width and height of output vide expressed in WxH
           * @hide
