@@ -139,17 +139,20 @@ public class NumPadKey extends ViewGroup {
         setContentDescription(mDigitText.getText().toString() + mKlondikeText.getText().toString());
     }
 
+    @Override
+    public void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+
+        // Reset the "announced headset" flag when detached.
+        ObscureSpeechDelegate.sAnnouncedHeadset = false;
+    }
+
+    public void setDigit(int digit) {
+        mDigit = digit;
+        updateText();
+    }
 
     private void updateText(){
-        if (enableRandom) {
-            if (!sShuffled) {
-                Collections.shuffle(sDigits);
-                sShuffled = true;
-            }
-            mDigit = sDigits.get(sCount);
-        }
-        mDigitText.setText(Integer.toString(mDigit));
-
         if (mDigit >= 0) {
             mDigitText.setText(Integer.toString(mDigit));
             if (sKlondike == null) {
@@ -165,7 +168,6 @@ public class NumPadKey extends ViewGroup {
                 }
             }
         }
-        sCount++;
     }
 
     @Override
