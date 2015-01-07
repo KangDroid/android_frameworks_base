@@ -4249,6 +4249,12 @@ public final class Settings {
         public static final String PIE_BUTTON_PRESSED_COLOR = "pie_button_pressed_color";
 
         /**
+         * Whether to dismiss all recents tasks
+         * @hide
+         */
+        public static final String RECENTS_CLEAR_ALL_DISMISS_ALL = "recents_clear_all_dismiss_all";
+
+        /**
          * Pie button long press color
          * @hide
          */
