@@ -1929,7 +1929,7 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
             makeVisible =
             !(emergencyCallsShownElsewhere && mMSimNetworkController.isEmergencyOnly())
             && mStackScroller.getHeight() < (mNotificationPanel.getHeight()
-                    - mCarrierAndWifiViewHeight - mStatusBarHeaderHeight)
+                    - mCarrierLabelHeight - mStatusBarHeaderHeight)
             && mStackScroller.getVisibility() == View.VISIBLE
             && mState != StatusBarState.KEYGUARD;
 
