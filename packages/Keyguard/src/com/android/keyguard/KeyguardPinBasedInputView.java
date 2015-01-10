@@ -21,6 +21,8 @@ import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.view.KeyEvent;
 import android.view.View;
+import android.os.UserHandle;
+import android.provider.Settings;
 
 /**
  * A Pin based Keyguard input view
