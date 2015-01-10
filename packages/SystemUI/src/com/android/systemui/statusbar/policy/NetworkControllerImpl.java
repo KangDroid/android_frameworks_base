@@ -58,7 +58,6 @@ import com.android.internal.telephony.cdma.EriInfo;
 import com.android.internal.util.AsyncChannel;
 import com.android.systemui.DemoMode;
 import com.android.systemui.R;
-import com.android.systemui.statusbar.phone.PhoneStatusBar;
 import com.android.systemui.statusbar.phone.StatusBarHeaderView;
 
 import java.io.FileDescriptor;
@@ -141,8 +140,6 @@ public class NetworkControllerImpl extends BroadcastReceiver
     NotificationManager nm;
     private int mStoredSSIDs;
     LinkedList mConnectionsList = new LinkedList();
-
-    int mHideLabels = PhoneStatusBar.LABELS_SHOW_ALL;
 
     // bluetooth
     protected boolean mBluetoothTethered = false;
@@ -1564,17 +1561,6 @@ public class NetworkControllerImpl extends BroadcastReceiver
                     + "/" + getResourceName(mBluetoothTetherIconId));
         }
 
-        switch (mHideLabels) {
-            case PhoneStatusBar.LABELS_HIDE_CARRIER:
-                mobileLabel = "";
-                combinedLabel = wifiLabel;
-                break;
-            case PhoneStatusBar.LABELS_HIDE_WIFI:
-                wifiLabel = "";
-                combinedLabel = mobileLabel;
-            break;
-        }
-
         // update QS
         for (NetworkSignalChangedCallback cb : mSignalsChangedCallbacks) {
             notifySignalsChangedCallbacks(cb);
@@ -1790,10 +1776,6 @@ public class NetworkControllerImpl extends BroadcastReceiver
             return SignalStrength.SIGNAL_STRENGTH_NONE_OR_UNKNOWN;
         }
         return mSignalStrength.getGsmLevel();
-    }
-
-    public void setHideLablesMode(int mode) {
-        mHideLabels = mode;
     }
 
     public void dump(FileDescriptor fd, PrintWriter pw, String[] args) {

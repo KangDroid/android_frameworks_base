@@ -2203,12 +2203,6 @@ public final class Settings {
          * @hide
          */
         public static final String BATTERY_SAVER_MODE_COLOR = "battery_save_mode_color";
-
-        /**
-         * Hide network labels in the notification drawer
-         * @hide
-         */
-        public static final String NOTIFICATION_HIDE_LABELS = "notification_hide_labels";
 		
         /**
          * Swap volume buttons when the screen is rotated
