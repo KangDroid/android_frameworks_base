@@ -524,7 +524,6 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
                 mNavigationBarView.setLeftInLandscape(navLeftInLandscape);
 			}
 		
-            }
         }
     }
 
