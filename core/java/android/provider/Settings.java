@@ -5917,12 +5917,6 @@ public final class Settings {
          * @hide
          */
         public static final String SMS_DEFAULT_APPLICATION = "sms_default_application";
-		
-         /**
-          * Whether to use the custom quick unlock screen control
-          * @hide
-          */
-         public static final String LOCKSCREEN_QUICK_UNLOCK_CONTROL = "lockscreen_quick_unlock_control";
 
         /**
          * Name of a package that the current user has explicitly allowed to see all of that
