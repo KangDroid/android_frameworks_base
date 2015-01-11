@@ -3650,6 +3650,12 @@ public final class Settings {
          * @hide
          */
         public static final String QS_USE_MAIN_TILES = "sysui_qs_main_tiles";
+		
+        /** Whether to show the brightness slider in quick settings panel.
+         *
+         * @hide
+         */
+        public static final String QS_SHOW_BRIGHTNESS_SLIDER = "qs_show_brightness_slider";
 
         /**
          * Settings to backup. This is here so that it's in the same place as the settings
