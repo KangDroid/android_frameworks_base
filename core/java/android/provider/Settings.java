@@ -3735,6 +3735,14 @@ public final class Settings {
          */
         public static final String LISTVIEW_INTERPOLATOR = "listview_interpolator";
 		
+       /**
+         * Allows to disable Camera widget in locskcreen
+         * 0 = use system default (show)
+         * 1 = hide camera
+         * @hide
+         */
+        public static final String CAMERA_WIDGET_HIDE = "camera_widget_hide";
+
         /**
          * Notification custom carrier label
          * @hide
@@ -4600,6 +4608,7 @@ public final class Settings {
                 int userHandle) {
             return putStringForUser(cr, name, Float.toString(value), userHandle);
         }
+
 
         /**
          * @deprecated Use {@link android.provider.Settings.Global#DEVELOPMENT_SETTINGS_ENABLED}
