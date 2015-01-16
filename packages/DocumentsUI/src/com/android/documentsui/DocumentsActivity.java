@@ -51,7 +51,6 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.os.RemoteException;
 import android.os.storage.StorageManager;
 import android.os.storage.StorageVolume;
 import android.provider.DocumentsContract;
@@ -1266,7 +1265,7 @@ public class DocumentsActivity extends Activity {
                         resolver, cwd.derivedUri.getAuthority());
                 childUri = DocumentsContract.createDocument(
                         client, cwd.derivedUri, mMimeType, mDisplayName);
-            } catch (RemoteException e) {
+            } catch (Exception e) {
                 Log.w(TAG, "Failed to create document", e);
             } finally {
                 ContentProviderClient.releaseQuietly(client);
@@ -1346,11 +1345,7 @@ public class DocumentsActivity extends Activity {
 
                     count++;
                     publishProgress((Integer) count);
-                } catch (RemoteException e) {
-                    Log.w(TAG, "Failed to copy " + doc, e);
-                } catch (FileNotFoundException e) {
-                    Log.w(TAG, "Failed to copy " + doc, e);
-                }catch (IOException e) {
+                } catch (Exception e) {
                     Log.w(TAG, "Failed to copy " + doc, e);
                 }
             }
