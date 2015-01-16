@@ -420,5 +420,4 @@ public abstract class QSTile<TState extends State> implements Listenable {
             return rt;
         }
     }
-
 }
