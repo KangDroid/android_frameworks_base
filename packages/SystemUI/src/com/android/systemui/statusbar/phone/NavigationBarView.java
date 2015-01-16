@@ -78,7 +78,7 @@ public class NavigationBarView extends LinearLayout implements NavigationCallbac
 
 
     private BackButtonDrawable mBackIcon, mBackLandIcon;
-    private Drawable mRecentIcon, mRecentLandIcon, mRecentAltIcon, mRecentAltLandIcon;
+    private Drawable mRecentIcon, mRecentLandIcon, mRecentAltIcon, mRecentAltLandIcon, mHomeIcon, mHomeLandIcon;
 
     private NavigationBarViewTaskSwitchHelper mTaskSwitchHelper;
     private DelegateViewHelper mDelegateHelper;
@@ -91,6 +91,8 @@ public class NavigationBarView extends LinearLayout implements NavigationCallbac
 
     // performs manual animation in sync with layout transitions
     private final NavTransitionListener mTransitionListener = new NavTransitionListener();
+
+    private Resources mThemedResources;
 
     private OnVerticalChangedListener mOnVerticalChangedListener;
     private boolean mIsLayoutRtl;
@@ -296,11 +298,44 @@ public class NavigationBarView extends LinearLayout implements NavigationCallbac
         mRecentLandIcon = res.getDrawable(R.drawable.ic_sysbar_recent_land);
         mRecentAltIcon = res.getDrawable(R.drawable.ic_sysbar_recent_clear);
         mRecentAltLandIcon = res.getDrawable(R.drawable.ic_sysbar_recent_clear_land);
+        mHomeIcon = res.getDrawable(R.drawable.ic_sysbar_home);
+        mHomeLandIcon = res.getDrawable(R.drawable.ic_sysbar_home_land);
+    }
+
+    public void updateResources(Resources res) {
+        mThemedResources = res;
+        getIcons(mThemedResources);
+        mBarTransitions.updateResources(res);
+        for (int i = 0; i < mRotatedViews.length; i++) {
+            ViewGroup container = (ViewGroup) mRotatedViews[i];
+            if (container != null) {
+                updateLightsOutResources(container);
+            }
+        }
+    }
+
+    private void updateLightsOutResources(ViewGroup container) {
+        ViewGroup lightsOut = (ViewGroup) container.findViewById(R.id.lights_out);
+        if (lightsOut != null) {
+            final int nChildren = lightsOut.getChildCount();
+            for (int i = 0; i < nChildren; i++) {
+                final View child = lightsOut.getChildAt(i);
+                if (child instanceof ImageView) {
+                    final ImageView iv = (ImageView) child;
+                    // clear out the existing drawable, this is required since the
+                    // ImageView keeps track of the resource ID and if it is the same
+                    // it will not update the drawable.
+                    iv.setImageDrawable(null);
+                    iv.setImageDrawable(mThemedResources.getDrawable(
+                            R.drawable.ic_sysbar_lights_out_dot_large));
+                }
+            }
+        }
     }
 
     @Override
     public void setLayoutDirection(int layoutDirection) {
-        getIcons(getContext().getResources());
+        getIcons(mThemedResources != null ? mThemedResources : getContext().getResources());
 
         super.setLayoutDirection(layoutDirection);
     }
@@ -340,6 +375,7 @@ public class NavigationBarView extends LinearLayout implements NavigationCallbac
         }
         ((ImageView)getBackButton()).setImageDrawable(null);
         ((ImageView)getBackButton()).setImageDrawable(mVertical ? mBackLandIcon : mBackIcon);
+        ((ImageView)getHomeButton()).setImageDrawable(mVertical ? mHomeLandIcon : mHomeIcon);
         mBackLandIcon.setImeVisible(backAlt);
         mBackIcon.setImeVisible(backAlt);
 
@@ -347,7 +383,6 @@ public class NavigationBarView extends LinearLayout implements NavigationCallbac
         getImeSwitchButton().setVisibility(showImeButton ? View.VISIBLE : View.INVISIBLE);
         // Update menu button in case the IME state has changed.
         setMenuVisibility(mShowMenu, true);
-
 
         setDisabledFlags(mDisabledFlags, true);
     }
