@@ -2047,7 +2047,6 @@
 
     <!-- Show downtime as a zen exit condition if it starts in the next n hours. -->
     <integer name="config_downtime_condition_lookahead_threshold_hrs">4</integer>
-
     <!-- Flags enabling default window features. See Window.java -->
     <bool name="config_defaultWindowFeatureOptionsPanel">true</bool>
     <bool name="config_defaultWindowFeatureContextMenu">true</bool>
@@ -2107,11 +2106,13 @@
         config to 7. -->
     <integer name="config_deviceHardwareKeys">0</integer>
 
-    <!-- Whether cpu boost is enabled for AppLaunch -->
+    <!-- Whether cpu boost is enabled for both application's 1st launch,subsequent
+         launch and in-app-activity -->
     <bool name="config_enableCpuBoostForAppLaunch">false</bool>
     <integer name="launchboost_timeout_param">0</integer>
     <integer name="launchboost_schedboost_param">0</integer>
     <integer name="launchboost_cpuboost_param">0</integer>
+    <integer name="launchboost_cpu_6_7_offline_param">0</integer>
     <integer name="launchboost_pcdisbl_param">0</integer>
     <integer name="launchboost_ksmboost_param">0</integer>
 </resources>
