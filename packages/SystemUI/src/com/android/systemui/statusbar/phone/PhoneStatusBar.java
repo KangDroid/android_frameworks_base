@@ -456,9 +456,6 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
             //        Settings.System.STATUS_BAR_BATTERY_STYLE), false, this);
             //resolver.registerContentObserver(Settings.System.getUriFor(
             //        Settings.System.STATUS_BAR_SHOW_BATTERY_PERCENT), false, this);
-			resolver.registerContentObserver(Settings.System.getUriFor(
-                    Settings.System.NOTIFICATION_HIDE_LABELS),
-                    false, this, UserHandle.USER_ALL);
             update();
         }
 
