@@ -351,7 +351,6 @@ public class NavigationBarView extends LinearLayout implements NavigationCallbac
         }
     }
 
-    @Override
     public void setLayoutDirection(int layoutDirection) {
         getIcons(mThemedResources != null ? mThemedResources : getContext().getResources());
 
@@ -417,7 +416,6 @@ public class NavigationBarView extends LinearLayout implements NavigationCallbac
         return mNavigationIconHints;
     }
 
-    @Override
     public void setDisabledFlags(int disabledFlags) {
         setDisabledFlags(disabledFlags, false);
     }
@@ -483,7 +481,6 @@ public class NavigationBarView extends LinearLayout implements NavigationCallbac
         }
     }
 
-    @Override
     public void setMenuVisibility(final boolean show) {
         setMenuVisibility(show, false);
     }
@@ -699,8 +696,11 @@ public class NavigationBarView extends LinearLayout implements NavigationCallbac
     }
 
     public void setForgroundColor(Drawable drawable) {
-        if (mRotatedViews[orientation] != null) {
-            mRotatedViews[orientation].setForeground(drawable);
+        if (mRotatedViews[Configuration.ORIENTATION_PORTRAIT] != null) {
+            mRotatedViews[Configuration.ORIENTATION_PORTRAIT].setForeground(drawable);
+        }
+        if (mRotatedViews[Configuration.ORIENTATION_LANDSCAPE] != null) {
+            mRotatedViews[Configuration.ORIENTATION_LANDSCAPE].setForeground(drawable);
         }
     }
 
