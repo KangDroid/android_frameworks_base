@@ -3697,7 +3697,7 @@ public final class Settings {
          * @hide
          */
         public static final String HEADS_UP_TOUCH_OUTSIDE = "heads_up_touch_outside";
-		
+
         /**
          * Whether to show the weather location on the header of the expanded status bar
          * @hide
@@ -3891,6 +3891,18 @@ public final class Settings {
          * @hide
          */
         public static final String MEDIA_SCANNER_ON_BOOT = "media_scanner_on_boot";
+		
+        /**
+         * Put on your ear, and this will automatically call current number in dialer
+         * @hide
+         */
+        public static final String DIRECT_CALL_FOR_DIALER = "direct_call_for_dialer";
+
+        /**
+         * Put on your ear, and this will automatically call current number in message
+         * @hide
+         */
+        public static final String DIRECT_CALL_FOR_MMS = "direct_call_for_mms";
 
         /**
          * Whether to use gesture anywhere feature.
