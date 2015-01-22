@@ -46,7 +46,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import com.android.systemui.R;
@@ -62,7 +61,6 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 
 public class NavigationBarView extends LinearLayout implements NavigationCallback {
-	
     final static boolean DEBUG = false;
     final static String TAG = "PhoneStatusBar/NavigationBarView";
 
@@ -95,9 +93,6 @@ public class NavigationBarView extends LinearLayout implements NavigationCallbac
 
     private BackButtonDrawable mBackIcon, mBackLandIcon;
     private Drawable mRecentIcon, mRecentLandIcon, mRecentAltIcon, mRecentAltLandIcon, mHomeIcon, mHomeLandIcon;
-
-    private FrameLayout mRot0;
-    private FrameLayout mRot90;
 
     private NavigationBarViewTaskSwitchHelper mTaskSwitchHelper;
     private DelegateViewHelper mDelegateHelper;
@@ -363,7 +358,6 @@ public class NavigationBarView extends LinearLayout implements NavigationCallbac
         setDisabledFlags(mDisabledFlags, true);
     }
 
-    @Override
     public void setNavigationIconHints(int hints) {
         setNavigationIconHints(NavigationCallback.NAVBAR_BACK_HINT, hints, false);
     }
@@ -417,7 +411,6 @@ public class NavigationBarView extends LinearLayout implements NavigationCallbac
         return mNavigationIconHints;
     }
 
-    @Override
     public void setDisabledFlags(int disabledFlags) {
         setDisabledFlags(disabledFlags, false);
     }
@@ -483,7 +476,6 @@ public class NavigationBarView extends LinearLayout implements NavigationCallbac
         }
     }
 
-    @Override
     public void setMenuVisibility(final boolean show) {
         setMenuVisibility(show, false);
     }
@@ -507,6 +499,7 @@ public class NavigationBarView extends LinearLayout implements NavigationCallbac
         mRotatedViews[Configuration.ORIENTATION_PORTRAIT] = findViewById(R.id.rot0);
         mRotatedViews[Configuration.ORIENTATION_LANDSCAPE] = findViewById(R.id.rot90);
         mCurrentView = mRotatedViews[mContext.getResources().getConfiguration().orientation];
+
         getImeSwitchButton().setOnClickListener(mImeSwitcherClickListener);
 
         updateRTLOrder();
@@ -695,12 +688,6 @@ public class NavigationBarView extends LinearLayout implements NavigationCallbac
                 return "GONE";
             default:
                 return "VISIBLE";
-        }
-    }
-
-    public void setForgroundColor(Drawable drawable) {
-        if (mRotatedViews[orientation] != null) {
-            mRotatedViews[orientation].setForeground(drawable);
         }
     }
 
