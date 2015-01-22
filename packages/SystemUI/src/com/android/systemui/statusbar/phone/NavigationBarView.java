@@ -362,7 +362,6 @@ public class NavigationBarView extends LinearLayout implements NavigationCallbac
         setDisabledFlags(mDisabledFlags, true);
     }
 
-    @Override
     public void setNavigationIconHints(int hints) {
         setNavigationIconHints(NavigationCallback.NAVBAR_BACK_HINT, hints, false);
     }
