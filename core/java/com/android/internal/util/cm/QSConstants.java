@@ -1,3 +1,4 @@
+
 /*
  * Copyright (C) 2015 The CyanogenMod Open Source Project
  *
@@ -34,6 +35,7 @@ public class QSConstants {
 	public static final String TILE_IMMERSIVE = "immersive";
     public static final String TILE_PROFILES = "profiles";
     public static final String TILE_PERFORMANCE = "performance";
+    public static final String TILE_NFC = "nfc";
 
     // Order matters
     protected static final ArrayList<String> TILES_DEFAULT = new ArrayList<String>();
@@ -58,5 +60,6 @@ public class QSConstants {
 		TILES_AVAILABLE.add(TILE_IMMERSIVE);
         TILES_AVAILABLE.add(TILE_PROFILES);
         TILES_AVAILABLE.add(TILE_PERFORMANCE);
+        TILES_AVAILABLE.add(TILE_NFC);
     }
 }
