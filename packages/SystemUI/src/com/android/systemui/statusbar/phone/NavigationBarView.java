@@ -501,6 +501,9 @@ public class NavigationBarView extends LinearLayout implements NavigationCallbac
 
     @Override
     public void onFinishInflate() {
+        mRot0 = (FrameLayout) findViewById(R.id.rot0);
+        mRot90 = (FrameLayout) findViewById(R.id.rot90);
+		
         mRotatedViews[Configuration.ORIENTATION_PORTRAIT] = findViewById(R.id.rot0);
         mRotatedViews[Configuration.ORIENTATION_LANDSCAPE] = findViewById(R.id.rot90);
         mCurrentView = mRotatedViews[mContext.getResources().getConfiguration().orientation];
@@ -696,13 +699,14 @@ public class NavigationBarView extends LinearLayout implements NavigationCallbac
     }
 
     public void setForgroundColor(Drawable drawable) {
-        if (mRotatedViews[Configuration.ORIENTATION_PORTRAIT] != null) {
-            mRotatedViews[Configuration.ORIENTATION_PORTRAIT].setForeground(drawable);
+        if (mRot0 != null) {
+            mRot0.setForeground(drawable);
         }
-        if (mRotatedViews[Configuration.ORIENTATION_LANDSCAPE] != null) {
-            mRotatedViews[Configuration.ORIENTATION_LANDSCAPE].setForeground(drawable);
+        if (mRot90 != null) {
+            mRot90.setForeground(drawable);
         }
     }
+
 
     public void dump(FileDescriptor fd, PrintWriter pw, String[] args) {
         pw.println("NavigationBarView {");
