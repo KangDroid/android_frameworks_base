@@ -33,6 +33,7 @@ import com.android.internal.util.cm.QSConstants;
 import com.android.internal.util.cm.QSUtils;
 import com.android.systemui.R;
 import com.android.systemui.qs.QSTile;
+import com.android.systemui.qs.tiles.AdbOverNetworkTile;
 import com.android.systemui.qs.tiles.AirplaneModeTile;
 import com.android.systemui.qs.tiles.ApnTile;
 import com.android.systemui.qs.tiles.BluetoothTile;
@@ -46,6 +47,8 @@ import com.android.systemui.qs.tiles.HotspotTile;
 import com.android.systemui.qs.tiles.IntentTile;
 import com.android.systemui.qs.tiles.LocationTile;
 import com.android.systemui.qs.tiles.NotificationsTile;
+import com.android.systemui.qs.tiles.ProfilesTile;
+import com.android.systemui.qs.tiles.PerfProfileTile;
 import com.android.systemui.qs.tiles.RoamingTile;
 import com.android.systemui.qs.tiles.RotationLockTile;
 import com.android.systemui.qs.tiles.WifiTile;
@@ -300,6 +303,12 @@ public class QSTileHost implements QSTile.Host {
                 return new DdsTile(this);
             case QSConstants.TILE_APN:
                 return new ApnTile(this);
+            case QSConstants.TILE_PROFILES:
+                return new ProfilesTile(this);
+            case QSConstants.TILE_PERFORMANCE:
+                return new PerfProfileTile(this);
+            case QSConstants.TILE_ADB_NETWORK:
+                return new AdbOverNetworkTile(this);
             default:
                 throw new IllegalArgumentException("Bad tile spec: " + tileSpec);
         }
