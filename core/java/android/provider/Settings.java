@@ -3985,6 +3985,14 @@ public final class Settings {
         public static final String STATUS_BAR_EXPANDED_HEADER_ICON_COLOR = "status_bar_expanded_header_icon_color";
 
         /**
+          * Allows to disable weather in locskcreen
+          * 1 = use system default (show)
+          * 0 = hide Weather
+          * @hide
+          */
+         public static final String LOCKSCREEN_WEATHER = "lockscreen_weather";
+
+        /**
          * Whether pie controls are enabled
          * @hide
          */
