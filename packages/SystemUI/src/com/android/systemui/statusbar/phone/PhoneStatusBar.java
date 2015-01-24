@@ -3998,6 +3998,12 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
         if (updateStatusBar) {
             mContext.recreateTheme();
             recreateStatusBar();
+
+        // detect status bar carrier state when theme change.
+        mShowStatusBarCarrier = Settings.System.getInt(
+                resolver, Settings.System.STATUS_BAR_CARRIER, 0) == 1;
+                showStatusBarCarrierLabel(mShowStatusBarCarrier);
+
         } else {
             loadDimens();
         }
