@@ -78,6 +78,19 @@
     <string name="tasklist_memory_usage">"Free/Total Memory: [<xliff:g id="number">%s</xliff:g>] / [<xliff:g id="name">%s</xliff:g>]"</string>
     <string name="message_keep_one_launcher">Should keep at lease one home activity!</string>
 
+    <!-- Notify changed wifi network -->
+    <string name="wifi_status_changed">New connection</string>
+    <string name="wifi_restored">Connection restored</string>
+    <string name="wifi_address_changed">Wi\u2011Fi SSID changed to <xliff:g id="name">%s</xliff:g></string>
+    <string name="wifi_changed_ticker">Wi\u2011Fi SSID: <xliff:g id="name">%s</xliff:g></string>
+
+    <!-- Timeout tile -->
+    <string name="quick_settings_screen_timeout">Timeout</string>
+    <string name="quick_settings_screen_timeout_summary">%1$d %2$s</string>
+
+    <string name="quick_settings_network_adb_enabled_label">Enabled</string>
+    <string name="quick_settings_network_adb_disabled_label">Disabled</string>
+
     <!-- Weather string format in expanded statusbar header -->
     <string name="status_bar_expanded_header_weather_format"><xliff:g id="temp">%1$s</xliff:g> - <xliff:g id="condition">%2$s</xliff:g></string>
 	
