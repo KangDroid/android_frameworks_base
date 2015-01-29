@@ -2318,12 +2318,6 @@ public final class Settings {
          */
         public static final String QS_SMART_PULLDOWN = "qs_smart_pulldown";
 
- 	/**
-        * Custom Screen Timeout
-        * @hide
-        */
-        public static final String QS_EXPANDED_SCREENTIMEOUT_MODE = "qs_expanded_screentimeout_mode";
-
         /**
          * Defines the status and navigation bar color is battery safe mode is enabled.
          *
