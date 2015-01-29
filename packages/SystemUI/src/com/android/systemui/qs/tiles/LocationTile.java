@@ -48,8 +48,6 @@ public class LocationTile extends QSTile<QSTile.BooleanState> {
             Settings.Secure.LOCATION_MODE_SENSORS_ONLY,
             Settings.Secure.LOCATION_MODE_HIGH_ACCURACY
     };
-	
-	protected final Host mHost;
 
     private final List<Integer> mLocationList = new ArrayList<>();
     private final LocationController mController;
