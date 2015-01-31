@@ -2415,24 +2415,20 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             loadBooleanSetting(stmt, Settings.System.NOTIFICATION_LIGHT_PULSE,
                     R.bool.def_notification_pulse);
 
-            loadUISoundEffectsSettings(stmt);
-
             loadIntegerSetting(stmt, Settings.System.POINTER_SPEED,
                     R.integer.def_pointer_speed);
 
-            loadIntegerSetting(stmt, Settings.System.DEV_FORCE_SHOW_NAVBAR,
-                    R.integer.def_force_disable_navkeys);
-
             loadIntegerSetting(stmt, Settings.System.STATUS_BAR_SHOW_NOTIF_COUNT,
                     R.integer.def_notif_count);
-
-                    loadHeadsUpSetting(stmt);
 
             loadIntegerSetting(stmt, Settings.System.STATUS_BAR_BATTERY_STYLE,
                     R.integer.def_battery_style);
 
             loadIntegerSetting(stmt, Settings.System.ENABLE_PEOPLE_LOOKUP,
                     R.integer.def_people_lookup);
+			
+                    loadHeadsUpSetting(stmt);
+            loadUISoundEffectsSettings(stmt);
 
         } finally {
             if (stmt != null) stmt.close();
