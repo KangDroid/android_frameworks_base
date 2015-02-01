@@ -37,6 +37,7 @@ public class QSConstants {
     public static final String TILE_PERFORMANCE = "performance";
     public static final String TILE_NFC = "nfc";
     public static final String TILE_COMPASS = "compass";
+    public static final String TILE_USB_TETHER = "usb_tether";
 
     // Order matters
     protected static final ArrayList<String> TILES_DEFAULT = new ArrayList<String>();
@@ -63,5 +64,6 @@ public class QSConstants {
         TILES_AVAILABLE.add(TILE_PERFORMANCE);
         TILES_AVAILABLE.add(TILE_NFC);
         TILES_AVAILABLE.add(TILE_COMPASS);
+        TILES_AVAILABLE.add(TILE_USB_TETHER);
     }
 }
