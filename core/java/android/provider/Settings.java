@@ -3968,6 +3968,13 @@ public final class Settings {
          * @hide
          */
         public static final String HEADS_UP_BLACKLIST_VALUES = "heads_up_blacklist_values";
+		
+		/**
+        * Defines the global heads up notification decay
+        *
+        * @hide
+        */
+       public static final String HEADS_UP_NOTIFCATION_DECAY = "heads_up_notification_decay";
 
         /**
          * Color of the text on the header of the expanded status bar
