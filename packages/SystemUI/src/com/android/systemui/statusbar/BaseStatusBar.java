@@ -1126,7 +1126,7 @@ public abstract class BaseStatusBar extends SystemUI implements
 
     @Override
     public void showSearchPanel() {
-        if (mSearchPanelView != null) {
+        if (mSearchPanelView != null && mSearchPanelView.isAssistantAvailable()) {
             mSearchPanelView.show(true, true);
         }
     }
@@ -1164,6 +1164,8 @@ public abstract class BaseStatusBar extends SystemUI implements
         mSearchPanelView.setOnTouchListener(
                  new TouchOutsideListener(MSG_CLOSE_SEARCH_PANEL, mSearchPanelView));
         mSearchPanelView.setVisibility(View.GONE);
+        boolean vertical = mNavigationBarView != null && mNavigationBarView.isVertical();
+        mSearchPanelView.setHorizontal(vertical);
 
         WindowManager.LayoutParams lp = getSearchLayoutParams(mSearchPanelView.getLayoutParams());
 
