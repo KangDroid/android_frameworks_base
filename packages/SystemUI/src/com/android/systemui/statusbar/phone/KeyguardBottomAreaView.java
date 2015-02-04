@@ -455,23 +455,14 @@ public class KeyguardBottomAreaView extends FrameLayout implements View.OnClickL
 
     private String getIndexHint(LockscreenShortcutsHelper.Shortcuts shortcut) {
         if (mShortcutHelper.isTargetCustom(shortcut)) {
-            boolean isRtl = getLayoutDirection() == LAYOUT_DIRECTION_RTL;
             String label = mShortcutHelper.getFriendlyNameForUri(shortcut);
             int resId = 0;
             switch (shortcut) {
                 case LEFT_SHORTCUT:
-                        if (isRtl) {
-                            resId = R.string.right_shortcut_hint; // swipe left
-                        } else {
-                            resId = R.string.left_shortcut_hint; // swipe right
-                        }
+                        resId = R.string.left_shortcut_hint;
                         break;
                     case RIGHT_SHORTCUT:
-                        if (isRtl) {
-                            resId = R.string.left_shortcut_hint;
-                        } else {
-                            resId = R.string.right_shortcut_hint;
-                        }
+                        resId = R.string.right_shortcut_hint;
                         break;
             }
             return mContext.getString(resId, label);
