@@ -472,8 +472,8 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
                 mTickerEnabled = Settings.System.getIntForUser(
                         mContext.getContentResolver(),
                         Settings.System.STATUS_BAR_SHOW_TICKER,
-                        mContext.getResources().getBoolean(R.bool.enable_ticker),
-                        1, UserHandle.USER_CURRENT) == 1;
+                        mContext.getResources().getBoolean(R.bool.enable_ticker)
+                        ? 1 : 0, UserHandle.USER_CURRENT) == 1;
                 initTickerView();
             } else if (uri.equals(Settings.System.getUriFor(
                     Settings.System.PIE_CONTROLS))) {
@@ -962,8 +962,8 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
 
         mTickerEnabled = Settings.System.getIntForUser(mContext.getContentResolver(),
                     Settings.System.STATUS_BAR_SHOW_TICKER,
-                    mContext.getResources().getBoolean(R.bool.enable_ticker),
-                            1, UserHandle.USER_CURRENT) == 1;
+                    mContext.getResources().getBoolean(R.bool.enable_ticker)
+                            ? 1 : 0, UserHandle.USER_CURRENT) == 1;
         initTickerView();
 
         mEdgeBorder = res.getDimensionPixelSize(R.dimen.status_bar_edge_ignore);
@@ -3816,7 +3816,6 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
             showKeyguard();
             // The following views need to be invisible if the keyguard is showing
             // These views were hidden but re-inflating the status bar changed them back to visible
-            mClockView.setVisibility(View.INVISIBLE);
             mNotificationIconArea.setVisibility(View.INVISIBLE);
             mSystemIconArea.setVisibility(View.INVISIBLE);
         }
