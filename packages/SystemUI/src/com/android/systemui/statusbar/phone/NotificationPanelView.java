@@ -1251,7 +1251,6 @@ public class NotificationPanelView extends PanelView implements
         } else if (mOneFingerQuickSettingsInterceptMode == ONE_FINGER_QS_INTERCEPT_START) {
             showQsOverride = isLayoutRtl() ? (w - region < x) : (x < region);
         }
-
         if (mQsExpanded) {
             return onHeader || (mScrollView.isScrolledToBottom() && yDiff < 0) && isInQsArea(x, y);
         } else {
