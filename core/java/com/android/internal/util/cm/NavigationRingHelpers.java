@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2014 The CyanogenMod Project
+ * Copyright (C) 2013 The CyanogenMod Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,11 +25,6 @@ import android.content.IntentFilter;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.ColorMatrix;
-import android.graphics.ColorMatrixColorFilter;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
 import android.graphics.drawable.StateListDrawable;
@@ -39,7 +34,6 @@ import android.provider.Settings;
 import android.text.TextUtils;
 
 import static com.android.internal.util.cm.NavigationRingConstants.*;
-
 import com.android.internal.util.cm.TorchConstants;
 import com.android.internal.widget.multiwaveview.GlowPadView;
 import com.android.internal.widget.multiwaveview.TargetDrawable;
@@ -49,14 +43,12 @@ import java.net.URISyntaxException;
 public class NavigationRingHelpers {
     public static final int MAX_ACTIONS = 3;
 
-    private static final String ASSIST_ICON_METADATA_NAME =
-            "com.android.systemui.action_assist_icon";
+    private static final String ASSIST_ICON_METADATA_NAME = "com.android.systemui.action_assist_icon";
 
     private static final IntentFilter TORCH_STATE_FILTER =
             new IntentFilter(TorchConstants.ACTION_STATE_CHANGED);
 
     private NavigationRingHelpers() {
-        // Do nothing here
     }
 
     public static String[] getTargetActions(Context context) {
@@ -70,7 +62,6 @@ public class NavigationRingHelpers {
                 isDefault = false;
             }
         }
-
         if (isDefault) {
             resetActionsToDefaults(context);
             result[1] = ACTION_ASSIST;
@@ -86,7 +77,6 @@ public class NavigationRingHelpers {
         if (available) {
             return;
         }
-
         for (int i = 0; i < result.length; i++) {
             if (TextUtils.equals(result[i], action)) {
                 result[i] = null;
@@ -111,9 +101,8 @@ public class NavigationRingHelpers {
         try {
             return pm.getPackageInfo(TorchConstants.APP_PACKAGE_NAME, 0) != null;
         } catch (PackageManager.NameNotFoundException e) {
-            // Ignored, just catched so we can return false below
+            // ignored, just catched so we can return false below
         }
-
         return false;
     }
 
@@ -125,7 +114,7 @@ public class NavigationRingHelpers {
             resourceId = com.android.internal.R.drawable.ic_navigation_ring_empty;
         } else if (action.equals(ACTION_SCREENSHOT)) {
             resourceId = com.android.internal.R.drawable.ic_navigation_ring_screenshot;
-        } else if (action.equals(ACTION_IME_SWITCHER)) {
+        } else if (action.equals(ACTION_IME)) {
             resourceId = com.android.internal.R.drawable.ic_navigation_ring_ime_switcher;
         } else if (action.equals(ACTION_VIBRATE)) {
             resourceId = getVibrateDrawableResId(context);
@@ -133,10 +122,10 @@ public class NavigationRingHelpers {
             resourceId = getSilentDrawableResId(context);
         } else if (action.equals(ACTION_RING_SILENT_VIBRATE)) {
             resourceId = getRingerDrawableResId(context);
-        } else if (action.equals(ACTION_KILL_TASK)) {
-            resourceId = com.android.internal.R.drawable.ic_navigation_ring_kill_task;
-        } else if (action.equals(ACTION_STANDBY)) {
-            resourceId = com.android.internal.R.drawable.ic_navigation_ring_standby;
+        } else if (action.equals(ACTION_KILL)) {
+            resourceId = com.android.internal.R.drawable.ic_navigation_ring_killtask;
+        } else if (action.equals(ACTION_POWER)) {
+            resourceId = com.android.internal.R.drawable.ic_navigation_ring_power;
         } else if (action.equals(ACTION_TORCH)) {
             resourceId = getTorchDrawableResId(context);
         } else if (action.equals(ACTION_ASSIST)) {
@@ -144,7 +133,7 @@ public class NavigationRingHelpers {
         }
 
         if (resourceId < 0) {
-            // No pre-defined action, try to resolve URI
+            // no pre-defined action, try to resolve URI
             try {
                 Intent intent = Intent.parseUri(action, 0);
                 PackageManager pm = context.getPackageManager();
@@ -154,7 +143,7 @@ public class NavigationRingHelpers {
                     return createDrawableForActivity(res, info.loadIcon(pm));
                 }
             } catch (URISyntaxException e) {
-                // Treat as empty
+                // treat as empty
             }
 
             resourceId = com.android.internal.R.drawable.ic_navigation_ring_empty;
@@ -164,7 +153,6 @@ public class NavigationRingHelpers {
         if (resourceId == com.android.internal.R.drawable.ic_navigation_ring_empty) {
             drawable.setEnabled(false);
         }
-
         return drawable;
     }
 
@@ -174,33 +162,12 @@ public class NavigationRingHelpers {
         Drawable iconBgActivated = res.getDrawable(
                 com.android.internal.R.drawable.ic_navigation_ring_blank_activated);
 
-        // Get the size for the base icon and the activity icon
-        int iconSize = (int) res.getDimension(
-                com.android.internal.R.dimen.navigation_ring_icon_size);
-        int activityIconSize = (int) res.getDimension(
-                com.android.internal.R.dimen.navigation_ring_activity_icon_size);
-        int margin = (iconSize - activityIconSize) / 2;
+        int margin = (int)(iconBg.getIntrinsicHeight() / 3);
+        LayerDrawable icon = new LayerDrawable (new Drawable[] { iconBg, activityIcon });
+        LayerDrawable iconActivated = new LayerDrawable (new Drawable[] { iconBgActivated, activityIcon });
 
-        // Create the grayscale color filter
-        ColorMatrix colorMatrix = new ColorMatrix();
-        colorMatrix.setSaturation(0);
-        ColorMatrixColorFilter grayscaleFilter = new ColorMatrixColorFilter(colorMatrix);
-
-        // Create the final bitmap for the icon
-        Bitmap scaledActivityIconBitmap =
-                Bitmap.createBitmap(iconSize, iconSize, Bitmap.Config.ARGB_8888);
-        Canvas canvas = new Canvas(scaledActivityIconBitmap);
-        activityIcon.setBounds(margin, margin, iconSize - margin, iconSize - margin);
-        activityIcon.setColorFilter(grayscaleFilter);
-        activityIcon.draw(canvas);
-
-        // Create the final drawable from the new generated bitmap
-        BitmapDrawable scaledActivityIcon = new BitmapDrawable(res, scaledActivityIconBitmap);
-
-        LayerDrawable icon = new LayerDrawable(
-                new Drawable[] { iconBg, scaledActivityIcon });
-        LayerDrawable iconActivated = new LayerDrawable(
-                new Drawable[] { iconBgActivated, scaledActivityIcon });
+        icon.setLayerInset(1, margin, margin, margin, margin);
+        iconActivated.setLayerInset(1, margin, margin, margin, margin);
 
         StateListDrawable selector = new StateListDrawable();
         selector.addState(TargetDrawable.STATE_INACTIVE, icon);
@@ -249,7 +216,6 @@ public class NavigationRingHelpers {
         if (active) {
             return com.android.internal.R.drawable.ic_navigation_ring_torch_on;
         }
-
         return com.android.internal.R.drawable.ic_navigation_ring_torch_off;
     }
 
