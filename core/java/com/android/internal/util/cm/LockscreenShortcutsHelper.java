@@ -31,7 +31,6 @@ public class LockscreenShortcutsHelper {
         }
     }
 
-    public static final String DEFAULT = "default";
     public static final String NONE = "none";
     private static final String DELIMITER = "|";
     private static final String SYSTEM_UI_PKGNAME = "com.android.systemui";
@@ -84,9 +83,10 @@ public class LockscreenShortcutsHelper {
         int itemsToPad = Shortcuts.values().length - mTargetActivities.size();
         if (itemsToPad > 0) {
             for (int i = 0; i < itemsToPad; i++) {
-                mTargetActivities.add(DEFAULT);
+                mTargetActivities.add(NONE);
             }
         }
+
     }
 
     public List<TargetInfo> getDrawablesForTargets() {
@@ -132,7 +132,7 @@ public class LockscreenShortcutsHelper {
     }
 
     public Drawable getDrawableFromSystemUI(String name) {
-        Resources res;
+        Resources res = null;
         if (mContext.getPackageName().equals(SYSTEM_UI_PKGNAME)) {
             res = mContext.getResources();
         } else {
@@ -185,29 +185,19 @@ public class LockscreenShortcutsHelper {
     }
 
     public boolean isTargetCustom(Shortcuts shortcut) {
-        if (mTargetActivities == null || mTargetActivities.isEmpty()) {
-            return false;
-        }
-        String action = mTargetActivities.get(shortcut.index);
-        if (DEFAULT.equals(action)) {
-            return false;
-        }
-
-        return NONE.equals(action) || getIntent(shortcut) != null;
-    }
-
-    public boolean isTargetEmpty(Shortcuts shortcut) {
         return mTargetActivities != null &&
                 !mTargetActivities.isEmpty() &&
-                mTargetActivities.get(shortcut.index).equals(NONE);
+                !mTargetActivities.get(shortcut.index).equals(NONE);
     }
 
     public Intent getIntent(Shortcuts shortcut) {
         Intent intent = null;
-        try {
-            intent = Intent.parseUri(mTargetActivities.get(shortcut.index), 0);
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
+        if (isTargetCustom(shortcut)) {
+            try {
+                intent = Intent.parseUri(mTargetActivities.get(shortcut.index), 0);
+            } catch (URISyntaxException e) {
+                e.printStackTrace();
+            }
         }
         return intent;
     }
