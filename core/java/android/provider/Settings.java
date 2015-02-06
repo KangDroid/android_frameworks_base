@@ -3589,6 +3589,12 @@ public final class Settings {
 		 */
         public static final String STATUS_BAR_EXPANDED_HEADER_SHOW_WEATHER = "status_bar_expanded_header_show_weather";
 		
+         /**
+         * Hide notification 1 second after touching outside
+         * @hide
+         */
+        public static final String HEADS_UP_TOUCH_OUTSIDE = "heads_up_touch_outside";
+		
         /**
          * Whether to show the weather location on the header of the expanded status bar
          * @hide
