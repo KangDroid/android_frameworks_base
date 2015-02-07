@@ -122,7 +122,7 @@ public class QSPanel extends ViewGroup {
 
     public boolean isVibrationEnabled() {
         return (Settings.System.getIntForUser(mContext.getContentResolver(),
-                Settings.System.QUICK_SETTINGS_TILES_VIBRATE, 0, UserHandle.USER_CURRENT) == 1);
+                Settings.System.QUICK_SETTINGS_TILES_VIBRATE, 1, UserHandle.USER_CURRENT) == 1);
     }
 
     public void vibrateTile(int duration) {
