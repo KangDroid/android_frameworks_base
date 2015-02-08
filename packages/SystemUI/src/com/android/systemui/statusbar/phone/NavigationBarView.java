@@ -96,7 +96,7 @@ public class NavigationBarView extends LinearLayout implements NavigationCallbac
     int mNavigationIconHints = 0;
 
 
-    private BackButtonDrawable mBackIcon, mBackLandIcon;
+    private Drawable mBackIcon, mBackLandIcon, mBackAltIcon, mBackAltLandIcon;
     private Drawable mRecentIcon, mRecentLandIcon, mRecentAltIcon, mRecentAltLandIcon, mHomeIcon, mHomeLandIcon;
 
     private FrameLayout mRot0;
@@ -336,8 +336,10 @@ public class NavigationBarView extends LinearLayout implements NavigationCallbac
     }
 
     private void getIcons(Resources res) {
-        mBackIcon = new BackButtonDrawable(res.getDrawable(R.drawable.ic_sysbar_back));
-        mBackLandIcon = new BackButtonDrawable(res.getDrawable(R.drawable.ic_sysbar_back_land));
+        mBackIcon = res.getDrawable(R.drawable.ic_sysbar_back);
+        mBackLandIcon = res.getDrawable(R.drawable.ic_sysbar_back_land);
+        mBackAltIcon = res.getDrawable(R.drawable.ic_sysbar_back_ime);
+        mBackAltLandIcon = res.getDrawable(R.drawable.ic_sysbar_back_ime);
         mRecentIcon = res.getDrawable(R.drawable.ic_sysbar_recent);
         mRecentLandIcon = res.getDrawable(R.drawable.ic_sysbar_recent_land);
         mRecentAltIcon = res.getDrawable(R.drawable.ic_sysbar_recent_clear);
@@ -417,8 +419,10 @@ public class NavigationBarView extends LinearLayout implements NavigationCallbac
         }
 
         ((ImageView)getHomeButton()).setImageDrawable(mVertical ? mHomeLandIcon : mHomeIcon);
-        mBackLandIcon.setImeVisible(backAlt);
-        mBackIcon.setImeVisible(backAlt);
+
+        ((ImageView)getBackButton()).setImageDrawable(backAlt
+                ? (mVertical ? mBackAltLandIcon : mBackAltIcon)
+                : (mVertical ? mBackLandIcon : mBackIcon));
 
 
         ImageView recentView = (ImageView) findViewWithTag(NavbarEditor.NAVBAR_RECENT);
