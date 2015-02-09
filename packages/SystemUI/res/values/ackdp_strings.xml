@@ -22,6 +22,8 @@
     <string name="pie_phone_status_emergency_only">Emergency calls only</string>
 	
     <!-- Quick settings -->
+    <string name="quick_settings_battery_saver">Battery saver</string>
+    <string name="quick_settings_battery_saver_off">Battery saver off</string>
     <string name="quick_settings_screenshot">Screenshot</string>
     <string name="quick_settings_sync">Sync</string>
     <string name="quick_settings_sync_off">Sync off</string>
