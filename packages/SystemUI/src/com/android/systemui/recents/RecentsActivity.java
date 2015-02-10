@@ -51,7 +51,6 @@ import com.android.systemui.recents.views.DebugOverlayView;
 import com.android.systemui.recents.views.RecentsView;
 import com.android.systemui.recents.views.SystemBarScrimViews;
 import com.android.systemui.recents.views.ViewAnimation;
-import com.android.systemui.recents.RecentsConfiguration;
 import android.provider.Settings;
 import com.android.systemui.statusbar.phone.NavigationBarView;
 
@@ -276,20 +275,10 @@ public class RecentsActivity extends Activity implements RecentsView.RecentsView
                 mEmptyView.setVisibility(View.GONE);
             }
             if (mRecentsView.hasSearchBar()) {
-
-                if (Settings.System.getInt(getContentResolver(),
-                    Settings.System.RECENTS_SHOW_HIDE_SEARCH_BAR, 0) == 1) {
-                    mRecentsView.setSearchBarVisibility(View.VISIBLE);
-                } else {
-                    mRecentsView.setSearchBarVisibility(View.GONE);
-                   }
-                } else {
-                if (Settings.System.getInt(getContentResolver(),
-                    Settings.System.RECENTS_SHOW_HIDE_SEARCH_BAR, 0) == 1) {
-                    addSearchBarAppWidgetView();
+                mRecentsView.setSearchBarVisibility(View.VISIBLE);
             } else {
-               }
-                }
+                addSearchBarAppWidgetView();
+            }
         }
 
 	// Update search bar space height
