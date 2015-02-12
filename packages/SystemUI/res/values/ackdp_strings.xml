@@ -32,4 +32,6 @@
     <string name="quick_settings_sync_off">Sync off</string>
 	<string name="quick_settings_brightness">Brightness</string>
 
+<string name="bliss">KangDroid</string>
+
 </resources>
