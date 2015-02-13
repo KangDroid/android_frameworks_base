@@ -4096,6 +4096,12 @@ public final class Settings {
         * @hide
         */
        public static final String HEADS_UP_NOTIFCATION_DECAY = "heads_up_notification_decay";
+			
+        /**
+         * volume answer.
+         * @hide
+         */
+        public static final String ANSWER_VOLUME_BUTTON_BEHAVIOR_ANSWER = "answer_volume_button_behavior_answer";		
 
         /**
          * Settings to backup. This is here so that it's in the same place as the settings
