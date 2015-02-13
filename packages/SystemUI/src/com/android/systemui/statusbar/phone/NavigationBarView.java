@@ -48,6 +48,7 @@ import android.view.Surface;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.view.KeyEvent;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -81,6 +82,13 @@ public class NavigationBarView extends LinearLayout implements NavigationCallbac
     private OnTouchListener mRecentsPreloadListener;
     private OnTouchListener mHomeSearchActionListener;
     private OnLongClickListener mRecentsBackListener;
+    private OnLongClickListener mPowerListener = new View.OnLongClickListener() {
+        @Override
+        public boolean onLongClick(View v) {
+            ((KeyButtonView) v).sendEvent(KeyEvent.KEYCODE_POWER, KeyEvent.FLAG_LONG_PRESS);
+            return true;
+        }
+    };
 
     final Display mDisplay;
     View mCurrentView = null;
@@ -511,6 +519,7 @@ public class NavigationBarView extends LinearLayout implements NavigationCallbac
         setButtonWithTagVisibility(NavbarEditor.NAVBAR_BACK, !disableBack);
         setButtonWithTagVisibility(NavbarEditor.NAVBAR_HOME, !disableHome);
         setButtonWithTagVisibility(NavbarEditor.NAVBAR_RECENT, !disableRecent);
+        setButtonWithTagVisibility(NavbarEditor.NAVBAR_POWER, !disableRecent);
 
         mBarTransitions.applyBackButtonQuiescentAlpha(mBarTransitions.getMode(), true /*animate*/);
     }
@@ -820,6 +829,11 @@ public class NavigationBarView extends LinearLayout implements NavigationCallbac
         View homeView = mCurrentView.findViewWithTag(NavbarEditor.NAVBAR_HOME);
         if (homeView != null) {
             homeView.setOnTouchListener(mHomeSearchActionListener);
+        }
+        View powerView = mCurrentView.findViewWithTag(NavbarEditor.NAVBAR_POWER);
+        if (powerView != null) {
+            powerView.setLongClickable(true);
+            powerView.setOnLongClickListener(mPowerListener);
         }
     }
 

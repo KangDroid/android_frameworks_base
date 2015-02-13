@@ -34,4 +34,7 @@
 
 <string name="bliss">KangDroid</string>
 
+	<string name="navbar_power_button">Power button</string>
+	<string name="accessibility_power">Power</string>
+
 </resources>
