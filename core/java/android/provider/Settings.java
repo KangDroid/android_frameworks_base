@@ -3961,6 +3961,13 @@ public final class Settings {
         public static final String MUTE_ANNOYING_NOTIFICATIONS_THRESHOLD =
                 "mute_annoying_notifications_threshold";
 
+       /**
+        * Timeout for volume panel
+        * @hide
+        */
+       public static final String VOLUME_PANEL_TIMEOUT = "volume_panel_timeout";
+
+
 		/**
         * Whether to display app circle sidebar
         * @hide
