@@ -208,6 +208,7 @@ public abstract class KeyguardPinBasedInputView extends KeyguardAbsKeyInputView
             }
         }
 }
+
     protected void applyPaddingToView(View view, int paddingDimenResId) {
         final Rect backgroundPadding = new Rect();
 
