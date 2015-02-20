@@ -83,6 +83,21 @@ public class DozeParameters {
         return values != 0;
     }
 
+    public boolean getTimeMode() {
+        final int values = Settings.System.getIntForUser(mContext.getContentResolver(),
+               Settings.System.DOZE_TIME_MODE, 0,
+                    UserHandle.USER_CURRENT);
+        return values != 0;
+    }
+
+    public boolean getFullMode() {
+        return getTimeMode() && getPocketMode();
+    }
+
+    public boolean getHalfMode() {
+        return !getTimeMode() && getPocketMode();
+    }
+
     public boolean getDisplayStateSupported() {
         return getBoolean("doze.display.supported", R.bool.doze_display_state_supported);
     }

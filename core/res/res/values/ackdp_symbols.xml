@@ -102,8 +102,6 @@
     <java-symbol type="bool" name="config_stylusGestures" />
     <java-symbol type="string" name="stylus_app_not_installed" />
 	
-	<java-symbol type="bool" name="config_dozeUseAccelerometer" />
-	
     <!-- Storage -->
     <java-symbol type="string" name="storage_usb" />
     <java-symbol type="string" name="storage_uicc" />
@@ -130,5 +128,7 @@
     <java-symbol type="string" name="usb_media_checking" />
     <java-symbol type="string" name="usb_media_removed" />
     <java-symbol type="string" name="usb_media_shared" />
+	
+	<java-symbol type="bool" name="config_dozeUseAccelerometer" />
 
 </resources>
