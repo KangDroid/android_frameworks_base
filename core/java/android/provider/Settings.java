@@ -2333,8 +2333,32 @@ public final class Settings {
          */
         public static final String BATTERY_SAVER_MODE_COLOR = "battery_save_mode_color";
 		
+        /**
+         * Swap volume buttons when the screen is rotated
+         * 0 - Disabled
+         * 1 - Enabled (screen is rotated by 90 or 180 degrees: phone, hybrid)
+         * 2 - Enabled (screen is rotated by 180 or 270 degrees: tablet)
+         * @hide
+         */
+        public static final String SWAP_VOLUME_KEYS_ON_ROTATION = "swap_volume_keys_on_rotation";
+
+        /**
+         * List of QS tile names
+         * Deprecated Use {@link android.provider.Settings.Secure.QS_TILES}
+         * @hide
+         */
+        @Deprecated
+        public static final String QS_TILES = "sysui_qs_tiles";
+
+        /**
+         * Deprecated Use {@link android.provider.Settings.Secure.QS_USE_MAIN_TILES}
+         * @hide
+         */
+        @Deprecated
+        public static final String QS_USE_MAIN_TILES = "sysui_qs_main_tiles";
+
 		/**
-		 * Enable/disable overwrite default value for ambient display
+         * Enable/disable overwrite default value for ambient display
          * @hide
          */
         public static final String DOZE_OVERWRITE_VALUE = "doze_overwrite_value";
@@ -2387,30 +2411,6 @@ public final class Settings {
          */
         public static final String DOZE_TIME_MODE = "doze_time_mode";
 		
-        /**
-         * Swap volume buttons when the screen is rotated
-         * 0 - Disabled
-         * 1 - Enabled (screen is rotated by 90 or 180 degrees: phone, hybrid)
-         * 2 - Enabled (screen is rotated by 180 or 270 degrees: tablet)
-         * @hide
-         */
-        public static final String SWAP_VOLUME_KEYS_ON_ROTATION = "swap_volume_keys_on_rotation";
-
-        /**
-         * List of QS tile names
-         * Deprecated Use {@link android.provider.Settings.Secure.QS_TILES}
-         * @hide
-         */
-        @Deprecated
-        public static final String QS_TILES = "sysui_qs_tiles";
-
-        /**
-         * Deprecated Use {@link android.provider.Settings.Secure.QS_USE_MAIN_TILES}
-         * @hide
-         */
-        @Deprecated
-        public static final String QS_USE_MAIN_TILES = "sysui_qs_main_tiles";
-
         /**
          * Control whether the process CPU usage meter should be shown.
          *
@@ -6729,6 +6729,7 @@ public final class Settings {
          * @hide
          */
         public static final String QS_USE_MAIN_TILES = "sysui_qs_main_tiles";
+
 
         /**
          * Whether to show detail view for the wi-fi tile
