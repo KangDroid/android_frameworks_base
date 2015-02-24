@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-package com.android.internal.util.cm;
+package org.du.util;
 
 import android.content.res.Resources;
 
 import java.util.Locale;
 
-public class CarrierUtils {
+public class DuUtils {
     public static boolean isChineseLanguage() {
        return Resources.getSystem().getConfiguration().locale.getLanguage().startsWith(Locale.CHINESE.getLanguage());
     }
