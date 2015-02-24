@@ -3,6 +3,7 @@
  * Not a Contribution.
  *
  * Copyright (C) 2010 The Android Open Source Project
+ * Copyright (C) 2014-2015 The MoKee OpenSource Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -295,8 +296,6 @@ public class NetworkControllerImpl extends BroadcastReceiver
         IntentFilter filter = new IntentFilter();
         filter.addAction("cm.UPDATE_WIFI_NOTIFICATION_PREFERENCE");
         filter.addAction(Intent.ACTION_BOOT_COMPLETED);
-
-        filter.addAction(Intent.ACTION_CUSTOM_CARRIER_LABEL_CHANGED);
         filter.addAction(WifiManager.RSSI_CHANGED_ACTION);
         filter.addAction(WifiManager.WIFI_STATE_CHANGED_ACTION);
         filter.addAction(WifiManager.NETWORK_STATE_CHANGED_ACTION);
@@ -304,6 +303,7 @@ public class NetworkControllerImpl extends BroadcastReceiver
         filter.addAction(TelephonyIntents.SPN_STRINGS_UPDATED_ACTION);
         filter.addAction(ConnectivityManager.CONNECTIVITY_ACTION_IMMEDIATE);
         filter.addAction(ConnectivityManager.INET_CONDITION_ACTION);
+        filter.addAction(Intent.ACTION_CUSTOM_CARRIER_LABEL_CHANGED);
         filter.addAction(Intent.ACTION_CONFIGURATION_CHANGED);
         filter.addAction(Intent.ACTION_AIRPLANE_MODE_CHANGED);
 
@@ -644,10 +644,8 @@ public class NetworkControllerImpl extends BroadcastReceiver
         } else if (action.equals("cm.UPDATE_WIFI_NOTIFICATION_PREFERENCE")) {
             mWifiNotifications = Settings.System.getInt(mContext.getContentResolver(),
                     Settings.System.WIFI_NETWORK_NOTIFICATIONS, 0);
-
         } else if (action.equals(Intent.ACTION_CUSTOM_CARRIER_LABEL_CHANGED)) {
             refreshViews();
-
         } else if (action.equals(Intent.ACTION_CONFIGURATION_CHANGED)) {
             //parse the string to current language string in public resources
             if (mContext.getResources().getBoolean(
@@ -1403,9 +1401,8 @@ public class NetworkControllerImpl extends BroadcastReceiver
         int N;
         final boolean emergencyOnly = isEmergencyOnly();
 
-        final String customCarrierLabel = Settings.System.getStringForUser
-                (mContext.getContentResolver(), Settings.System.NOTIFICATION_CUSTOM_CARRIER_LABEL,
-                UserHandle.USER_CURRENT);
+        final String customCarrierLabel = Settings.System.getStringForUser(context.getContentResolver(),
+                Settings.System.CUSTOM_CARRIER_LABEL, UserHandle.USER_CURRENT);
 
         if (!mHasMobileDataFeature) {
             mDataSignalIconId = mPhoneSignalIconId = 0;
@@ -1581,10 +1578,7 @@ public class NetworkControllerImpl extends BroadcastReceiver
             // look again; your radios are now sim cards
             mPhoneSignalIconId = mDataSignalIconId = mDataTypeIconId = mQSDataTypeIconId = 0;
             mQSPhoneSignalIconId = 0;
-        }
-
-        final String customLabel = Settings.System.getString(mContext.getContentResolver(),
-               Settings.System.NOTIFICATION_CUSTOM_CARRIER_LABEL);
+		}
 
         if (!TextUtils.isEmpty(customCarrierLabel)) {
             combinedLabel = customCarrierLabel;

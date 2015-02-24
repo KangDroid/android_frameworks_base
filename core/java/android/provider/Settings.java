@@ -3892,6 +3892,24 @@ public final class Settings {
         public static final String GESTURE_ANYWHERE_CHANGED = "gesture_anywhere_changed";
 
         /**
+         * show carrier in statusbar. The value is
+         * int (1: Show or 0: Hide).
+         */
+        public static final String STATUS_BAR_CARRIER = "status_bar_carrier";
+
+        /**
+         * custom carrier label. The value is
+         * String.
+         */
+        public static final String CUSTOM_CARRIER_LABEL = "custom_carrier_label";
+
+        /**
+         * Carrier Label Custom Color
+         * @hide
+         */
+        public static final String STATUS_BAR_CARRIER_COLOR = "status_bar_carrier_color";
+
+        /**
          * Width of the gesture anywhere trigger.
          * @hide
          */
@@ -4097,24 +4115,6 @@ public final class Settings {
          * @hide
          */
         public static final String LISTVIEW_INTERPOLATOR = "listview_interpolator";
-
-        /**
-         * Notification custom carrier label
-         * @hide
-         */
-        public static final String NOTIFICATION_CUSTOM_CARRIER_LABEL = "notification_custom_carrier_label";
-
-        /**
-         * Carrier Label Custom Color
-         * @hide
-         */
-        public static final String STATUS_BAR_CARRIER_COLOR = "status_bar_carrier_color";
-
-        /**
-         * show carrier in statusbar. The value is
-         * boolean (1 or 0).
-         */
-        public static final String STATUS_BAR_CARRIER = "status_bar_carrier";
 
         /**
          * Alternative recent apps integration using OmniSwitch
