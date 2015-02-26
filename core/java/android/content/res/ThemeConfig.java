@@ -51,6 +51,7 @@ public class ThemeConfig implements Cloneable, Parcelable, Comparable<ThemeConfi
      * Special package name for theming the navbar separate from the rest of SystemUI
      */
     public static final String SYSTEMUI_NAVBAR_PKG = "com.android.systemui.navbar";
+	public static final String SYSTEMUI_STATUS_BAR_PKG = "com.android.systemui";
 
     // Key for any app which does not have a specific theme applied
     private static final String KEY_DEFAULT_PKG = "default";
