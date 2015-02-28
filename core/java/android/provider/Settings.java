@@ -2789,9 +2789,38 @@ public final class Settings {
          *
          * @hide
          */
-        public static final String ANIMATION_CONTROLS_NO_SCROLL = "animation_controls_no_scroll";           
- 
+        public static final String ANIMATION_CONTROLS_NO_SCROLL = "animation_controls_no_scroll";         
+		
+        /**
+         * Transparent shade
+         * @hide
+         */
+        public static final String QS_COLOR_SWITCH = "qs_color_switch";  
+		
+		/**
+         * Color of the quick settings panel background
+         * @hide
+         */
+        public static final String QS_BACKGROUND_COLOR = "qs_background_color";
 
+        /**
+         * Color of the quick settings icons
+         * @hide
+         */
+        public static final String QS_ICON_COLOR = "qs_icons_color";
+
+        /**
+         * Color of the quick settings text
+         * @hide
+         */
+        public static final String QS_TEXT_COLOR = "qs_text_color";   
+			
+        /**
+         * Transparent shade
+         * @hide
+         */
+        public static final String QS_TRANSPARENT_SHADE = "qs_transparent_shade";
+ 
         /**
          * Settings to backup. This is here so that it's in the same place as the settings
          * keys and easy to update.

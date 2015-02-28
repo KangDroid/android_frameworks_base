@@ -16,6 +16,7 @@
 
 package com.android.systemui.qs;
 
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.content.res.Resources;
@@ -24,6 +25,7 @@ import android.graphics.Typeface;
 import android.graphics.drawable.Animatable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.RippleDrawable;
+import android.graphics.PorterDuff.Mode;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
@@ -61,6 +63,9 @@ public class QSTileView extends ViewGroup {
 
     private TextView mLabel;
     private QSDualTileLabel mDualLabel;
+    private int mLabelColor;
+    private int mIconColor;
+    private boolean mQSCSwitch = false;
     private boolean mDual;
     private OnClickListener mClickPrimary;
     private OnClickListener mClickSecondary;
@@ -123,6 +128,8 @@ public class QSTileView extends ViewGroup {
     private synchronized void recreateLabel() {
         final CharSequence labelText;
         final CharSequence labelDescription;
+        boolean mQSCSwitch = Settings.System.getInt(getContext().getContentResolver(),
+                Settings.System.QS_COLOR_SWITCH, 0) == 1;
         if (mDualLabel != null) {
             labelText = mDualLabel.getText();
             labelDescription = mDualLabel.getContentDescription();
@@ -135,6 +142,7 @@ public class QSTileView extends ViewGroup {
         }
 
         final Resources res = mContext.getResources();
+        updateColors();
         if (mDual) {
             if (mLabel != null) {
                 removeView(mLabel);
@@ -146,7 +154,11 @@ public class QSTileView extends ViewGroup {
             dualLabel.setId(android.R.id.title);
             dualLabel.setBackgroundResource(R.drawable.btn_borderless_rect);
             dualLabel.setFirstLineCaret(res.getDrawable(R.drawable.qs_dual_tile_caret));
-            dualLabel.setTextColor(res.getColor(R.color.qs_tile_text));
+            if (mQSCSwitch) {
+                dualLabel.setTextColor(mLabelColor);
+            } else {
+                dualLabel.setTextColor(res.getColor(R.color.qs_tile_text));
+            }
             dualLabel.setPadding(0, mDualTileVerticalPaddingPx, 0, mDualTileVerticalPaddingPx);
             dualLabel.setTypeface(CONDENSED);
             dualLabel.setTextSize(TypedValue.COMPLEX_UNIT_PX,
@@ -181,6 +193,18 @@ public class QSTileView extends ViewGroup {
             label.setPadding(0, 0, 0, 0);
             label.setTypeface(CONDENSED);
             label.setTextSize(TypedValue.COMPLEX_UNIT_PX,
+            mLabel = new TextView(mContext);
+            mLabel.setId(android.R.id.title);
+            if (mQSCSwitch) {
+                mLabel.setTextColor(mLabelColor);
+            } else {
+                mLabel.setTextColor(res.getColor(R.color.qs_tile_text));
+            }
+            mLabel.setGravity(Gravity.CENTER_HORIZONTAL);
+            mLabel.setMinLines(2);
+            mLabel.setPadding(0, 0, 0, 0);
+            mLabel.setTypeface(CONDENSED);
+            mLabel.setTextSize(TypedValue.COMPLEX_UNIT_PX,
                     res.getDimensionPixelSize(R.dimen.qs_tile_text_size));
             label.setClickable(false);
             label.setText(labelText);
@@ -234,6 +258,40 @@ public class QSTileView extends ViewGroup {
         postInvalidate();
     }
 
+    protected void updateColors() {
+        final ContentResolver resolver = mContext.getContentResolver();
+        mQSCSwitch = Settings.System.getInt(resolver,
+                Settings.System.QS_COLOR_SWITCH, 0) == 1;
+        if (mQSCSwitch) {
+            mLabelColor = Settings.System.getInt(resolver,
+                    Settings.System.QS_TEXT_COLOR, 0xffffffff);
+            mIconColor = Settings.System.getInt(resolver,
+                    Settings.System.QS_ICON_COLOR, 0xffffffff);
+        }
+    }
+
+    public void setLabelColor() {
+        updateColors();
+        if (mLabel != null) {
+            mLabel.setTextColor(mLabelColor);
+        }
+        if (mDualLabel != null) {
+            mDualLabel.setTextColor(mLabelColor);
+        }
+    }
+
+    public void setIconColor() {
+        if (mIcon instanceof ImageView) {
+            updateColors();
+            ImageView iv = (ImageView) mIcon;
+            iv.setColorFilter(mIconColor, Mode.MULTIPLY);
+        }
+    }
+
+    protected int getIconColor() {
+		return mIconColor;
+	}
+
     private void setRipple(RippleDrawable tileBackground) {
         mRipple = tileBackground;
         if (getWidth() != 0) {
@@ -250,9 +308,13 @@ public class QSTileView extends ViewGroup {
     }
 
     protected View createIcon() {
+        updateColors();
         final ImageView icon = new ImageView(mContext);
         icon.setId(android.R.id.icon);
         icon.setScaleType(ScaleType.CENTER_INSIDE);
+        if (mQSCSwitch) {
+            icon.setColorFilter(mIconColor, Mode.MULTIPLY);
+        }
         return icon;
     }
 
