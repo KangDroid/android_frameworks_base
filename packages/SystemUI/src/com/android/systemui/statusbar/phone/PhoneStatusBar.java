@@ -3989,6 +3989,14 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
         mShowStatusBarCarrier = Settings.System.getInt(
                 resolver, Settings.System.STATUS_BAR_CARRIER, 0) == 1;
                 showStatusBarCarrierLabel(mShowStatusBarCarrier);
+            
+            // detect greeting state when theme change.
+            mGreeting = Settings.System.getStringForUser(
+                    resolver, Settings.System.STATUS_BAR_GREETING,
+					UserHandle.USER_CURRENT);
+			if (mGreeting != null && !TextUtils.isEmpty(mGreeting)) {
+				mBlissLabel.setText(mGreeting);
+			}
 
         } else {
             loadDimens();
