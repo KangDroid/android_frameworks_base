@@ -80,6 +80,7 @@ public class PhoneStatusBarPolicy {
     private final SuController mSuController;
     private boolean mAlarmIconVisible;
     private boolean mSuIndicatorVisible;
+    private boolean mBluetoothIconVisible;
 
     // Assume it's all good unless we hear otherwise.  We don't always seem
     // to get broadcasts that it *is* there.
@@ -92,6 +93,8 @@ public class PhoneStatusBarPolicy {
 
     private boolean mBluetoothEnabled = false;
     StorageManager mStorageManager;
+    private boolean mBluetoothConnected = false;
+
 
     private BroadcastReceiver mIntentReceiver = new BroadcastReceiver() {
         @Override
@@ -205,6 +208,11 @@ public class PhoneStatusBarPolicy {
         mContext.getContentResolver().registerContentObserver(
                 Settings.System.getUriFor(Settings.System.SHOW_SU_INDICATOR),
                 false, mSettingsObserver);
+                
+        mBluetoothIconObserver.onChange(true);
+        mContext.getContentResolver().registerContentObserver(
+                Settings.System.getUriFor(Settings.System.SHOW_BLUETOOTH_ICON),
+                false, mBluetoothIconObserver);      
     }
 
     private ContentObserver mSettingsObserver = new ContentObserver(null) {
@@ -223,6 +231,20 @@ public class PhoneStatusBarPolicy {
             onChange(selfChange, null);
         }
     };
+
+    private ContentObserver mBluetoothIconObserver = new ContentObserver(null) {
+        @Override
+        public void onChange(boolean selfChange, Uri uri) {
+            mBluetoothIconVisible = Settings.System.getInt(mContext.getContentResolver(),
+                    Settings.System.SHOW_BLUETOOTH_ICON, 1) == 1;
+            updateBluetooth();
+        }
+
+        @Override
+        public void onChange(boolean selfChange) {
+            onChange(selfChange, null);
+        }
+    };  
 
     private final void updateSDCardtoAbsent() {
         mService.setIcon(SDCARD_ABSENT, R.drawable.stat_sys_no_sdcard, 0, null);
@@ -353,7 +375,8 @@ public class PhoneStatusBarPolicy {
                 mContext.getString(R.string.accessibility_bluetooth_disconnected);
         if (adapter != null) {
             mBluetoothEnabled = (adapter.getState() == BluetoothAdapter.STATE_ON);
-            if (adapter.getConnectionState() == BluetoothAdapter.STATE_CONNECTED) {
+            mBluetoothConnected = (adapter.getConnectionState() == BluetoothAdapter.STATE_CONNECTED);
+            if (mBluetoothConnected) {
                 iconId = R.drawable.stat_sys_data_bluetooth_connected;
                 contentDescription = mContext.getString(R.string.accessibility_bluetooth_connected);
             }
@@ -362,7 +385,11 @@ public class PhoneStatusBarPolicy {
         }
 
         mService.setIcon(SLOT_BLUETOOTH, iconId, 0, contentDescription);
-        mService.setIconVisibility(SLOT_BLUETOOTH, mBluetoothEnabled);
+        if (mBluetoothConnected) {
+            mService.setIconVisibility(SLOT_BLUETOOTH, true);
+        } else {
+            mService.setIconVisibility(SLOT_BLUETOOTH, mBluetoothEnabled && mBluetoothIconVisible);    
+        }
     }
 
     private final void updateTTY(Intent intent) {
