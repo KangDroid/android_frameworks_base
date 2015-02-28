@@ -1251,9 +1251,11 @@ public class NotificationPanelView extends PanelView implements
         boolean showQsOverride = false;
 
         if (mOneFingerQuickSettingsInterceptMode == ONE_FINGER_QS_INTERCEPT_END) {
-            showQsOverride = isLayoutRtl() ? (x < region) : (w - region < x);
+            showQsOverride = isLayoutRtl() ? (x < region) : (w - region < x)
+				&& mStatusBarState == StatusBarState.SHADE;
         } else if (mOneFingerQuickSettingsInterceptMode == ONE_FINGER_QS_INTERCEPT_START) {
-            showQsOverride = isLayoutRtl() ? (w - region < x) : (x < region);
+            showQsOverride = isLayoutRtl() ? (w - region < x) : (x < region)
+				&& mStatusBarState == StatusBarState.SHADE;
         }
 
         if (mQsExpanded) {
@@ -1958,6 +1960,7 @@ public class NotificationPanelView extends PanelView implements
                     Settings.System.QS_TEXT_COLOR))) {
                 setQSColors();
             }
+			update();
         }
 
         public void update() {
