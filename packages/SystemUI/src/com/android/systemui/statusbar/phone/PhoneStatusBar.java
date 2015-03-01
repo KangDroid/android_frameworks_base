@@ -369,6 +369,7 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
 
     private boolean mShowCarrierInPanel = false;
     private boolean mShowLabel;
+    private int mShowLabelTimeout;
 
     // Status bar carrier
     private boolean mShowStatusBarCarrier;
@@ -486,6 +487,9 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
             resolver.registerContentObserver(Settings.System.getUriFor(
                     Settings.System.HEADS_UP_NOTIFCATION_DECAY),
                     false, this, UserHandle.USER_ALL);
+            resolver.registerContentObserver(Settings.System.getUriFor(
+                    Settings.System.STATUS_BAR_GREETING_TIMEOUT),
+                    false, this, UserHandle.USER_ALL);
             update();
         }
 
@@ -586,8 +590,10 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
                 boolean navLeftInLandscape = Settings.System.getIntForUser(resolver,
                         Settings.System.NAVBAR_LEFT_IN_LANDSCAPE, 0, UserHandle.USER_CURRENT) == 1;
                 mNavigationBarView.setLeftInLandscape(navLeftInLandscape);
-            }
-
+			}
+            mShowLabelTimeout = Settings.System.getIntForUser(resolver,
+                    Settings.System.STATUS_BAR_GREETING_TIMEOUT, 400, mCurrentUserId);
+			
             // This method reads Settings.Secure.RECENTS_LONG_PRESS_ACTIVITY
             updateCustomRecentsLongPressHandler(false);
         }
@@ -2535,7 +2541,7 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
 						mBlissLabel.animate().cancel();
 						mBlissLabel.animate()
 								.alpha(1f)
-								.setDuration(320)
+								.setDuration(mShowLabelTimeout)
 								.setInterpolator(ALPHA_IN)
 								.setStartDelay(50)
 								.withEndAction(new Runnable() {
@@ -4056,6 +4062,10 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
         mShowStatusBarCarrier = Settings.System.getInt(
                 resolver, Settings.System.STATUS_BAR_CARRIER, 0) == 1;
                 showStatusBarCarrierLabel(mShowStatusBarCarrier);
+
+            mShowLabelTimeout = Settings.System.getIntForUser(resolver,
+                    Settings.System.STATUS_BAR_GREETING_TIMEOUT, 400,
+                    UserHandle.USER_CURRENT);
 
         } else {
             loadDimens();
