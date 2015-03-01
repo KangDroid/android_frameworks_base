@@ -81,12 +81,11 @@ public class KeyguardPINView extends KeyguardPinBasedInputView {
         mRow2 = (ViewGroup) findViewById(R.id.row2);
         mRow3 = (ViewGroup) findViewById(R.id.row3);
         mDivider = findViewById(R.id.divider);
+        boolean scramblePin = (Settings.System.getInt(getContext().getContentResolver(),
+                Settings.System.LOCKSCREEN_PIN_SCRAMBLE_LAYOUT, 0) == 1);
 
         boolean quickUnlock = (Settings.System.getInt(getContext().getContentResolver(),
                 Settings.System.LOCKSCREEN_QUICK_UNLOCK_CONTROL, 0) == 1);
-
-        boolean scramblePin = (Settings.System.getInt(getContext().getContentResolver(),
-                Settings.System.LOCKSCREEN_PIN_SCRAMBLE_LAYOUT, 0) == 1);
 
         if (scramblePin) {
             Collections.shuffle(sNumbers);
@@ -111,7 +110,7 @@ public class KeyguardPINView extends KeyguardPinBasedInputView {
                 view.setDigit(sNumbers.get(i));
             }
         }
-
+		
         if (quickUnlock) {
             mPasswordEntry.setQuickUnlockListener(new QuickUnlockListener() {
                 public void onValidateQuickUnlock(String password) {
@@ -155,7 +154,7 @@ public class KeyguardPINView extends KeyguardPinBasedInputView {
                         findViewById(R.id.key7), findViewById(R.id.key8), findViewById(R.id.key9)
                 },
                 new View[] {
-                        findViewById(R.id.key_random), findViewById(R.id.key0), findViewById(R.id.key_enter)
+                        null, findViewById(R.id.key0), findViewById(R.id.key_enter)
                 },
                 new View[] {
                         null, mEcaView, null
