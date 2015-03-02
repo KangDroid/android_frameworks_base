@@ -3727,7 +3727,7 @@ public final class Settings {
          * @hide
          */
         public static final String STATUS_BAR_EXPANDED_HEADER_SHOW_WEATHER_LOCATION = "status_bar_expanded_header_show_weather_location";
-
+		
         /**
           * Volume keys control cursor in text fields (default is 0)
           * 0 - Disabled
@@ -3736,6 +3736,12 @@ public final class Settings {
           * @hide
           */
          public static final String VOLUME_KEY_CURSOR_CONTROL = "volume_key_cursor_control";
+		
+        /**
+         * Force expanded notifications on all apps that support it.
+         * @hide
+         */
+        public static final String FORCE_EXPANDED_NOTIFICATIONS = "force_expanded_notifications";
 
         /**
          * Show search bar in recents
