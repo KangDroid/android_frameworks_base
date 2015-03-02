@@ -4131,6 +4131,12 @@ public final class Settings {
          * @hide
          */
         public static final String QS_TRANSPARENT_SHADE = "qs_transparent_shade";
+			
+        /**
+         * Force expanded notifications on all apps that support it.
+         * @hide
+         */
+        public static final String FORCE_EXPANDED_NOTIFICATIONS = "force_expanded_notifications";
 
         /**
          * Settings to backup. This is here so that it's in the same place as the settings
