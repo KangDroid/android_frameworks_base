@@ -54,6 +54,7 @@ public class QSConstants {
     public static final String TILE_EXPANDED_DESKTOP = "expanded_desktop";
     public static final String TILE_NAVBAR = "toggleNavBar";
     public static final String TILE_APPCIRCLEBAR = "toggleAppCircleBar";
+    public static final String TILE_AMBIENT_DISPLAY = "ambient_display";
 
     // Order matters
     protected static final ArrayList<String> TILES_DEFAULT = new ArrayList<String>();
@@ -98,5 +99,6 @@ public class QSConstants {
         TILES_AVAILABLE.add(TILE_EXPANDED_DESKTOP);
         TILES_AVAILABLE.add(TILE_NAVBAR);
         TILES_AVAILABLE.add(TILE_APPCIRCLEBAR);
+        TILES_AVAILABLE.add(TILE_AMBIENT_DISPLAY);
     }
 }
