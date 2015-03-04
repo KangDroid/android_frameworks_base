@@ -60,9 +60,9 @@ public class QSTileView extends ViewGroup {
 
     private TextView mLabel;
     private QSDualTileLabel mDualLabel;
-    private boolean mDual;
     private int mLabelColor;
     private int mIconColor;
+    private boolean mDual;
     private OnClickListener mClickPrimary;
     private OnClickListener mClickSecondary;
     private OnLongClickListener mClickLong;
@@ -136,7 +136,7 @@ public class QSTileView extends ViewGroup {
             mDualLabel = null;
         }
         final Resources res = mContext.getResources();
-		updateColors();
+        updateColors();
         if (mDual) {
             mDualLabel = new QSDualTileLabel(mContext);
             mDualLabel.setId(android.R.id.title);
@@ -205,13 +205,13 @@ public class QSTileView extends ViewGroup {
         }
         postInvalidate();
     }
-	
-    private void updateColors() {
+
+    protected void updateColors() {
         final ContentResolver resolver = mContext.getContentResolver();
         mLabelColor = Settings.System.getInt(resolver,
                 Settings.System.QS_TEXT_COLOR, 0xffffffff);
         mIconColor = Settings.System.getInt(resolver,
-                Settings.System.QS_ICON_COLOR, 0xffffffff);
+                Settings.System.QS_ICON_COLOR, 0xff009688);
     }
 
     public void setLabelColor() {
@@ -232,6 +232,10 @@ public class QSTileView extends ViewGroup {
         }
     }
 
+    protected int getIconColor() {
+		return mIconColor;
+	}
+
     private void setRipple(RippleDrawable tileBackground) {
         mRipple = tileBackground;
         if (getWidth() != 0) {
@@ -246,11 +250,11 @@ public class QSTileView extends ViewGroup {
     }
 
     protected View createIcon() {
-		updateColors();
+        updateColors();
         final ImageView icon = new ImageView(mContext);
         icon.setId(android.R.id.icon);
         icon.setScaleType(ScaleType.CENTER_INSIDE);
-		icon.setColorFilter(mIconColor, Mode.MULTIPLY);
+        icon.setColorFilter(mIconColor, Mode.MULTIPLY);
         return icon;
     }
 

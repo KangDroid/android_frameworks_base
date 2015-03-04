@@ -1975,7 +1975,7 @@ public class NotificationPanelView extends PanelView implements
                     Settings.System.QS_TEXT_COLOR))) {
                 setQSColors();
             }
-			update();
+            update();
         }
 
         public void update() {
