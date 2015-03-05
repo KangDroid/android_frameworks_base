@@ -61,7 +61,9 @@ public class CommandQueue extends IStatusBar.Stub {
 	private static final int MSG_START_CUSTOM_INTENT_AFTER_KEYGUARD = 19 << MSG_SHIFT;
     private static final int MSG_SET_PIE_TRIGGER_MASK               = 20 << MSG_SHIFT;
 	private static final int MSG_HIDE_HEADS_UP                      = 21 << MSG_SHIFT;
-
+    private static final int MSG_TOGGLE_LAST_APP                    = 22 << MSG_SHIFT;
+    private static final int MSG_TOGGLE_KILL_APP                    = 23 << MSG_SHIFT;
+	
     public static final int FLAG_EXCLUDE_NONE = 0;
     public static final int FLAG_EXCLUDE_SEARCH_PANEL = 1 << 0;
     public static final int FLAG_EXCLUDE_RECENTS_PANEL = 1 << 1;
@@ -107,6 +109,8 @@ public class CommandQueue extends IStatusBar.Stub {
         public void scheduleHeadsUpClose();
         public void showCustomIntentAfterKeyguard(Intent intent);
         public void setPieTriggerMask(int newMask, boolean lock);
+        public void toggleLastApp();
+        public void toggleKillApp();
     }
 
     public CommandQueue(Callbacks callbacks, StatusBarIconList list) {
@@ -286,6 +290,20 @@ public class CommandQueue extends IStatusBar.Stub {
         }
     }
 
+    public void toggleLastApp() {
+        synchronized (mList) {
+            mHandler.removeMessages(MSG_TOGGLE_LAST_APP);
+            mHandler.obtainMessage(MSG_TOGGLE_LAST_APP, 0, 0, null).sendToTarget();
+        }
+    }
+
+    public void toggleKillApp() {
+        synchronized (mList) {
+            mHandler.removeMessages(MSG_TOGGLE_KILL_APP);
+            mHandler.obtainMessage(MSG_TOGGLE_KILL_APP, 0, 0, null).sendToTarget();
+        }
+    }
+
     private final class H extends Handler {
         public void handleMessage(Message msg) {
             if (mPaused) {
@@ -381,6 +399,12 @@ public class CommandQueue extends IStatusBar.Stub {
                 case MSG_HIDE_HEADS_UP:
                     mCallbacks.scheduleHeadsUpClose();
                     break;
+                case MSG_TOGGLE_LAST_APP:
+                    mCallbacks.toggleLastApp();
+                    break;
+                case MSG_TOGGLE_KILL_APP:
+                    mCallbacks.toggleKillApp();
+                    break;	
             }
         }
     }
