@@ -369,6 +369,8 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
     // Status bar carrier
     private boolean mShowStatusBarCarrier;
 
+    private boolean mQSCSwitch;
+
     // position
     int[] mPositionTmp = new int[2];
     boolean mExpandedVisible;
@@ -480,6 +482,9 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
             resolver.registerContentObserver(Settings.System.getUriFor(
                     Settings.System.STATUS_BAR_GREETING_TIMEOUT),
                     false, this, UserHandle.USER_ALL);
+            resolver.registerContentObserver(Settings.System.getUriFor(
+                    Settings.System.QS_COLOR_SWITCH),
+                    false, this, UserHandle.USER_ALL);
             update();
         }
 
@@ -505,6 +510,13 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
                             R.integer.heads_up_notification_decay),
                             UserHandle.USER_CURRENT);
                     resetHeadsUpDecayTimer();
+            } else if (uri.equals(Settings.System.getUriFor(
+                    Settings.System.QS_COLOR_SWITCH))) {
+                    mQSCSwitch = Settings.System.getIntForUser(
+                            mContext.getContentResolver(),
+                            Settings.System.QS_COLOR_SWITCH,
+                            0, UserHandle.USER_CURRENT) == 1;
+                    recreateStatusBar();
             }
             update();
         }
@@ -545,6 +557,9 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
                     resolver, Settings.System.BATTERY_SAVER_MODE_COLOR, 1) == 1;
             // This method reads Settings.Secure.RECENTS_LONG_PRESS_ACTIVITY
             updateCustomRecentsLongPressHandler(false);		
+
+            mQSCSwitch = Settings.System.getIntForUser(resolver,
+                    Settings.System.QS_COLOR_SWITCH, 0, mCurrentUserId) == 1;
         }
     }
 
@@ -3986,6 +4001,7 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
         final Context context = mContext;
         final Resources res = context.getResources();
         ContentResolver resolver = mContext.getContentResolver();
+        SettingsObserver observer = new SettingsObserver(mHandler);
 
         // detect theme change.
         ThemeConfig newTheme = res.getConfiguration().themeConfig;
@@ -3993,28 +4009,7 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
                 (mCurrentTheme == null || !mCurrentTheme.equals(newTheme))) {
             mCurrentTheme = (ThemeConfig)newTheme.clone();
             recreateStatusBar();
-            mNotificationPanel.resetViews();
-            updateResources();
-            updateNotifications();
-            checkBarModes();
-            repositionNavigationBar();
-
-        // detect status bar carrier state when theme change.
-        mShowStatusBarCarrier = Settings.System.getInt(
-                resolver, Settings.System.STATUS_BAR_CARRIER, 0) == 1;
-                showStatusBarCarrierLabel(mShowStatusBarCarrier);
-            
-            // detect greeting state when theme change.
-            mGreeting = Settings.System.getStringForUser(
-                    resolver, Settings.System.STATUS_BAR_GREETING,
-					UserHandle.USER_CURRENT);
-			if (mGreeting != null && !TextUtils.isEmpty(mGreeting)) {
-				mBlissLabel.setText(mGreeting);
-			}
-
-            mShowLabelTimeout = Settings.System.getIntForUser(resolver,
-                    Settings.System.STATUS_BAR_GREETING_TIMEOUT, 400,
-                    UserHandle.USER_CURRENT);
+            observer.update();
 
         } else {
             loadDimens();
