@@ -211,7 +211,7 @@ public class QSTileView extends ViewGroup {
         mLabelColor = Settings.System.getInt(resolver,
                 Settings.System.QS_TEXT_COLOR, 0xffffffff);
         mIconColor = Settings.System.getInt(resolver,
-                Settings.System.QS_ICON_COLOR, 0xff009688);
+                Settings.System.QS_ICON_COLOR, 0xffffffff);
     }
 
     public void setLabelColor() {
