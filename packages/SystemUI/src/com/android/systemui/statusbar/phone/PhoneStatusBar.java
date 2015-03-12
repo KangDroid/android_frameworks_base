@@ -491,6 +491,12 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
             resolver.registerContentObserver(Settings.System.getUriFor(
                     Settings.System.QS_COLOR_SWITCH),
                     false, this, UserHandle.USER_ALL);
+            resolver.registerContentObserver(Settings.System.getUriFor(
+                    Settings.System.LOCK_SCREEN_TEXT_COLOR),
+                    false, this, UserHandle.USER_ALL);
+            resolver.registerContentObserver(Settings.System.getUriFor(
+                    Settings.System.LOCK_SCREEN_ICON_COLOR),
+                    false, this, UserHandle.USER_ALL);
             update();
         }
 		@Override
@@ -543,6 +549,11 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
                     updateSpeedbump();
                     updateClearAll();
                     updateEmptyShadeView();
+            } else if (uri.equals(Settings.System.getUriFor(
+                    Settings.System.LOCK_SCREEN_TEXT_COLOR))
+                || uri.equals(Settings.System.getUriFor(
+                    Settings.System.LOCK_SCREEN_ICON_COLOR))) {
+                setKeyguardTextAndIconColors();
             }
             update();
         }
@@ -1282,6 +1293,7 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
                 new Intent(pm.isScreenOn() ? Intent.ACTION_SCREEN_ON : Intent.ACTION_SCREEN_OFF));
 
         startGlyphRasterizeHack();
+        setKeyguardTextAndIconColors();
         return mStatusBarView;
     }
 
@@ -2393,6 +2405,19 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
                             .start();
                 }
             }
+        }
+    }
+
+    public void setKeyguardTextAndIconColors() {
+        int textColor =
+                Settings.System.getInt(mContext.getContentResolver(),
+                Settings.System.LOCK_SCREEN_TEXT_COLOR, 0xffffffff);
+        int iconColor =
+                Settings.System.getInt(mContext.getContentResolver(),
+                Settings.System.LOCK_SCREEN_ICON_COLOR, 0xffffffff);
+        if (mKeyguardBottomArea != null) {
+            mKeyguardBottomArea.updateTextColor(textColor);
+            mKeyguardBottomArea.updateIconColor(iconColor);
         }
     }
 
