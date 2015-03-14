@@ -271,6 +271,9 @@ public class ThemeService extends IThemeService.Stub {
         // Populate the currentTheme map for the components we care about, we'll look
         // at the compatibility of each pkg below.
         HashMap<String, String> currentThemeMap = new HashMap<String, String>();
+        currentThemeMap.put(ThemesColumns.MODIFIES_STATUS_BAR, config.getOverlayForStatusBar());
+        currentThemeMap.put(ThemesColumns.MODIFIES_NAVIGATION_BAR,
+                config.getOverlayForNavBar());
         currentThemeMap.put(ThemesColumns.MODIFIES_OVERLAYS, config.getOverlayPkgName());
 
         // Look at each component's theme (that we care about at least) and check compatibility

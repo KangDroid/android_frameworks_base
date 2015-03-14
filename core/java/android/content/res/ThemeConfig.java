@@ -73,6 +73,14 @@ public class ThemeConfig implements Cloneable, Parcelable, Comparable<ThemeConfi
         return theme.mOverlayPkgName;
     }
 
+    public String getOverlayForStatusBar() {
+        return getOverlayPkgNameForApp(SYSTEMUI_STATUS_BAR_PKG);
+    }
+
+    public String getOverlayForNavBar() {
+        return getOverlayPkgNameForApp(SYSTEMUI_NAVBAR_PKG);
+    }
+
     public String getOverlayPkgNameForApp(String appPkgName) {
         AppTheme theme = getThemeFor(appPkgName);
         return theme.mOverlayPkgName;
