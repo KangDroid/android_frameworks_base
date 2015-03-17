@@ -4059,7 +4059,7 @@ public final class Settings {
          * volume answer.
          * @hide
          */
-        public static final String ANSWER_VOLUME_BUTTON_BEHAVIOR_ANSWER = "call_volume_answer";		
+        public static final String ANSWER_VOLUME_BUTTON_BEHAVIOR_ANSWER = "answer_volume_button_behavior_answer";		
 
         /**
          * Whether to mute annoying notifications
