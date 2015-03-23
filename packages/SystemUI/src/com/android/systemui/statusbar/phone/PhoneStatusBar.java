@@ -1101,7 +1101,7 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
             mHotspotController = new HotspotControllerImpl(mContext);
         }
         if (mBluetoothController == null) {
-            mBluetoothController = new BluetoothControllerImpl(mContext);
+            mBluetoothController = new BluetoothControllerImpl(mContext, mHandlerThread.getLooper());
         }
         if (mSecurityController == null) {
             mSecurityController = new SecurityControllerImpl(mContext);
@@ -4216,6 +4216,10 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
         if (mNavigationBarView != null) {
             mWindowManager.removeViewImmediate(mNavigationBarView);
             mNavigationBarView = null;
+        }
+        if (mHandlerThread != null) {
+            mHandlerThread.quitSafely();
+            mHandlerThread = null;
         }
         mContext.unregisterReceiver(mBroadcastReceiver);
     }

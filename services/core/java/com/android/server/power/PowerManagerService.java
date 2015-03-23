@@ -3460,7 +3460,7 @@ public final class PowerManagerService extends SystemService
                     nativeCpuBoost(duration);
                 }
             } else {
-                Log.e(TAG, "Invalid boost duration: " + duration);
+                Slog.e(TAG, "Invalid boost duration: " + duration);
             }
         }
 
