@@ -193,6 +193,9 @@ public class QSPanel extends ViewGroup {
         @Override
         protected void update() {
             ContentResolver resolver = mContext.getContentResolver();
+            mUseMainTiles = Settings.Secure.getIntForUser(resolver,
+				Settings.Secure.QS_USE_MAIN_TILES,
+                1, UserHandle.USER_CURRENT) == 1;
             mBrightnessSliderEnabled = Settings.Secure.getIntForUser(resolver,
 				Settings.Secure.QS_SHOW_BRIGHTNESS_SLIDER,
                 1, UserHandle.USER_CURRENT) == 1;			

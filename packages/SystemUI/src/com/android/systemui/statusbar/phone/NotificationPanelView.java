@@ -2104,9 +2104,6 @@ public class NotificationPanelView extends PanelView implements
             resolver.registerContentObserver(Settings.System.getUriFor(
                     Settings.System.DOUBLE_TAP_SLEEP_GESTURE), false, this, UserHandle.USER_ALL);
             resolver.registerContentObserver(Settings.System.getUriFor(
-                    Settings.System.QS_SMART_PULLDOWN),
-                    false, this, UserHandle.USER_ALL);
-            resolver.registerContentObserver(Settings.System.getUriFor(
                     Settings.System.QS_BACKGROUND_COLOR), false, this);
             resolver.registerContentObserver(Settings.System.getUriFor(
                     Settings.System.QS_ICON_COLOR), false, this);
@@ -2191,5 +2188,7 @@ public class NotificationPanelView extends PanelView implements
         if (mQsPanel != null) {
             mQsPanel.setColors();
         }	
+		
+	}
 
 }

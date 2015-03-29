@@ -2115,7 +2115,7 @@ public class PhoneWindowManager implements WindowManagerPolicy {
                 mNavigationBarWidthForRotation[mUpsideDownRotation] =
                 mNavigationBarWidthForRotation[mLandscapeRotation] =
                 mNavigationBarWidthForRotation[mSeascapeRotation] = mNavigationBarWidth;
-            }f
+            }
 
             if (mSystemReady) {
                 int pointerLocation = Settings.System.getIntForUser(resolver,

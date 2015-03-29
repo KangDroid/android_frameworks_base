@@ -203,6 +203,7 @@ public class RecentsActivity extends Activity implements RecentsView.RecentsView
         loader.loadTasks(this, plan, loadOpts);
 
         SpaceNode root = plan.getSpaceNode();
+
         ArrayList<TaskStack> stacks = root.getStacks();
         boolean hasTasks = root.hasTasks();
         if (hasTasks) {

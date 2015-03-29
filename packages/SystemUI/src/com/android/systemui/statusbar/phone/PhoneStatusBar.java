@@ -135,6 +135,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.net.Uri;
 
 import com.android.internal.statusbar.StatusBarIcon;
 import com.android.internal.util.cm.ActionUtils;
@@ -1030,16 +1031,6 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
 		
         mNavigationBarView.setDisabledFlags(mDisabled);
         mNavigationBarView.setBar(this);
-        mNavigationBarView.setOnVerticalChangedListener(
-                new NavigationBarView.OnVerticalChangedListener() {
-            @Override
-            public void onVerticalChanged(boolean isVertical) {
-                if (mSearchPanelView != null) {
-                    mSearchPanelView.setHorizontal(isVertical);
-                }
-                mNotificationPanel.setQsScrimEnabled(!isVertical);
-            }
-        });
         mNavigationBarView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -4121,6 +4112,7 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
      */
     void updateResources(Configuration newConfig) {
         // detect theme change.
+		ContentResolver resolver = mContext.getContentResolver();
         ThemeConfig newTheme = newConfig != null ? newConfig.themeConfig : null;
         final boolean updateStatusBar = shouldUpdateStatusbar(mCurrentTheme, newTheme);
         if (newTheme != null) mCurrentTheme = (ThemeConfig) newTheme.clone();
