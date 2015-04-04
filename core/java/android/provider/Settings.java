@@ -2857,6 +2857,12 @@ public final class Settings {
          * @hide
          */
         public static final String HEADS_UP_TOUCH_OUTSIDE = "heads_up_touch_outside";
+		
+		/**	
+         * show the membar in recents
+         *  @hide
+         */
+        public static final String SYSTEMUI_RECENTS_MEM_DISPLAY = "systemui_recents_mem_display";
 
         /**
          * Settings to backup. This is here so that it's in the same place as the settings
