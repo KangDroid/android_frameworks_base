@@ -4146,7 +4146,6 @@ public final class Settings {
         public static final String PIE_ICON_COLOR_MODE = "pie_icon_color_mode";
 
         /**
-         * Pie button alpha
          * @hide
          */
         public static final String PIE_BUTTON_ALPHA = "pie_button_alpha";
@@ -4304,6 +4303,12 @@ public final class Settings {
          * @hide
          */
         public static final String HEADS_UP_NOTIFCATION_DECAY = "heads_up_notification_decay";
+			
+		/**	
+         * show the membar in recents
+         *  @hide
+         */
+        public static final String SYSTEMUI_RECENTS_MEM_DISPLAY = "systemui_recents_mem_display";
 
         /**
          * Settings to backup. This is here so that it's in the same place as the settings
