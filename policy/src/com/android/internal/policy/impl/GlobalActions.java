@@ -141,6 +141,7 @@ class GlobalActions implements DialogInterface.OnDismissListener, DialogInterfac
     // Power menu customizations
     String mActions;
     boolean mProfilesEnabled;
+    private int mScreenshotDelay;
 
     /**
      * @param context everything needs a context :(
@@ -215,6 +216,7 @@ class GlobalActions implements DialogInterface.OnDismissListener, DialogInterfac
 
     private void handleShow() {
         awakenIfNecessary();
+        checkSettings();
         prepareDialog();
 
         // If we only have 1 item and it's a simple press action, just do this action.
@@ -808,7 +810,7 @@ class GlobalActions implements DialogInterface.OnDismissListener, DialogInterfac
 
                         /* wait for the dialog box to close */
                         try {
-                            Thread.sleep(1000);
+                            Thread.sleep(mScreenshotDelay * 1000);
                         } catch (InterruptedException ie) {
                             // Do nothing
                         }
@@ -1512,6 +1514,11 @@ class GlobalActions implements DialogInterface.OnDismissListener, DialogInterfac
         canvas.setMatrix(m);
         canvas.drawCircle(inWidth / 2, inHeight / 2, inWidth / 2, paint);
         return output;
+    }
+
+    private void checkSettings() {
+        mScreenshotDelay = Settings.System.getInt(mContext.getContentResolver(),
+                Settings.System.SCREENSHOT_DELAY, 1);
     }
 
     private static final class GlobalActionsDialog extends Dialog implements DialogInterface {

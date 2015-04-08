@@ -4301,6 +4301,12 @@ public final class Settings {
          * @hide
          */
         public static final String STORAGE_MOUNT_NOTIFICATION = "storage_mount_notification";
+			
+		/**	
+         * Change the screenshot delay
+         * @hide
+         */
+        public static final String SCREENSHOT_DELAY = "screenshot_delay";
 
         /**
          * Settings to backup. This is here so that it's in the same place as the settings
