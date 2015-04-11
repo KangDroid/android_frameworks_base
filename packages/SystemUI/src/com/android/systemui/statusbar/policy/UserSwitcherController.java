@@ -585,7 +585,7 @@ public class UserSwitcherController {
     }
 
     public static boolean isUserSwitcherAvailable(UserManager um) {
-        return um.opensUserSwitcher();
+        return UserManager.supportsMultipleUsers() && um.isUserSwitcherEnabled();
     }
 
 }
