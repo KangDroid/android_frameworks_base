@@ -249,9 +249,6 @@ public abstract class QSTile<TState extends State> implements Listenable {
                 } else if (msg.what == SECONDARY_CLICK) {
                     name = "handleSecondaryClick";
                     handleSecondaryClick();
-                } else if (msg.what == LONG_CLICK) {
-                    name = "handleLongClick";
-                    handleLongClick();
                 } else if (msg.what == REFRESH_STATE) {
                     name = "handleRefreshState";
                     handleRefreshState(msg.obj);
@@ -400,6 +397,7 @@ public abstract class QSTile<TState extends State> implements Listenable {
     public static class State {
         public boolean visible;
         public boolean enabled = true;
+		public int iconId;
         public Icon icon;
         public String label;
         public String contentDescription;
