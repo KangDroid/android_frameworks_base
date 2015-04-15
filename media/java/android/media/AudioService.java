@@ -4707,6 +4707,7 @@ public class AudioService extends IAudioService.Stub {
             //       and mRingerModeAffectedStreams, so will leave this synchronized for now.
             //       mRingerModeMutedStreams and mMuteAffectedStreams are safe (only accessed once).
             synchronized (mSettingsLock) {
+
     if (uri.equals(Settings.System.getUriFor(
         Settings.System.SAFE_HEADSET_VOLUME))) {
         mSafeVolumeEnabled = safeVolumeEnabled(mContentResolver);
@@ -4723,7 +4724,7 @@ public class AudioService extends IAudioService.Stub {
         Settings.Global.DOCK_AUDIO_MEDIA_ENABLED))) {
         readDockAudioSettings(mContentResolver);
     }
-                mLinkNotificationWithVolume = Settings.System.getInt(mContentResolver,
+                mLinkNotificationWithVolume = Settings.Secure.getInt(mContentResolver,
                         Settings.Secure.VOLUME_LINK_NOTIFICATION, 1) == 1;
                 if (mLinkNotificationWithVolume) {
                     mStreamVolumeAlias[AudioSystem.STREAM_NOTIFICATION] = AudioSystem.STREAM_RING;
