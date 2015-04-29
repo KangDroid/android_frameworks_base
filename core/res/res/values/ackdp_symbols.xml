@@ -66,4 +66,8 @@
   	<java-symbol type="integer" name="config_uiThemeMode" />
   	<java-symbol type="string" name="theme_auto_switch_mode_error" />
 	
+	<!-- Custom styles for dialog themes -->
+	<java-symbol type="style" name="Theme.Material.Trds.Dialog" />
+	<java-symbol type="style" name="Theme.Material.Trds.Dialog.Alert" />
+	
 </resources>
