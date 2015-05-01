@@ -24,8 +24,8 @@ import android.os.ServiceManager;
 import android.provider.Settings.Secure;
 import android.widget.Toast;
 
-import com.android.internal.util.temasek.ActionConstants;
-import com.android.internal.util.temasek.Action;
+import com.android.internal.util.slim.ActionConstants;
+import com.android.internal.util.slim.Action;
 import com.android.systemui.R;
 import com.android.systemui.qs.QSTile;
 import com.android.systemui.qs.SecureSetting;
