@@ -70,15 +70,7 @@ public class StatusBarIconView extends AnimatedImageView {
     public StatusBarIconView(Context context, String slot, Notification notification) {
         super(context);
         final Resources res = context.getResources();
-        final float densityMultiplier = res.getDisplayMetrics().density;
-        final float scaledPx = 8 * densityMultiplier;
         mSlot = slot;
-        mNumberPaint = new Paint();
-        mNumberPaint.setTextAlign(Paint.Align.CENTER);
-        mNumberPaint.setAntiAlias(true);
-        mNumberPaint.setTypeface(Typeface.DEFAULT_BOLD);
-        mNumberPaint.setTextSize(scaledPx);
-        updateIconsAndText();
 
         mObserver = GlobalSettingsObserver.getInstance(context);
 
@@ -154,8 +146,17 @@ public class StatusBarIconView extends AnimatedImageView {
         if (!numberEquals || force) {
             if (icon.number > 0 && mShowNotifCount) {
                 if (mNumberBackground == null) {
+					final Resources res = mContext.getResources();
+			        final float densityMultiplier = res.getDisplayMetrics().density;
+			        final float scaledPx = 8 * densityMultiplier;
+			        mNumberPaint = new Paint();
+			        mNumberPaint.setTextAlign(Paint.Align.CENTER);
+			        mNumberPaint.setAntiAlias(true);
+			        mNumberPaint.setTypeface(Typeface.DEFAULT_BOLD);
+			        mNumberPaint.setTextSize(scaledPx);
                     mNumberBackground = getContext().getResources().getDrawable(
                             R.drawable.ic_notification_overlay);
+					updateIconsAndText();
                 }
                 mNumberBackground.setColorFilter(null);
                 mNumberBackground.setColorFilter(mNotifCountColor,
@@ -164,6 +165,7 @@ public class StatusBarIconView extends AnimatedImageView {
             } else {
                 mNumberBackground = null;
                 mNumberText = null;
+				mNumberPaint = null;
             }
             invalidate();
         }
