@@ -201,6 +201,7 @@ public class StatusBarHeaderView extends RelativeLayout implements View.OnClickL
         updateAvatarScale();
         updateTextColor();
         updateIconColor();
+        updateBackgroundColor();
         addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
             @Override
             public void onLayoutChange(View v, int left, int top, int right,
@@ -362,6 +363,7 @@ public class StatusBarHeaderView extends RelativeLayout implements View.OnClickL
         requestCaptureValues();
         updateTextColor();
         updateIconColor();
+        updateBackgroundColor();
     }
 
     private void updateHeights() {
@@ -964,7 +966,10 @@ public class StatusBarHeaderView extends RelativeLayout implements View.OnClickL
             } else if (uri.equals(Settings.System.getUriFor(
                     Settings.System.STATUS_BAR_EXPANDED_HEADER_ICON_COLOR))) {
                 updateIconColor();
-            }
+            } else if (uri.equals(Settings.System.getUriFor(
+                    Settings.System.STATUS_BAR_EXPANDED_HEADER_BG_COLOR))) {
+                updateBackgroundColor();
+			}
 
         }
 
@@ -1004,6 +1009,7 @@ public class StatusBarHeaderView extends RelativeLayout implements View.OnClickL
             requestCaptureValues();
             updateTextColor();
             updateIconColor();
+			updateBackgroundColor();
         }
     }
 
@@ -1027,6 +1033,15 @@ public class StatusBarHeaderView extends RelativeLayout implements View.OnClickL
         alarmIcon.setColorFilter(mIconColor, Mode.MULTIPLY);
         mAlarmStatus.setCompoundDrawablesWithIntrinsicBounds(alarmIcon, null, null, null);
     }
+	
+    private void updateBackgroundColor() {
+        ContentResolver resolver = mContext.getContentResolver();
+        int backgroundColor = Settings.System.getInt(resolver,
+                Settings.System.STATUS_BAR_EXPANDED_HEADER_BG_COLOR, 0xff384248);
+
+        getBackground().setColorFilter(backgroundColor, Mode.MULTIPLY);
+    }
+
 
     private int getTransparentColor(int color, int alpha) {
         int r = Color.red(color);
