@@ -85,8 +85,6 @@
     <string name="quick_settings_doze">Doze enabled</string>
     <string name="quick_settings_doze_off">Doze disabled</string>
     <string name="quick_settings_usb_tether_label">USB tethering</string>
-    <string name="quick_settings_music_play">Play</string>
-    <string name="quick_settings_music_pause">Pause</string>
     <string name="quick_settings_heads_up_on">Heads up enabled</string>
     <string name="quick_settings_heads_up_off">No interruptions</string>
     <string name="heads_up_enabled">Heads up notifications are enabled</string>

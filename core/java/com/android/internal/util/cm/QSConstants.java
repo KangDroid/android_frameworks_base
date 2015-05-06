@@ -56,7 +56,6 @@ public class QSConstants {
     public static final String TILE_APPCIRCLEBAR = "toggleAppCircleBar";
     public static final String TILE_AMBIENT_DISPLAY = "ambient_display";
     public static final String TILE_USB_TETHER = "usb_tether";
-    public static final String TILE_MUSIC = "music";
     public static final String TILE_HEADS_UP = "toggleHeadsUp";
     public static final String TILE_TRDS = "trds";
     public static final String TILE_APPSIDEBAR = "toggleAppSideBar";
@@ -106,7 +105,6 @@ public class QSConstants {
         TILES_AVAILABLE.add(TILE_APPCIRCLEBAR);
         TILES_AVAILABLE.add(TILE_AMBIENT_DISPLAY);
         TILES_AVAILABLE.add(TILE_USB_TETHER);
-        TILES_AVAILABLE.add(TILE_MUSIC);
         TILES_AVAILABLE.add(TILE_HEADS_UP);
         TILES_AVAILABLE.add(TILE_TRDS);
         TILES_AVAILABLE.add(TILE_APPSIDEBAR);
