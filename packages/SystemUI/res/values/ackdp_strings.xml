@@ -69,7 +69,7 @@
     <!-- TRDS -->
     <string name="quick_settings_trds_label">TRDS</string>
 	
-	<!-- Play Music -->
+    <!-- Music Tile -->
     <string name="quick_settings_music_play">Play</string>
     <string name="quick_settings_music_pause">Pause</string>
 
