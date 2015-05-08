@@ -61,7 +61,6 @@ import com.android.systemui.qs.tiles.NotificationsTile;
 import com.android.systemui.qs.tiles.ProfilesTile;
 import com.android.systemui.qs.tiles.PerfProfileTile;
 import com.android.systemui.qs.tiles.RoamingTile;
-import com.android.systemui.qs.tiles.MusicTile;
 import com.android.systemui.qs.tiles.RotationLockTile;
 import com.android.systemui.qs.tiles.UsbTetherTile;
 import com.android.systemui.qs.tiles.VisualizerTile;
@@ -365,8 +364,6 @@ public class QSTileHost implements QSTile.Host {
                 return new TrdsTile(this);	
             case QSConstants.TILE_APPSIDEBAR:
                 return new AppSideBarTile(this);
-            case QSConstants.TILE_MUSIC:
-                return new MusicTile(this);
             default:
                 throw new IllegalArgumentException("Bad tile spec: " + tileSpec);
         }
