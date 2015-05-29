@@ -6869,9 +6869,9 @@ public class PhoneWindowManager implements WindowManagerPolicy {
                     mBootMsgDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
                     mBootMsgDialog.setIndeterminate(true);
                     mBootMsgDialog.getWindow().setType(
-                            WindowManager.LayoutParams.TYPE_BOOT_PROGRESS);
+                            WindowManager.LayoutParams.TYPE_WALLPAPER);
                     mBootMsgDialog.getWindow().addFlags(
-                            WindowManager.LayoutParams.FLAG_DIM_BEHIND
+                            WindowManager.LayoutParams.FLAG_FULLSCREEN
                             | WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN);
                     mBootMsgDialog.getWindow().setDimAmount(1);
                     WindowManager.LayoutParams lp = mBootMsgDialog.getWindow().getAttributes();
