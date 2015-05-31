@@ -551,6 +551,11 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
             resolver.unregisterContentObserver(this);
         }
 		
+        @Override
+        public void onChange(boolean selfChange) {
+            update();
+        }
+		
 		@Override
         public void onChange(boolean selfChange, Uri uri) {
 			if (uri.equals(Settings.System.getUriFor(
