@@ -82,7 +82,7 @@ import com.android.systemui.statusbar.policy.UserInfoController;
 /**
  * The view to manage the header area in the expanded status bar.
  */
-public class StatusBarHeaderView extends RelativeLayout implements View.OnClickListener,
+public class StatusBarHeaderView extends RelativeLayout implements View.OnClickListener, View.OnLongClickListener,
         NextAlarmController.NextAlarmChangeCallback, WeatherController.Callback {
 
     private static final int STATUS_BAR_POWER_MENU_OFF = 0;
@@ -663,6 +663,16 @@ public class StatusBarHeaderView extends RelativeLayout implements View.OnClickL
             mQSPanel.vibrateTile(QSPanel.VIBRATION_DURATION_SHORT);
         }
     }
+	
+    @Override
+    public boolean onLongClick(View v) {
+        if (mStatusBarPowerMenuStyle == STATUS_BAR_POWER_MENU_DEFAULT) {
+            triggerPowerMenuDialog();
+        } else if (mStatusBarPowerMenuStyle == STATUS_BAR_POWER_MENU_INVERTED) {
+            goToSleep();
+        }
+        return false;
+    }
 
     private View.OnLongClickListener mLongClickListener =
             new View.OnLongClickListener() {
@@ -670,10 +680,6 @@ public class StatusBarHeaderView extends RelativeLayout implements View.OnClickL
         public boolean onLongClick(View v) {
             if (v == mHeadsUpButton) {
                 startHeadsUpLongClickActivity();
-			} else if (mStatusBarPowerMenuStyle == STATUS_BAR_POWER_MENU_DEFAULT) {
-            triggerPowerMenuDialog();
-			} else if (mStatusBarPowerMenuStyle == STATUS_BAR_POWER_MENU_INVERTED) {
-				goToSleep();
             }
             return true;
         }
