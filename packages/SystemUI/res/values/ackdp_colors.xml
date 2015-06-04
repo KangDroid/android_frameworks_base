@@ -62,5 +62,9 @@
 
     <!-- Used by selector -->
     <color name="card_pressed">#7e3c3c3c</color>
+	
+    <!-- Floating action button -->
+    <color name="fab_color">#ff009688</color>
+    <color name="floating_action_button_icon_color">#ffffff</color>
 
 </resources>

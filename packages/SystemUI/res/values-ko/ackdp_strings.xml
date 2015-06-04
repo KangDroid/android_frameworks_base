@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+	
+    <!-- App circle sidebar -->
+    <string name="app_float_maximize_item_title">최대화</string>
+    <string name="app_float_item_title">플로팅 뷰</string>
+    <string name="app_stop_item_title">앱 끄기</string>
+
+	<string name="gestures_message">제스쳐를 여기에 그려주세요</string>
+	
+    <!-- Pie controls -->
+    <string name="pie_battery_status_charging">충전중 (<xliff:g id="percent">%d</xliff:g>%%)</string>
+    <string name="pie_battery_status_full">충전됨</string>
+    <string name="pie_battery_status_discharging"><xliff:g id="percent">%d</xliff:g>%% 남음</string>
+    <string name="pie_phone_status_no_service">서비스 불가</string>
+    <string name="pie_phone_status_airplane_mode">비행기모드 켜져있음</string>
+    <string name="pie_phone_status_emergency_only">긴급전화만 사용 가능</string>
+	
+    <!-- Quick settings -->
+    <string name="quick_settings_battery_saver">베터리 세이버</string>
+    <string name="quick_settings_expanded_desktop">확장 데스크탑</string>
+    <string name="quick_settings_expanded_desktop_off">기본 데스크탑</string>
+    <string name="quick_settings_battery_saver_off">베터리 세이버 끔</string>
+    <string name="quick_settings_screenshot">스크린샷</string>
+    <string name="quick_settings_sync">동기화</string>
+    <string name="quick_settings_sync_off">동기화 끄기</string>
+	<string name="quick_settings_brightness">밝기</string>
+
+	<string name="bliss">KangDroid</string>
+
+	<string name="navbar_power_button">전원버튼</string>
+	<string name="accessibility_power">전원</string>
+
+    <!-- mount notifications -->
+    <string name="ext_media_mounted_notification_title">장착 됨</string>
+    <string name="ext_media_unmounted_notification_title">장착 해재됨</string>
+    <string name="ext_media_unmounted_notification_message">이제 저장소를 꺼내도 됩니다.</string>
+    <string name="ext_media_unmount_action">꺼내기</string>
+    <string name="ext_media_mount_action">삽입하기</string>
+    <string name="ext_media_unmounting_notification_title">장착 해재중\u2026</string>
+    <string name="ext_media_mounting_notification_title">장착중\u2026</string>
+	
+    <!-- Screenrecord Notification Ticker -->
+    <string name="screenrecord_notif_ticker">화면이 녹음됩니다</string>
+
+    <!-- Screenrecord notification title -->
+    <string name="screenrecord_notif_title">화면 찍는중..</string>
+
+    <!-- Screenrecord notification action: Stop -->
+    <string name="screenrecord_notif_stop">그만</string>
+
+    <!-- Screenrecord notification action: show/hide pointer -->
+    <string name="screenrecord_notif_pointer_on">포인터 보이기</string>
+    <string name="screenrecord_notif_pointer_off">포인터 숨기기</string>
+
+    <!-- Screen record notification error title -->
+    <string name="screenrecord_notif_error">화면 촬영이 불가능합니다</string>
+
+    <!-- App sidebar -->
+    <string name="default_folder_text">폴더</string>
+    <string name="title_activity_sidebar_configuration">어플리케이션 바 컨텐트 설정</string>
+    <string name="action_save">저장</string>
+    <string name="toast_items_saved">앱 사이드바 아이템이 저장되었습니다.</string>
+    <string name="content_setup_instructions">오른쪽에있는 앱들을 선택해서 앱바에 옮겨주세요. 앱을 앱 사이드바에서 삭제하려면, 단순히 앱을 다시 끌어오면 됩니다.</string>
+    <string name="content_setup_dismiss">계속</string>
+	<string name="toast_not_installed">앱이 설치되지 않았습니다</string>
+	<string name="quick_settings_appsidebar_on">엡바 키기</string>
+    <string name="quick_settings_appsidebar_off">엡바 끄기</string>
+
+    <!-- TRDS -->
+    <string name="quick_settings_trds_label">TRDS</string>
+
+    <!-- Heads up toast -->
+    <string name="heads_up_enabled">헤드 업 알림이 켜져있습니다</string>
+    <string name="heads_up_disabled">헤드 업 알림이 꺼져있습니다</string>
+	<string name="heads_up_snooze_message"><xliff:g id="number">%d</xliff:g> 분동안 헤드 업 알림이 꺼집니다.</string>
+
+    <!-- Task Manager -->
+    <string name="task_manager_title">작업 관리자</string>
+    <string name="message_switch_fail">이 작업으로 바꿀수 없습니다. 바꿀려고 하는 어플리케이션에 인터페이스가 없습니다.</string>
+    <string name="tasklist_killall">다 끄기</string>
+    <string name="tasklist_memory_usage">"가용/총 메모리: <xliff:g id="number">%s</xliff:g> / <xliff:g id="name">%s</xliff:g>"</string>
+    <string name="message_keep_one_launcher">최소 홈 런쳐 하나는 있어야합니다!</string>
+
+</resources>
