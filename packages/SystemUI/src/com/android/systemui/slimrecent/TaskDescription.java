@@ -28,7 +28,6 @@ public final class TaskDescription {
     final String packageName; // used to override animations (see onClick())
     final String identifier;
     final CharSequence description;
-    int cardColor = 0;
 
     private String mLabel; // application package label
     private int mExpandedState;
@@ -37,7 +36,7 @@ public final class TaskDescription {
     public TaskDescription(int _taskId, int _persistentTaskId,
             ResolveInfo _resolveInfo, Intent _intent,
             String _packageName, String _identifier, CharSequence _description,
-            boolean isFavorite, int expandedState, int activityColor) {
+            boolean isFavorite, int expandedState) {
         resolveInfo = _resolveInfo;
         intent = _intent;
         taskId = _taskId;
@@ -49,7 +48,6 @@ public final class TaskDescription {
 
         mExpandedState = expandedState;
         mIsFavorite = isFavorite;
-        cardColor = activityColor;
     }
 
     public TaskDescription() {

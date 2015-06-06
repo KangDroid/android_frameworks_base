@@ -70,29 +70,27 @@ public class RecentExpandedCard extends CardExpand {
 
     final static BitmapFactory.Options sBitmapOptions;
 
-    private TaskDescription mTaskDescription;
-
     static {
         sBitmapOptions = new BitmapFactory.Options();
         sBitmapOptions.inMutable = true;
     }
 
-    public RecentExpandedCard(Context context, TaskDescription td, float scaleFactor) {
-        this(context, R.layout.recent_inner_card_expand, td, scaleFactor);
+    public RecentExpandedCard(Context context, int persistentTaskId,
+            String label, float scaleFactor) {
+        this(context, R.layout.recent_inner_card_expand,
+                persistentTaskId, label, scaleFactor);
     }
 
     // Main constructor. Set the important values we need.
     public RecentExpandedCard(Context context, int innerLayout,
-            TaskDescription td, float scaleFactor) {
+            int persistentTaskId, String label, float scaleFactor) {
         super(context, innerLayout);
-        mTaskDescription = td;
         mContext = context;
-        mPersistentTaskId = td.persistentTaskId;
-        mLabel = (String) td.getLabel();
+        mPersistentTaskId = persistentTaskId;
+        mLabel = label;
         mScaleFactor = scaleFactor;
 
-        defaultCardBg = mContext.getResources().getColor(
-                R.color.recents_task_bar_default_background_color);
+        defaultCardBg = mContext.getResources().getColor(R.color.card_background);
         cardColor = Settings.System.getIntForUser(
                 mContext.getContentResolver(), Settings.System.RECENT_CARD_BG_COLOR,
                 defaultCardBg, UserHandle.USER_CURRENT);
@@ -101,14 +99,12 @@ public class RecentExpandedCard extends CardExpand {
     }
 
     // Update expanded card content.
-    public void updateExpandedContent(TaskDescription td, float scaleFactor) {
-        mTaskDescription = td;
-        String label = (String) td.getLabel();
+    public void updateExpandedContent(int persistentTaskId, String label, float scaleFactor) {
         if (label != null && label.equals(mLabel)) {
             mDoNotNullBitmap = true;
         }
         mLabel = label;
-        mPersistentTaskId = td.persistentTaskId;
+        mPersistentTaskId = persistentTaskId;
         mReload = true;
 
         if (scaleFactor != mScaleFactor) {
@@ -116,14 +112,6 @@ public class RecentExpandedCard extends CardExpand {
             mScaleFactor = scaleFactor;
             initDimensions();
         }
-    }
-
-    /** Returns the activity's primary color. */
-    public int getDefaultCardColorBg() {
-        if (mTaskDescription != null && mTaskDescription.cardColor != 0) {
-            return mTaskDescription.cardColor;
-        }
-        return defaultCardBg;
     }
 
     // Setup main dimensions we need.
@@ -207,7 +195,7 @@ public class RecentExpandedCard extends CardExpand {
         if (cardColor != 0x00ffffff) {
             parent.setBackgroundColor(cardColor);
         } else {
-            parent.setBackgroundColor(getDefaultCardColorBg());
+            parent.setBackgroundColor(defaultCardBg);
         }
     }
 

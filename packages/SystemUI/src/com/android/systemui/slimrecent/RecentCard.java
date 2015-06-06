@@ -40,7 +40,7 @@ public class RecentCard extends Card {
     private int mPersistentTaskId;
 
     private int defaultCardBg = mContext.getResources().getColor(
-                R.color.recents_task_bar_default_background_color);
+                R.color.card_background);
     private int cardColor = Settings.System.getIntForUser(
                 mContext.getContentResolver(), Settings.System.RECENT_CARD_BG_COLOR,
                 defaultCardBg, UserHandle.USER_CURRENT);
@@ -60,7 +60,7 @@ public class RecentCard extends Card {
             final TaskDescription td, float scaleFactor) {
 
         // Construct card header view.
-        mHeader = new RecentHeader(mContext, td, scaleFactor);
+        mHeader = new RecentHeader(mContext, (String) td.getLabel(), scaleFactor);
 
         // Construct app icon view.
         mRecentIcon = new RecentAppIcon(
@@ -68,14 +68,15 @@ public class RecentCard extends Card {
         mRecentIcon.setExternalUsage(true);
 
         // Construct expanded area view.
-        mExpandedCard = new RecentExpandedCard(context, td, scaleFactor);
+        mExpandedCard = new RecentExpandedCard(
+                context, td.persistentTaskId, td.getLabel(), scaleFactor);
         initExpandedState(td);
 
         // set custom background
         if (cardColor != 0x00ffffff) {
             this.setBackgroundResource(new ColorDrawable(cardColor));
         } else {
-            this.setBackgroundResource(new ColorDrawable(getDefaultCardColorBg(td)));
+            this.setBackgroundResource(new ColorDrawable(defaultCardBg));
         }
 
         // Finally add header, icon and expanded area to our card.
@@ -86,19 +87,11 @@ public class RecentCard extends Card {
         mPersistentTaskId = td.persistentTaskId;
     }
 
-    /** Returns the activity's primary color. */
-    public int getDefaultCardColorBg(TaskDescription td) {
-        if (td != null && td.cardColor != 0) {
-            return td.cardColor;
-        }
-        return defaultCardBg;
-    }
-
     // Update content of our card.
     public void updateCardContent(final TaskDescription td, float scaleFactor) {
         if (mHeader != null) {
             // Set or update the header title.
-            mHeader.updateHeader(td, scaleFactor);
+            mHeader.updateHeader((String) td.getLabel(), scaleFactor);
         }
         if (mRecentIcon != null) {
             mRecentIcon.updateIcon(
@@ -108,16 +101,9 @@ public class RecentCard extends Card {
             // Set expanded state.
             initExpandedState(td);
             // Update app screenshot.
-            mExpandedCard.updateExpandedContent(td, scaleFactor);
+            mExpandedCard.updateExpandedContent(td.persistentTaskId, td.getLabel(), scaleFactor);
         }
         mPersistentTaskId = td.persistentTaskId;
-
-        // set custom background
-        if (cardColor != 0x00ffffff) {
-            this.setBackgroundResource(new ColorDrawable(cardColor));
-        } else {
-            this.setBackgroundResource(new ColorDrawable(getDefaultCardColorBg(td)));
-        }
     }
 
     // Set initial expanded state of our card.
