@@ -105,7 +105,6 @@ import com.android.internal.widget.LockPatternUtils;
 import com.android.systemui.R;
 import com.android.systemui.RecentsComponent;
 import com.android.systemui.SearchPanelView;
-import com.android.systemui.slimrecent.RecentController;
 import com.android.systemui.SwipeHelper;
 import com.android.systemui.SystemUI;
 import com.android.systemui.chaos.lab.gestureanywhere.GestureAnywhereView;
@@ -290,7 +289,7 @@ public abstract class BaseStatusBar extends SystemUI implements
 
     private boolean mDeviceProvisioned = false;
 
-    private RecentController mRecents;
+    private RecentsComponent mRecents;
 
     protected int mZenMode;
 
@@ -664,6 +663,9 @@ public abstract class BaseStatusBar extends SystemUI implements
         mBarService = IStatusBarService.Stub.asInterface(
                 ServiceManager.getService(Context.STATUS_BAR_SERVICE));
 
+        mRecents = getComponent(RecentsComponent.class);
+        mRecents.setCallback(this);
+
         final Configuration currentConfig = mContext.getResources().getConfiguration();
         mLocale = currentConfig.locale;
         mLayoutDirection = TextUtils.getLayoutDirectionFromLocale(mLocale);
@@ -675,8 +677,6 @@ public abstract class BaseStatusBar extends SystemUI implements
                 android.R.interpolator.linear_out_slow_in);
         mFastOutLinearIn = AnimationUtils.loadInterpolator(mContext,
                 android.R.interpolator.fast_out_linear_in);
-
-        mRecents = new RecentController(mContext, mLayoutDirection);
 
         // Connect in to the status bar manager service
         StatusBarIconList iconList = new StatusBarIconList();
@@ -1279,9 +1279,9 @@ public abstract class BaseStatusBar extends SystemUI implements
             Intent showIntent = new Intent(OmniSwitchConstants.ACTION_SHOW_OVERLAY);
             mContext.sendBroadcastAsUser(showIntent, UserHandle.CURRENT);
         } else {
-        if (mRecents != null) {
-            sendCloseSystemWindows(mContext, SYSTEM_DIALOG_REASON_RECENT_APPS);
-            //mRecents.showRecents();
+            if (mRecents != null) {
+                sendCloseSystemWindows(mContext, SYSTEM_DIALOG_REASON_RECENT_APPS);
+                mRecents.showRecents(triggeredFromAltTab, getStatusBarView());
             }
         }
     }
@@ -1291,8 +1291,8 @@ public abstract class BaseStatusBar extends SystemUI implements
             Intent showIntent = new Intent(OmniSwitchConstants.ACTION_HIDE_OVERLAY);
             mContext.sendBroadcastAsUser(showIntent, UserHandle.CURRENT);
         } else {
-        if (mRecents != null) {
-            //mRecents.hideRecents(triggeredFromHomeKey);
+            if (mRecents != null) {
+                mRecents.hideRecents(triggeredFromAltTab, triggeredFromHomeKey);
             }
         }
     }
@@ -1311,32 +1311,32 @@ public abstract class BaseStatusBar extends SystemUI implements
 
     protected void preloadRecents() {
         if (!isOmniSwitchEnabled()) {
-        if (mRecents != null) {
-            mRecents.preloadRecentTasksList();
+            if (mRecents != null) {
+                mRecents.preloadRecents();
             }
         }
     }
 
     protected void cancelPreloadingRecents() {
         if (!isOmniSwitchEnabled()) {
-        if (mRecents != null) {
-            mRecents.cancelPreloadingRecentTasksList();
+            if (mRecents != null) {
+                mRecents.cancelPreloadingRecents();
             }
         }
     }
 
     protected void showRecentsNextAffiliatedTask() {
         if (!isOmniSwitchEnabled()) {
-        if (mRecents != null) {
-           // mRecents.showNextAffiliatedTask();
+            if (mRecents != null) {
+                mRecents.showNextAffiliatedTask();
             }
         }
     }
 
     protected void showRecentsPreviousAffiliatedTask() {
         if (!isOmniSwitchEnabled()) {
-        if (mRecents != null) {
-           // mRecents.showPrevAffiliatedTask();
+            if (mRecents != null) {
+                mRecents.showPrevAffiliatedTask();
             }
         }
     }
@@ -1344,12 +1344,6 @@ public abstract class BaseStatusBar extends SystemUI implements
     @Override
     public void onVisibilityChanged(boolean visible) {
         // Do nothing
-    }
-
-    protected void rebuildRecentsScreen() {
-        if (mRecents != null) {
-            mRecents.rebuildRecentsScreen();
-        }
     }
 
     public abstract void resetHeadsUpDecayTimer();

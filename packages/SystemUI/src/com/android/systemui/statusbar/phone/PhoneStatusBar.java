@@ -543,12 +543,6 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
                     Settings.System.NOTIFICATION_DRAWER_CLEAR_ALL_ICON_COLOR),
                     false, this, UserHandle.USER_ALL);
             resolver.registerContentObserver(Settings.System.getUriFor(
-                    Settings.System.RECENT_CARD_BG_COLOR), false, this,
-                    UserHandle.USER_ALL);
-            resolver.registerContentObserver(Settings.System.getUriFor(
-                    Settings.System.RECENT_CARD_TEXT_COLOR), false, this,
-                    UserHandle.USER_ALL);
-            resolver.registerContentObserver(Settings.System.getUriFor(
                     Settings.System.ENABLE_TASK_MANAGER),
                     false, this, UserHandle.USER_ALL);
             update();
@@ -568,8 +562,6 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
 		
 		@Override
         public void onChange(boolean selfChange, Uri uri) {
-			super.onChange(selfChange, uri);
-			
 			if (uri.equals(Settings.System.getUriFor(
                     Settings.System.BATTERY_SAVER_MODE_COLOR))) {
                     mBatterySaverWarningColor = Settings.System.getIntForUser(
@@ -631,12 +623,6 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
 			} else if (uri.equals(Settings.System.getUriFor(
                     Settings.System.NOTIFICATION_DRAWER_CLEAR_ALL_ICON_COLOR))) {
                 UpdateNotifDrawerClearAllIconColor();
-            } else if (uri.equals(Settings.System.getUriFor(
-                    Settings.System.RECENT_CARD_BG_COLOR))
-                    || uri.equals(Settings.System.getUriFor(
-                    Settings.System.RECENT_CARD_TEXT_COLOR))) {
-
-                rebuildRecentsScreen();	
             } else if (uri.equals(Settings.System.getUriFor(
                     Settings.System.ENABLE_TASK_MANAGER))) {
                     mShowTaskManager = Settings.System.getIntForUser(
