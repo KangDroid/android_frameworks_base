@@ -5690,12 +5690,6 @@ public class WindowManagerService extends IWindowManager.Stub
     public void addSystemUIVisibilityFlag(int flags) {
         mLastStatusBarVisibility |= flags;
     }
-	
-    /* @hide */
-    @Override
-    public void toggleGlobalMenu() {
-        mPolicy.toggleGlobalMenu();
-    }
 
     // Called by window manager policy. Not exposed externally.
     @Override
