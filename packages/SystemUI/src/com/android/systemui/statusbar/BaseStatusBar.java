@@ -290,9 +290,7 @@ public abstract class BaseStatusBar extends SystemUI implements
 
     private boolean mDeviceProvisioned = false;
 
-    private RecentController cRecents;
-    private RecentsComponent mRecents;
-    private boolean mCustomRecent = false;
+    private RecentController mRecents;
 
     protected int mZenMode;
 
@@ -678,15 +676,7 @@ public abstract class BaseStatusBar extends SystemUI implements
         mFastOutLinearIn = AnimationUtils.loadInterpolator(mContext,
                 android.R.interpolator.fast_out_linear_in);
 
-        mCustomRecent = Settings.System.getBoolean(mContext.getContentResolver(),
-                Settings.System.CUSTOM_RECENT, false);
-
-        if (mCustomRecent) {
-            cRecents = new RecentController(mContext, mLayoutDirection);
-        } else {
-            mRecents = getComponent(RecentsComponent.class);
-            mRecents.setCallback(this);
-        }
+        mRecents = new RecentController(mContext, mLayoutDirection);
 
         // Connect in to the status bar manager service
         StatusBarIconList iconList = new StatusBarIconList();
@@ -1289,17 +1279,9 @@ public abstract class BaseStatusBar extends SystemUI implements
             Intent showIntent = new Intent(OmniSwitchConstants.ACTION_SHOW_OVERLAY);
             mContext.sendBroadcastAsUser(showIntent, UserHandle.CURRENT);
         } else {
-            if (mRecents != null || cRecents != null) {
-
-            mCustomRecent = Settings.System.getBoolean(mContext.getContentResolver(),
-                            Settings.System.CUSTOM_RECENT, false);
-
-            if (mCustomRecent)
-                sendCloseSystemWindows(mContext, SYSTEM_DIALOG_REASON_RECENT_APPS);
-                //cRecents.showRecents();
-            else
-                sendCloseSystemWindows(mContext, SYSTEM_DIALOG_REASON_RECENT_APPS);
-                mRecents.showRecents(triggeredFromAltTab, getStatusBarView());
+        if (mRecents != null) {
+            sendCloseSystemWindows(mContext, SYSTEM_DIALOG_REASON_RECENT_APPS);
+            //mRecents.showRecents();
             }
         }
     }
@@ -1309,8 +1291,8 @@ public abstract class BaseStatusBar extends SystemUI implements
             Intent showIntent = new Intent(OmniSwitchConstants.ACTION_HIDE_OVERLAY);
             mContext.sendBroadcastAsUser(showIntent, UserHandle.CURRENT);
         } else {
-            if (mRecents != null) {
-                mRecents.hideRecents(triggeredFromAltTab, triggeredFromHomeKey);
+        if (mRecents != null) {
+            //mRecents.hideRecents(triggeredFromHomeKey);
             }
         }
     }
@@ -1320,58 +1302,41 @@ public abstract class BaseStatusBar extends SystemUI implements
             Intent showIntent = new Intent(OmniSwitchConstants.ACTION_TOGGLE_OVERLAY);
             mContext.sendBroadcastAsUser(showIntent, UserHandle.CURRENT);
         } else {
-            mCustomRecent = Settings.System.getBoolean(mContext.getContentResolver(),
-                            Settings.System.CUSTOM_RECENT, false);
-            if (cRecents != null && mCustomRecent) {
+            if (mRecents != null) {
                 sendCloseSystemWindows(mContext, SYSTEM_DIALOG_REASON_RECENT_APPS);
-                cRecents.toggleRecents(mDisplay, mLayoutDirection, getStatusBarView());
-            } else {
-                if (mRecents != null) {
-                    sendCloseSystemWindows(mContext, SYSTEM_DIALOG_REASON_RECENT_APPS);
-                    mRecents.toggleRecents(mDisplay, mLayoutDirection, getStatusBarView());
-                }
+                mRecents.toggleRecents(mDisplay, mLayoutDirection, getStatusBarView());
             }
         }
     }
 
     protected void preloadRecents() {
         if (!isOmniSwitchEnabled()) {
-            if (mRecents != null || cRecents != null) {
-                mCustomRecent = Settings.System.getBoolean(mContext.getContentResolver(), 
-                                Settings.System.CUSTOM_RECENT, false);
-            if (mCustomRecent)
-               cRecents.preloadRecentTasksList();
-            else
-               mRecents.preloadRecents();
+        if (mRecents != null) {
+            mRecents.preloadRecentTasksList();
             }
         }
     }
 
     protected void cancelPreloadingRecents() {
         if (!isOmniSwitchEnabled()) {
-            if (mRecents != null || cRecents != null) {
-                mCustomRecent = Settings.System.getBoolean(mContext.getContentResolver(), 
-                                Settings.System.CUSTOM_RECENT, false);
-            if (mCustomRecent)
-                cRecents.cancelPreloadingRecentTasksList();
-            else
-                mRecents.cancelPreloadingRecents();
+        if (mRecents != null) {
+            mRecents.cancelPreloadingRecentTasksList();
             }
         }
     }
 
     protected void showRecentsNextAffiliatedTask() {
         if (!isOmniSwitchEnabled()) {
-            if (mRecents != null) {
-                mRecents.showNextAffiliatedTask();
+        if (mRecents != null) {
+           // mRecents.showNextAffiliatedTask();
             }
         }
     }
 
     protected void showRecentsPreviousAffiliatedTask() {
         if (!isOmniSwitchEnabled()) {
-            if (mRecents != null) {
-                mRecents.showPrevAffiliatedTask();
+        if (mRecents != null) {
+           // mRecents.showPrevAffiliatedTask();
             }
         }
     }
@@ -1382,10 +1347,9 @@ public abstract class BaseStatusBar extends SystemUI implements
     }
 
     protected void rebuildRecentsScreen() {
-        mCustomRecent = Settings.System.getBoolean(mContext.getContentResolver(),
-                        Settings.System.CUSTOM_RECENT, false);
-        if (cRecents != null && mCustomRecent)
-            cRecents.rebuildRecentsScreen();
+        if (mRecents != null) {
+            mRecents.rebuildRecentsScreen();
+        }
     }
 
     public abstract void resetHeadsUpDecayTimer();
