@@ -4566,13 +4566,6 @@ public final class Settings {
          * @hide
          */
         public static final String STATUS_BAR_EXPANDED_HEADER_BG_COLOR = "status_bar_expanded_header_bg_color";
-
-        /**
-         * Ad blocker
-		 * Disable ads (HFM)
-		 * @hide
-		 */
-		public static final String HFM_DISABLE_ADS = "hfm_disable_ads";
 			
         /**
          * Color of the clear all icon in the notification drawer
