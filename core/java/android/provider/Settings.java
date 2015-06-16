@@ -2350,12 +2350,6 @@ public final class Settings {
         public static final String QS_USE_MAIN_TILES = Secure.QS_USE_MAIN_TILES;
 
         /**
-         *
-         * @hide
-         */
-        public static final String STATUS_BAR_SHOW_TICKER = "status_bar_show_show_ticker";
-
-        /**
          * Defines the status and navigation bar color is battery safe mode is enabled.
          *
          * @hide

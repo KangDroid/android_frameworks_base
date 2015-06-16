@@ -502,9 +502,6 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
             resolver.registerContentObserver(Settings.System.getUriFor(
                     Settings.System.SCREEN_BRIGHTNESS_MODE), false, this);
             resolver.registerContentObserver(Settings.System.getUriFor(
-                    Settings.System.STATUS_BAR_SHOW_TICKER),
-                    false, this, UserHandle.USER_ALL);
-            resolver.registerContentObserver(Settings.System.getUriFor(
                     Settings.System.BATTERY_SAVER_MODE_COLOR),
                     false, this, UserHandle.USER_ALL);
             resolver.registerContentObserver(Settings.System.getUriFor(
@@ -658,11 +655,6 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
             mBrightnessControl = Settings.System.getIntForUser(
                     resolver, Settings.System.STATUS_BAR_BRIGHTNESS_CONTROL, 0,
                     UserHandle.USER_CURRENT) == 1;
-			
-            mTickerEnabled = Settings.System.getIntForUser(
-                    resolver, Settings.System.STATUS_BAR_TICKER_ENABLED,
-                    mContext.getResources().getBoolean(R.bool.enable_ticker)
-                            ? 1 : 0, UserHandle.USER_CURRENT) == 1;
 			
             mShowStatusBarCarrier = Settings.System.getIntForUser(resolver,
                 Settings.System.STATUS_BAR_CARRIER, 0, mCurrentUserId) == 1;
@@ -1243,10 +1235,7 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
                         R.id.keyguard_indication_text));
         mKeyguardBottomArea.setKeyguardIndicationController(mKeyguardIndicationController);
 
-        mTickerEnabled = Settings.System.getIntForUser(mContext.getContentResolver(),
-                    Settings.System.STATUS_BAR_SHOW_TICKER,
-                    mContext.getResources().getBoolean(R.bool.enable_ticker)
-                            ? 1 : 0, UserHandle.USER_CURRENT) == 1;
+        mTickerEnabled = res.getBoolean(R.bool.enable_ticker);
         if (mTickerEnabled) {
             final ViewStub tickerStub = (ViewStub) mStatusBarView.findViewById(R.id.ticker_stub);
             if (tickerStub != null) {
