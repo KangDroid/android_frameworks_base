@@ -4408,15 +4408,9 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
             mContext.recreateTheme();
             recreateStatusBar();
 
-        // detect status bar carrier state when theme change.
-        mShowStatusBarCarrier = Settings.System.getInt(
-                resolver, Settings.System.STATUS_BAR_CARRIER, 0) == 1;
-                showStatusBarCarrierLabel(mShowStatusBarCarrier);
-
             mShowLabelTimeout = Settings.System.getIntForUser(resolver,
                     Settings.System.STATUS_BAR_GREETING_TIMEOUT, 400,
                     UserHandle.USER_CURRENT);
-
         } else {
             loadDimens();
         }
