@@ -2189,7 +2189,7 @@
   <!-- Theme install failure notification -->
   <java-symbol type="string" name="theme_install_error_title" />
   <java-symbol type="string" name="theme_install_error_message" />
-
+  
   <!-- Notification and battery light -->
   <java-symbol type="bool" name="config_intrusiveNotificationLed" />
   <java-symbol type="bool" name="config_multiColorNotificationLed" />
@@ -2198,4 +2198,8 @@
   <java-symbol type="array" name="notification_light_package_mapping" />
   <java-symbol type="array" name="config_notificationNoAlertsVibePattern" />
 
+    <!-- EdgeGesture service -->
+  <java-symbol type="dimen" name="edge_gesture_trigger_distance" />
+  <java-symbol type="dimen" name="edge_gesture_perpendicular_distance" />
+  <java-symbol type="dimen" name="edge_gesture_trigger_thickness" />
 </resources>
