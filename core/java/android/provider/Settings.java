@@ -4956,6 +4956,13 @@ public final class Settings {
          * @hide
          */
         public static final String STATUS_BAR_CUSTOM_HEADER_DEFAULT = "status_bar_custom_header_default";
+			
+        /**
+         * Defines global heads up enable/disable switch.
+         *
+         * @hide
+         */
+        public static final String HEADS_UP_GLOBAL_SWITCH = "heads_up_global_switch";
 
         /**
          * Settings to backup. This is here so that it's in the same place as the settings
