@@ -16,6 +16,8 @@
      limitations under the License.
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+	<!-- Lockscreen Whether -->
+	<string name="weather_info_not_available">Weather informations not available</string>
     <!-- When the user inserts a sim card with some personalization enabled -->
     <string name="keyguard_perso_locked_message">SIM/RUIM is Perso locked</string>
     <!-- Status -->
