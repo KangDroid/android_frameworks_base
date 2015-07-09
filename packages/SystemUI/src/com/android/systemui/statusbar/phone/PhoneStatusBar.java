@@ -1142,10 +1142,6 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
             mNavigationBarView.updateResources(getNavbarThemedResources());
         }
 
-        if (mRecreating) {
-            removeSidebarView();
-        }
-
         addSidebarView();
 
         mNavigationBarView.setDisabledFlags(mDisabled);
@@ -4397,6 +4393,8 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
         if (updateStatusBar) {
             mContext.recreateTheme();
             recreateStatusBar();
+            observer.update();
+            addSidebarView();
 
             mShowLabelTimeout = Settings.System.getIntForUser(resolver,
                     Settings.System.STATUS_BAR_GREETING_TIMEOUT, 400,
