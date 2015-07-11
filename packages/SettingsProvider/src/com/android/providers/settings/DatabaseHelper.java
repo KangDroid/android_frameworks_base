@@ -2625,6 +2625,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 			
             loadIntegerSetting(stmt, Settings.System.DOUBLE_TAP_SLEEP_GESTURE,
                     R.integer.def_double_tap_sleep_gesture);
+
+            loadBooleanSetting(stmt, Settings.System.SWAP_VOLUME_KEYS_ON_ROTATION,
+                    R.bool.def_swap_volume_keys_on_rotation);
+
         } finally {
             if (stmt != null) stmt.close();
         }
