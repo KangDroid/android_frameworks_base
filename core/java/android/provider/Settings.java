@@ -4699,6 +4699,12 @@ public final class Settings {
          * @hide
          */
         public static final String GESTURE_ANYWHERE_FLOATING = "gesture_anywhere_floating";
+			
+		/**	
+         * show carrier in statusbae while on lockscreen. The value is
+         * int (1: Show or 0: Hide).
+         */
+        public static final String LOCK_SCREEN_HIDE_CARRIER = "lock_screen_hide_carrier";
 
         /**
          * Settings to backup. This is here so that it's in the same place as the settings
