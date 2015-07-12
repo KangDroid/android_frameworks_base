@@ -77,18 +77,10 @@
     <java-symbol type="anim" name="slide_out_left_no_fade" />
     <java-symbol type="anim" name="slide_in_left_no_fade" />
     <java-symbol type="anim" name="slide_out_right_no_fade" />
-		
-	<!-- Ambient Display-->
-	<java-symbol type="bool" name="config_dozeUseAccelerometer" />
-  
-  	<!-- UI theme mode -->
-  	<java-symbol type="integer" name="config_uiThemeMode" />
-  	<java-symbol type="string" name="theme_auto_switch_mode_error" />
 	
-	<!-- Custom styles for dialog themes -->
-	<java-symbol type="style" name="Theme.Material.Trds.Dialog" />
-	<java-symbol type="style" name="Theme.Material.Trds.Dialog.Alert" />
-	<java-symbol type="style" name="Theme.DeviceDefault.Resolver.Dark" />
+  <!-- Ambient Display-->
+  <java-symbol type="bool" name="config_dozeUseAccelerometer" />
+	
 	
     <!-- Slim recent app screen-->
     <java-symbol type="integer" name="config_recentDefaultDur" />
@@ -125,5 +117,5 @@
   <java-symbol type="string" name="setting_confirmation_ask_me_later" />
   <java-symbol type="string" name="setting_confirmation_yes" />
   <java-symbol type="string" name="setting_confirmation_no" />
-	
+
 </resources>

@@ -59,7 +59,6 @@ public class QSConstants {
     public static final String TILE_USB_TETHER = "usb_tether";
     public static final String TILE_MUSIC = "music";
     public static final String TILE_HEADS_UP = "heads_up";
-    public static final String TILE_TRDS = "trds";
     public static final String TILE_APPSIDEBAR = "toggleAppSideBar";
     public static final String TILE_SLIM_FLOATS = "slim_floats";
 
@@ -111,7 +110,6 @@ public class QSConstants {
         STATIC_TILES_AVAILABLE.add(TILE_NAVBAR);
         STATIC_TILES_AVAILABLE.add(TILE_APPCIRCLEBAR);
         STATIC_TILES_AVAILABLE.add(TILE_MUSIC);
-        STATIC_TILES_AVAILABLE.add(TILE_TRDS);
         STATIC_TILES_AVAILABLE.add(TILE_APPSIDEBAR);
         STATIC_TILES_AVAILABLE.add(TILE_SLIM_FLOATS);
 
