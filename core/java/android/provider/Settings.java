@@ -2820,6 +2820,12 @@ public final class Settings {
          * @hide
          */
         public static final String QS_TRANSPARENT_SHADE = "qs_transparent_shade";
+		
+        /**
+         * Whether to vibrate when quick settings tile is pressed
+         * @hide
+         */
+        public static final String QS_TILES_VIBRATE = "qs_tiles_vibrate";
  
         /**
          * Settings to backup. This is here so that it's in the same place as the settings
