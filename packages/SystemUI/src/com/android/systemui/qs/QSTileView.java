@@ -37,6 +37,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
 import android.widget.TextView;
+import android.provider.Settings;
 
 import com.android.systemui.FontSizeUtils;
 import com.android.systemui.R;
@@ -187,25 +188,17 @@ public class QSTileView extends ViewGroup {
 
             final TextView label = mLabel == null ? new TextView(mContext) : mLabel;
             label.setId(android.R.id.title);
-            label.setTextColor(res.getColor(R.color.qs_tile_text));
+            if (mQSCSwitch) {
+                label.setTextColor(mLabelColor);
+            } else {
+                label.setTextColor(res.getColor(R.color.qs_tile_text));
+            }
             label.setGravity(Gravity.CENTER_HORIZONTAL);
             label.setMinLines(2);
             label.setPadding(0, 0, 0, 0);
             label.setTypeface(CONDENSED);
             label.setTextSize(TypedValue.COMPLEX_UNIT_PX,
-            mLabel = new TextView(mContext);
-            mLabel.setId(android.R.id.title);
-            if (mQSCSwitch) {
-                mLabel.setTextColor(mLabelColor);
-            } else {
-                mLabel.setTextColor(res.getColor(R.color.qs_tile_text));
-            }
-            mLabel.setGravity(Gravity.CENTER_HORIZONTAL);
-            mLabel.setMinLines(2);
-            mLabel.setPadding(0, 0, 0, 0);
-            mLabel.setTypeface(CONDENSED);
-            mLabel.setTextSize(TypedValue.COMPLEX_UNIT_PX,
-                    res.getDimensionPixelSize(R.dimen.qs_tile_text_size));
+				res.getDimensionPixelSize(R.dimen.qs_tile_text_size));
             label.setClickable(false);
             label.setText(labelText);
             label.setContentDescription(labelDescription);

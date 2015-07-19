@@ -2020,14 +2020,12 @@ public class NotificationPanelView extends PanelView implements
         }
     }
 
-    private class SettingsObserver extends UserContentObserver {
+    private class SettingsObserver extends ContentObserver {
         SettingsObserver(Handler handler) {
             super(handler);
         }
 
-        @Override
-        protected void observe() {
-            super.observe();
+        void observe() {
             ContentResolver resolver = mContext.getContentResolver();
             resolver.registerContentObserver(Settings.System.getUriFor(
                     Settings.System.QS_BACKGROUND_COLOR), false, this);
@@ -2040,10 +2038,14 @@ public class NotificationPanelView extends PanelView implements
             update();
         }
 
-        @Override
-        protected void unobserve() {
-            super.unobserve();
+        void unobserve() {
             mContext.getContentResolver().unregisterContentObserver(this);
+        }
+		
+		@Override
+        public void onChange(boolean selfChange) {
+            super.onChange(selfChange);
+	            update();
         }
 
         @Override
@@ -2109,5 +2111,6 @@ public class NotificationPanelView extends PanelView implements
     private void setQSColors() {
         if (mQsPanel != null) {
             mQsPanel.setColors();
-        }	
+        }
+	}	
 }

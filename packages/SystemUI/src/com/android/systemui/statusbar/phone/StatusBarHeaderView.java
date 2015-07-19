@@ -38,6 +38,7 @@ import android.provider.Settings;
 import android.util.AttributeSet;
 import android.util.MathUtils;
 import android.util.TypedValue;
+import android.os.UserHandle;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewOutlineProvider;
@@ -46,6 +47,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.os.Handler;
 
 import com.android.keyguard.KeyguardStatusView;
 import com.android.systemui.BatteryMeterView;
@@ -849,15 +851,12 @@ public class StatusBarHeaderView extends RelativeLayout implements View.OnClickL
         }
     };
 
-    class SettingsObserver extends UserContentObserver {
+    class SettingsObserver extends ContentObserver {
         SettingsObserver(Handler handler) {
             super(handler);
         }
 
-        @Override
-        protected void observe() {
-            super.observe();
-
+        void observe() {
             ContentResolver resolver = mContext.getContentResolver();
 			resolver.registerContentObserver(Settings.System.getUriFor(
                     Settings.System.QS_COLOR_SWITCH), false, this,
@@ -865,20 +864,22 @@ public class StatusBarHeaderView extends RelativeLayout implements View.OnClickL
             update();
         }
 
-        @Override
-        protected void unobserve() {
-            super.unobserve();
-
+        void unobserve() {
             ContentResolver resolver = mContext.getContentResolver();
             resolver.unregisterContentObserver(this);
         }
 		
         @Override
-        public void onChange(boolean selfChange, Uri uri) {
-			update();
+        public void onChange(boolean selfChange) {
+            super.onChange(selfChange);
+            update();
         }
 
         @Override
+        public void onChange(boolean selfChange, Uri uri) {
+            update();
+        }
+
         public void update() {
             ContentResolver resolver = mContext.getContentResolver();
             mQSCSwitch = Settings.System.getInt(
