@@ -262,8 +262,9 @@ public class CommandQueue extends IStatusBar.Stub {
         synchronized (mList) {
             mHandler.removeMessages(MSG_SET_AUTOROTATE_STATUS);
             mHandler.obtainMessage(MSG_SET_AUTOROTATE_STATUS,
-                enabled ? 1 : 0, 0, null).sendToTarget();
-     }
+               enabled ? 1 : 0, 0, null).sendToTarget();
+        }
+	}
 
     public void pause() {
         mPaused = true;

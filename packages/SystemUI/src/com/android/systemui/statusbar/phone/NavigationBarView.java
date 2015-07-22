@@ -1161,11 +1161,6 @@ public class NavigationBarView extends LinearLayout {
 		
         public void update() {
             ContentResolver resolver = mContext.getContentResolver();
-
-            mImeArrowVisibility =
-                    (Settings.System.getIntForUser(resolver,
-                    Settings.System.STATUS_BAR_IME_ARROWS, HIDE_IME_ARROW,
-                    UserHandle.USER_CURRENT) == SHOW_IME_ARROW);
             mDimNavButtons = (Settings.System.getIntForUser(resolver,
                     Settings.System.DIM_NAV_BUTTONS, 0,
                     UserHandle.USER_CURRENT) == 1);

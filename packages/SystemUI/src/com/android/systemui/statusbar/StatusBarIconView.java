@@ -42,7 +42,7 @@ import android.view.accessibility.AccessibilityEvent;
 import android.widget.ImageView;
 
 import com.android.internal.statusbar.StatusBarIcon;
-import com.android.internal.util.fusion.ImageHelper;
+import com.android.internal.util.slim.ImageHelper;
 import com.android.systemui.R;
 
 import java.text.NumberFormat;
@@ -419,16 +419,15 @@ public class StatusBarIconView extends AnimatedImageView {
         @Override
         public void onChange(boolean selfChange) {
 			update();
-        }
+        }		
+		public void update() {
+	        for (StatusBarIconView sbiv : mIconViews) {
+	            sbiv.updateIconsAndText();
+	            sbiv.set(sbiv.mIcon, true);
+	        }
+		}	
     }
 	
-	public void update() {
-        for (StatusBarIconView sbiv : mIconViews) {
-            sbiv.updateIconsAndText();
-            sbiv.set(sbiv.mIcon, true);
-        }
-	}
-
     public void updateIconsAndText() {
         ContentResolver resolver = mContext.getContentResolver();
 

@@ -307,7 +307,7 @@ public abstract class ContentProvider implements ComponentCallbacks2 {
         public int delete(String callingPkg, Uri uri, String selection, String[] selectionArgs) {
             validateIncomingUri(uri);
             uri = getUriWithoutUserId(uri);
-            if (enforceDeletePermission(callingPkg, uri) != AppOpsManager.MODE_ALLOWED) {
+            if (enforceDeletePermission(callingPkg, uri, null) != AppOpsManager.MODE_ALLOWED) {
                 return 0;
             }
             final String original = setCallingPackage(callingPkg);
@@ -468,8 +468,9 @@ public abstract class ContentProvider implements ComponentCallbacks2 {
             return AppOpsManager.MODE_ALLOWED;
         }
 
-        private int enforceDeletePermission(String callingPkg, Uri uri) throws SecurityException {
-            enforceWritePermissionInner(uri);
+        private int enforceDeletePermission(String callingPkg, Uri uri, IBinder callerToken)
+			 	throws SecurityException {
+            enforceWritePermissionInner(uri, callerToken);
             if (mWriteOp != AppOpsManager.OP_NONE) {
                 int op = mWriteOp;
                 switch (mWriteOp) {
@@ -488,7 +489,7 @@ public abstract class ContentProvider implements ComponentCallbacks2 {
                 default:
                     break;
                 }
-               mAppOpsManager.noteOp(op, Binder.getCallingUid(), callingPkg);
+                return mAppOpsManager.noteOp(op, Binder.getCallingUid(), callingPkg);
             }
             return AppOpsManager.MODE_ALLOWED;
         }

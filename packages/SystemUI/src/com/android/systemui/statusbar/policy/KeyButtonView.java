@@ -31,7 +31,7 @@ import android.hardware.input.InputManager;
 import android.media.AudioManager;
 import android.os.Bundle;
 import android.os.PowerManager;
-import android.os.RemoteException;j
+import android.os.RemoteException;
 import android.os.SystemClock;
 import android.os.UserHandle;
 import android.provider.Settings;

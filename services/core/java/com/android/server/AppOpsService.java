@@ -1119,9 +1119,9 @@ public class AppOpsService extends IAppOpsService.Stub {
 
             String tagName = parser.getName();
             if (tagName.equals("op")) {
-                Op op = new Op(uid, pkgName, code, AppOpsManager.MODE_ERRORED);
                 int code = Integer
                         .parseInt(parser.getAttributeValue(null, "n"));
+                Op op = new Op(uid, pkgName, code, AppOpsManager.MODE_ERRORED);
                 // use op name string if it exists
                 String codeNameStr = parser.getAttributeValue(null, "ns");
                 if (codeNameStr != null) {
@@ -1573,7 +1573,7 @@ public class AppOpsService extends IAppOpsService.Stub {
                         // if there is nothing else interesting in it.
                         pruneOp(op, uid, packageName);
                     }
-                    scheduleWriteNowLocked();
+                    scheduleFastWriteLocked();
                 }
             }
         }
