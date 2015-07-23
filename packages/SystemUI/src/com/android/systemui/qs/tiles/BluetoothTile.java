@@ -34,20 +34,19 @@ import java.util.Set;
 
 /** Quick settings tile: Bluetooth **/
 public class BluetoothTile extends QSTile<QSTile.BooleanState>  {
-    public static final String SPEC = "bt";
     private static final Intent BLUETOOTH_SETTINGS = new Intent(Settings.ACTION_BLUETOOTH_SETTINGS);
 
     private final BluetoothController mController;
     private final BluetoothDetailAdapter mDetailAdapter;
 
     public BluetoothTile(Host host) {
-        super(host, SPEC);
+        super(host);
         mController = host.getBluetoothController();
         mDetailAdapter = new BluetoothDetailAdapter();
     }
 
     @Override
-    public boolean isNativeDualTargets() {
+    public boolean supportsDualTargets() {
         return true;
     }
 
@@ -71,13 +70,13 @@ public class BluetoothTile extends QSTile<QSTile.BooleanState>  {
     }
 
     @Override
-    protected void handleToggleClick() {
+    protected void handleClick() {
         final boolean isEnabled = (Boolean)mState.value;
         mController.setBluetoothEnabled(!isEnabled);
     }
 
     @Override
-    protected void handleDetailClick() {
+    protected void handleSecondaryClick() {
         if (!mState.value) {
             mState.value = true;
             mController.setBluetoothEnabled(true);

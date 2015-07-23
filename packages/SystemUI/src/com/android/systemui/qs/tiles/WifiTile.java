@@ -38,7 +38,6 @@ import com.android.systemui.statusbar.policy.NetworkController.NetworkSignalChan
 
 /** Quick settings tile: Wifi **/
 public class WifiTile extends QSTile<QSTile.SignalState> {
-    public static final String SPEC = "wifi";
     private static final Intent WIFI_SETTINGS = new Intent(Settings.ACTION_WIFI_SETTINGS);
 
     private final NetworkController mController;
@@ -47,14 +46,14 @@ public class WifiTile extends QSTile<QSTile.SignalState> {
     private final QSTile.SignalState mStateBeforeClick = newTileState();
 
     public WifiTile(Host host) {
-        super(host, SPEC);
+        super(host);
         mController = host.getNetworkController();
         mWifiController = mController.getAccessPointController();
         mDetailAdapter = new WifiDetailAdapter();
     }
 
     @Override
-    public boolean isNativeDualTargets() {
+    public boolean supportsDualTargets() {
         return true;
     }
 
@@ -85,13 +84,13 @@ public class WifiTile extends QSTile<QSTile.SignalState> {
     }
 
     @Override
-    protected void handleToggleClick() {
+    protected void handleClick() {
         mState.copyTo(mStateBeforeClick);
         mController.setWifiEnabled(!mState.enabled);
     }
 
     @Override
-    protected void handleDetailClick() {
+    protected void handleSecondaryClick() {
         if (!mWifiController.canConfigWifi()) {
             mHost.startSettingsActivity(new Intent(Settings.ACTION_WIFI_SETTINGS));
             return;

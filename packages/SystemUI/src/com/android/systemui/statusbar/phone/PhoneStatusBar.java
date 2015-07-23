@@ -1177,9 +1177,16 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
                     mUserSwitcherController, mKeyguardMonitor,
                     mSecurityController);
             mQSPanel.setHost(qsh);
-            mQSPanel.setBrightnessMirror(mBrightnessMirrorController =
-                    new BrightnessMirrorController(mStatusBarWindowContent));
+            mQSPanel.setTiles(qsh.getTiles());
+            mBrightnessMirrorController = new BrightnessMirrorController(mStatusBarWindowContent);
+            mQSPanel.setBrightnessMirror(mBrightnessMirrorController);
             mHeader.setQSPanel(mQSPanel);
+            qsh.setCallback(new QSTileHost.Callback() {
+                @Override
+                public void onTilesChanged() {
+                    mQSPanel.setTiles(qsh.getTiles());
+                }
+            });
         }
 
         // User info. Trigger first load.
