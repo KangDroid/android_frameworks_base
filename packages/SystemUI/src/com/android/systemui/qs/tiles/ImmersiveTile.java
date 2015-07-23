@@ -23,21 +23,10 @@ import android.provider.Settings.Secure;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
-import android.widget.AbsListView;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.CheckedTextView;
-import android.widget.ListView;
-
+import android.widget.RadioButton;
 import com.android.systemui.R;
 import com.android.systemui.qs.SecureSetting;
-import com.android.systemui.qs.QSDetailItemsList;
 import com.android.systemui.qs.QSTile;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 /** Quick settings tile: Immersive mode **/
 public class ImmersiveTile extends QSTile<QSTile.BooleanState> {
@@ -54,16 +43,8 @@ public class ImmersiveTile extends QSTile<QSTile.BooleanState> {
                                         View.SYSTEM_UI_FLAG_FULLSCREEN |
                                         View.SYSTEM_UI_FLAG_HIDE_NAVIGATION;
 
-    public static final Integer[] IMMERSIVE_STATES = new Integer[]{
-            IMMERSIVE_FLAGS_FULL,
-            IMMERSIVE_FLAGS_HIDE_NAV,
-            IMMERSIVE_FLAGS_HIDE_STATUS
-    };
-
     private final SecureSetting mSetting;
     private final ImmersiveDetailAdapter mDetailAdapter;
-
-    private final List<Integer> mDetailList = new ArrayList<>();
 
     private boolean mListening;
     private int mLastState;
@@ -129,19 +110,6 @@ public class ImmersiveTile extends QSTile<QSTile.BooleanState> {
         }
     }
 
-    private int getStateLabelRes(int currentState) {
-        switch (currentState) {
-            case IMMERSIVE_FLAGS_FULL:
-                return R.string.quick_settings_immersive_mode_detail_hide_all;
-            case IMMERSIVE_FLAGS_HIDE_NAV:
-                return R.string.quick_settings_immersive_mode_detail_hide_nav;
-            case IMMERSIVE_FLAGS_HIDE_STATUS:
-                return R.string.quick_settings_immersive_mode_detail_hide_status;
-            default:
-                return R.string.quick_settings_immersive_mode_label;
-        }
-    }
-
     @Override
     protected String composeChangeAnnouncement() {
         if (mState.value) {
@@ -157,25 +125,7 @@ public class ImmersiveTile extends QSTile<QSTile.BooleanState> {
         mSetting.setListening(listening);
     }
 
-    private class ImmersiveAdapter extends ArrayAdapter<Integer> {
-        public ImmersiveAdapter(Context context) {
-            super(context, android.R.layout.simple_list_item_single_choice, mDetailList);
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            LayoutInflater inflater = LayoutInflater.from(mContext);
-            CheckedTextView label = (CheckedTextView) inflater.inflate(
-                    android.R.layout.simple_list_item_single_choice, parent, false);
-            label.setText(getStateLabelRes(getItem(position)));
-            return label;
-        }
-    }
-
-    private final class ImmersiveDetailAdapter implements DetailAdapter, AdapterView.OnItemClickListener {
-
-        private ImmersiveAdapter mAdapter;
-        private QSDetailItemsList mDetails;
+    private final class ImmersiveDetailAdapter implements DetailAdapter, View.OnClickListener {
 
         @Override
         public int getTitle() {
@@ -184,7 +134,6 @@ public class ImmersiveTile extends QSTile<QSTile.BooleanState> {
 
         @Override
         public Boolean getToggleState() {
-            rebuildDetailList(mState.value);
             return mState.value;
         }
 
@@ -196,42 +145,44 @@ public class ImmersiveTile extends QSTile<QSTile.BooleanState> {
         @Override
         public void setToggleState(boolean state) {
             setEnabled(state);
-            rebuildDetailList(state);
             fireToggleStateChanged(state);
         }
 
         @Override
         public View createDetailView(Context context, View convertView, ViewGroup parent) {
-            mDetails = QSDetailItemsList.convertOrInflate(context, convertView, parent);
-            mDetails.setEmptyState(R.drawable.ic_qs_immersive_off,
-                    R.string.accessibility_quick_settings_immersive_mode_off);
-            mAdapter = new ImmersiveTile.ImmersiveAdapter(context);
-            mDetails.setAdapter(mAdapter);
-
-            final ListView list = mDetails.getListView();
-            list.setChoiceMode(AbsListView.CHOICE_MODE_SINGLE);
-            list.setOnItemClickListener(this);
-
-            return mDetails;
-        }
-
-        private void rebuildDetailList(boolean populate) {
-            mDetailList.clear();
-            if(populate) {
-                mDetailList.addAll(Arrays.asList(IMMERSIVE_STATES));
-                mDetails.getListView().setItemChecked(mAdapter.getPosition(
-                        mLastState), true);
-            }
-            mAdapter.notifyDataSetChanged();
+            final View v = (convertView != null
+                    ? convertView
+                    : LayoutInflater.from(mContext).inflate(R.layout.immersive_mode, parent, false));
+            v.findViewById(R.id.radio_full).setOnClickListener(this);
+            v.findViewById(R.id.radio_hide_nav).setOnClickListener(this);
+            v.findViewById(R.id.radio_hide_status).setOnClickListener(this);
+            RadioButton currentMode =
+                    (mLastState == IMMERSIVE_FLAGS_FULL ? (RadioButton)v.findViewById(R.id.radio_full) :
+                    (mLastState == IMMERSIVE_FLAGS_HIDE_NAV ? (RadioButton)v.findViewById(R.id.radio_hide_nav) :
+                                              (RadioButton)v.findViewById(R.id.radio_hide_status)));
+            currentMode.setChecked(true);
+            return v;
         }
 
         @Override
-        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            mLastState = (Integer) parent.getItemAtPosition(position);
-            fireToggleStateChanged(true);
-            mSetting.setValue(mLastState);
-            Secure.putIntForUser(mContext.getContentResolver(), Secure.LAST_SYSTEM_UI_FLAGS,
-                    mLastState, UserHandle.USER_CURRENT);
+        public void onClick(View v) {
+            if(((RadioButton)v).isChecked()) {
+                switch(v.getId()) {
+                    case R.id.radio_full:
+                        mLastState = IMMERSIVE_FLAGS_FULL;
+                        break;
+                    case R.id.radio_hide_nav:
+                        mLastState = IMMERSIVE_FLAGS_HIDE_NAV;
+                        break;
+                    case R.id.radio_hide_status:
+                        mLastState = IMMERSIVE_FLAGS_HIDE_STATUS;
+                        break;
+                }
+                fireToggleStateChanged(true);
+                mSetting.setValue(mLastState);
+                Secure.putIntForUser(mContext.getContentResolver(), Secure.LAST_SYSTEM_UI_FLAGS,
+                        mLastState, UserHandle.USER_CURRENT);
+            }
         }
     }
 }
