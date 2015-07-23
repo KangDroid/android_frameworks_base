@@ -80,7 +80,7 @@ public class SearchPanelView extends FrameLayout implements StatusBarPanel {
         mThreshold = context.getResources().getDimensionPixelSize(R.dimen.search_panel_threshold);
     }
 
-    public void startAssistActivity() {
+    private void startAssistActivity() {
         if (!mBar.isDeviceProvisioned()) return;
 
         // Close Recent Apps if needed
