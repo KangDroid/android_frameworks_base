@@ -2952,12 +2952,6 @@ public final class Settings {
         public static final String QS_TRANSPARENT_SHADE = "qs_transparent_shade";
 		
         /**
-         * Whether to vibrate when quick settings tile is pressed
-         * @hide
-         */
-        public static final String QS_TILES_VIBRATE = "qs_tiles_vibrate";
-		
-        /**
          * Show search bar in recents
          * @hide
          */
