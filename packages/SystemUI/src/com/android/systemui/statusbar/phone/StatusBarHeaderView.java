@@ -143,18 +143,17 @@ public class StatusBarHeaderView extends RelativeLayout implements View.OnClickL
     private boolean mShowBatteryTextCharging;
     private boolean mBatteryIsCharging;
     private int mBatteryChargeLevel;
+    private int mTextColor;
+    private int mIconColor;
+
+    private boolean mQSCSwitch = false;
+	private SettingsObserver mSettingsObserver;
 
     public void updateBatteryIconSettings() {
         mBatteryView.updateBatteryIconSettings();
         updateVisibilities();
         requestCaptureValues();
     };
-
-    private int mTextColor;
-    private int mIconColor;
-
-    private boolean mQSCSwitch = false;
-	private SettingsObserver mSettingsObserver;
 
     public StatusBarHeaderView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -970,13 +969,16 @@ public class StatusBarHeaderView extends RelativeLayout implements View.OnClickL
                     Settings.System.STATUS_BAR_EXPANDED_HEADER_ICON_COLOR))) {
                 updateIconColor();
             }
-            update();
         }
 
         public void update() {
             ContentResolver resolver = mContext.getContentResolver();
             mQSCSwitch = Settings.System.getInt(
                     resolver, Settings.System.QS_COLOR_SWITCH, 0) == 1;
+            mTextColor = Settings.System.getInt(resolver,
+                    Settings.System.STATUS_BAR_EXPANDED_HEADER_TEXT_COLOR, 0xffffffff);
+            mIconColor = Settings.System.getInt(resolver,
+                    Settings.System.STATUS_BAR_EXPANDED_HEADER_ICON_COLOR, 0xffffffff);
             updateTextColor();
             updateIconColor();
         }
