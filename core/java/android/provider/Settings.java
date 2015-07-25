@@ -6035,12 +6035,6 @@ public final class Settings {
         public static final String THEME_PREV_BOOT_API_LEVEL = "theme_prev_boot_api_level";
 
         /**
-         * Whether to include options in power menu for rebooting into recovery and bootloader
-         * @hide
-         */
-        public static final String ADVANCED_REBOOT = "advanced_reboot";
-
-        /**
          * Add global SystemUI flags (e.g. for immersive mode)
          * @hide
          */
@@ -6154,7 +6148,6 @@ public final class Settings {
             MOUNT_UMS_NOTIFY_ENABLED,
             UI_NIGHT_MODE,
             SLEEP_TIMEOUT,
-            ADVANCED_REBOOT,
             DEVELOPMENT_SHORTCUT,
             PRIVACY_GUARD_DEFAULT
         };
