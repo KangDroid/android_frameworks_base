@@ -338,6 +338,10 @@ public class NavigationBarView extends LinearLayout {
         mDelegateHelper.setDisabled(false);
     }
 
+    public void setTransparencyAllowedWhenVertical(boolean allowed) {
+        mBarTransitions.setTransparencyAllowedWhenVertical(allowed);
+    }
+
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         initDownStates(event);
