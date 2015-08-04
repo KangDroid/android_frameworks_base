@@ -52,6 +52,7 @@
 	
     <!-- Floating action button -->
     <color name="fab_color">#ff009688</color>
+	<color name="fab_background_color">#ffffffff</color>
     <color name="floating_action_button_icon_color">#ffffff</color>
 
     <!-- Slim recent -->
@@ -72,6 +73,6 @@
     <color name="recents_empty_light_color">#ffb3b3b3</color>
 
     <!-- The color size for the temperature text -->
-    <color name="status_bar_temp_text_color">#FFFFFFFF</color>
+    <color name="status_bar_temp_text_color">#ffffffff</color>
 
 </resources>

@@ -4831,6 +4831,19 @@ public final class Settings {
          * @hide
          */
         public static final String DIM_NAV_BUTTONS_TOUCH_ANYWHERE = "dim_nav_buttons_touch_anywhere";
+			
+        /**
+         * Color of the clear all button background in the recent apps panel
+         * @hide
+         */
+        public static final String RECENT_APPS_CLEAR_ALL_BG_COLOR = "recent_apps_clear_all_bg_color";
+
+        /**
+         * Color of the clear all button icon in the recent apps panel
+         * @hide
+         */
+        public static final String RECENT_APPS_CLEAR_ALL_ICON_COLOR = "recent_apps_clear_all_icon_color";
+
 
         /**
          * Settings to backup. This is here so that it's in the same place as the settings
