@@ -12,7 +12,4 @@
 	
     <!-- Doze: force using accelerometer as pick up sensor -->
     <bool name="config_dozeUseAccelerometer">false</bool>
-	
-    <!-- Whether doze should invert colors for notifications -->
-    <bool name="config_invert_colors_on_doze">false</bool>
 </resources>
