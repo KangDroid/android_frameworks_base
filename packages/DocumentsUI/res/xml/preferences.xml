@@ -17,10 +17,10 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
     <CheckBoxPreference
         android:title="@string/pref_advanced_devices"
-        android:defaultValue="true"
+        android:defaultValue="false"
         android:key="advancedDevices" />
     <CheckBoxPreference
         android:title="@string/pref_file_size"
-        android:defaultValue="true"
+        android:defaultValue="false"
         android:key="fileSize" />
 </PreferenceScreen>

@@ -12,20 +12,6 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *
- * Per article 5 of the Apache 2.0 License, some modifications to this code
- * were made by the Oneplus Project.
- *
- * Modifications Copyright (C) 2015 The Oneplus Project
- *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 3
- * of the License, or (at your option) any later version.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
 package com.android.documentsui;
@@ -44,10 +30,8 @@ import android.content.DialogInterface.OnClickListener;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.RemoteException;
 import android.provider.DocumentsContract;
 import android.provider.DocumentsContract.Document;
-import android.text.InputFilter;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -55,8 +39,6 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.android.documentsui.model.DocumentInfo;
-
-import java.io.FileNotFoundException;
 
 /**
  * Dialog to create a new directory.
@@ -79,7 +61,6 @@ public class CreateDirectoryFragment extends DialogFragment {
 
         final View view = dialogInflater.inflate(R.layout.dialog_create_dir, null, false);
         final EditText text1 = (EditText) view.findViewById(android.R.id.text1);
-        text1.setFilters(new InputFilter[] { new FolderInputFilter() });
 
         builder.setTitle(R.string.menu_create_dir);
         builder.setView(view);
@@ -90,37 +71,15 @@ public class CreateDirectoryFragment extends DialogFragment {
                 final String displayName = text1.getText().toString();
 
                 final DocumentsActivity activity = (DocumentsActivity) getActivity();
-
-                if (displayName == null || "".equals(displayName.trim())) {
-                    Toast.makeText(activity, activity.getResources().getString(
-                            R.string.folder_name_empty, displayName), Toast.LENGTH_LONG).show();
-                    return;
-                }
-
                 final DocumentInfo cwd = activity.getCurrentDirectory();
 
-                boolean exists = DocumentsContract.isChildDocument(resolver, cwd.derivedUri,
-                        displayName);
-                if (exists) {
-                    Toast.makeText(activity, activity.getResources().getString(
-                            R.string.folder_exists, displayName), Toast.LENGTH_LONG).show();
-                } else {
-                    new CreateDirectoryTask(activity, cwd, displayName).executeOnExecutor(
-                            ProviderExecutor.forAuthority(cwd.authority));
-                }
-                ((DocumentsActivity) context).removeDialog((Dialog) dialog);
+                new CreateDirectoryTask(activity, cwd, displayName).executeOnExecutor(
+                        ProviderExecutor.forAuthority(cwd.authority));
             }
         });
-        builder.setNegativeButton(android.R.string.cancel, new OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                ((DocumentsActivity) context).removeDialog((Dialog) dialog);
-            }
-        });
+        builder.setNegativeButton(android.R.string.cancel, null);
 
-        AlertDialog dialog = builder.create();
-        ((DocumentsActivity) context).addDialog((Dialog) dialog);
-        return dialog;
+        return builder.create();
     }
 
     private class CreateDirectoryTask extends AsyncTask<Void, Void, DocumentInfo> {
@@ -150,10 +109,7 @@ public class CreateDirectoryFragment extends DialogFragment {
                 final Uri childUri = DocumentsContract.createDocument(
                         client, mCwd.derivedUri, Document.MIME_TYPE_DIR, mDisplayName);
                 return DocumentInfo.fromUri(resolver, childUri);
-            } catch (RemoteException e) {
-                Log.w(TAG, "Failed to create directory", e);
-                return null;
-            } catch (FileNotFoundException e) {
+            } catch (Exception e) {
                 Log.w(TAG, "Failed to create directory", e);
                 return null;
             } finally {

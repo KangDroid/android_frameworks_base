@@ -12,20 +12,6 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *
- * Per article 5 of the Apache 2.0 License, some modifications to this code
- * were made by the Oneplus Project.
- *
- * Modifications Copyright (C) 2015 The Oneplus Project
- *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 3
- * of the License, or (at your option) any later version.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
 package com.android.documentsui;
@@ -46,7 +32,6 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.CancellationSignal;
 import android.os.OperationCanceledException;
-import android.os.RemoteException;
 import android.provider.DocumentsContract;
 import android.provider.DocumentsContract.Document;
 import android.util.Log;
@@ -83,11 +68,11 @@ public class DirectoryLoader extends AsyncTaskLoader<DirectoryResult> {
 
     private final ForceLoadContentObserver mObserver = new ForceLoadContentObserver();
 
-    private int mType;
-    private RootInfo mRoot;
+    private final int mType;
+    private final RootInfo mRoot;
     private DocumentInfo mDoc;
-    private Uri mUri;
-    private int mUserSortOrder;
+    private final Uri mUri;
+    private final int mUserSortOrder;
 
     private CancellationSignal mSignal;
     private DirectoryResult mResult;
@@ -95,19 +80,6 @@ public class DirectoryLoader extends AsyncTaskLoader<DirectoryResult> {
     public DirectoryLoader(Context context, int type, RootInfo root, DocumentInfo doc, Uri uri,
             int userSortOrder) {
         super(context, ProviderExecutor.forAuthority(root.authority));
-        mType = type;
-        mRoot = root;
-        mDoc = doc;
-        mUri = uri;
-        mUserSortOrder = userSortOrder;
-    }
-
-    public DirectoryLoader(Context context) {
-        super(context);
-    }
-
-    public void init(int type, RootInfo root, DocumentInfo doc, Uri uri,
-            int userSortOrder) {
         mType = type;
         mRoot = root;
         mDoc = doc;
@@ -205,11 +177,7 @@ public class DirectoryLoader extends AsyncTaskLoader<DirectoryResult> {
 
             result.client = client;
             result.cursor = cursor;
-        } catch (RemoteException e) {
-            Log.w(TAG, "Failed to query", e);
-            result.exception = e;
-            ContentProviderClient.releaseQuietly(client);
-         } catch (NullPointerException e) {
+        } catch (Exception e) {
             Log.w(TAG, "Failed to query", e);
             result.exception = e;
             ContentProviderClient.releaseQuietly(client);
