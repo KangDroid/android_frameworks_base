@@ -245,6 +245,8 @@ public class RecentsActivity extends Activity implements RecentsView.RecentsView
             if (mEmptyView == null) {
                 mEmptyView = mEmptyViewStub.inflate();
             }
+
+            mRecentsView.enableShake(true);
             mEmptyView.setVisibility(View.VISIBLE);
             mEmptyView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -259,6 +261,7 @@ public class RecentsActivity extends Activity implements RecentsView.RecentsView
                 mEmptyView.setVisibility(View.GONE);
                 mEmptyView.setOnClickListener(null);
             }
+            mRecentsView.enableShake(true);
             findViewById(R.id.floating_action_button).setVisibility(View.VISIBLE);
             boolean showSearchBar = Settings.System.getInt(getContentResolver(),
                        Settings.System.RECENTS_SHOW_SEARCH_BAR, 1) == 1;
