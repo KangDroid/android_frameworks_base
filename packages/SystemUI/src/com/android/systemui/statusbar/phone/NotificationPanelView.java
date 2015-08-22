@@ -372,6 +372,9 @@ public class NotificationPanelView extends PanelView implements
         updateHeader();
         mNotificationStackScroller.updateIsSmallScreen(
                 mHeader.getCollapsedHeight() + mQsPeekHeight);
+        if (mQsSizeChangeAnimator == null) {
+            mQsContainer.setHeightOverride(mQsContainer.getDesiredHeight());
+        }
         requestPanelHeightUpdate();
     }
 
@@ -710,9 +713,6 @@ public class NotificationPanelView extends PanelView implements
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        if (event.getActionMasked() == MotionEvent.ACTION_UP) {
-            mStatusBar.setVisualizerTouching(false);
-        }
         if (mBlockTouches) {
             return false;
         }
@@ -948,7 +948,6 @@ public class NotificationPanelView extends PanelView implements
     }
 
     private void setQsExpanded(boolean expanded) {
-        mStatusBar.setVisualizerAnimating(expanded);
         boolean changed = mQsExpanded != expanded;
         if (changed) {
             mQsExpanded = expanded;
@@ -1853,14 +1852,12 @@ public class NotificationPanelView extends PanelView implements
                 || isDozing()) {
             return;
         }
-        mStatusBar.setVisualizerAnimating(true);
         mHintAnimationRunning = true;
         mAfforanceHelper.startHintAnimation(right, new Runnable() {
             @Override
             public void run() {
                 mHintAnimationRunning = false;
                 mStatusBar.onHintFinished();
-                mStatusBar.setVisualizerAnimating(false);
             }
         });
         boolean start = getLayoutDirection() == LAYOUT_DIRECTION_RTL ? right : !right;
