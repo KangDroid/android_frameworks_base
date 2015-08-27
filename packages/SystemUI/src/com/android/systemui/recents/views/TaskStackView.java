@@ -565,6 +565,8 @@ public class TaskStackView extends FrameLayout implements TaskStack.TaskStackCal
                 // Remove visible TaskViews
                 long dismissDelay = 0;
                 int childCount = getChildCount();
+                // Check if childCount is a zero before moving forward
+                if (childCount > 0) {
                 int delay = mConfig.taskViewRemoveAnimDuration / childCount;
                 for (int i = 0; i < childCount; i++) {
                     TaskView tv = (TaskView) getChildAt(i);
@@ -572,6 +574,7 @@ public class TaskStackView extends FrameLayout implements TaskStack.TaskStackCal
                     tv.dismissTask(dismissDelay);
                     dismissDelay += delay;
                 }
+			}
 
                 int size = tasks.size();
                 // Remove any other Tasks
