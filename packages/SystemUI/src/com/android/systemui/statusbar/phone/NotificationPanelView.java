@@ -761,6 +761,7 @@ public class NotificationPanelView extends PanelView implements
         if (event.getActionMasked() == MotionEvent.ACTION_DOWN && mExpandedHeight == 0
                 && mQsExpansionEnabled) {
             mTwoFingerQsExpandPossible = true;
+			mStatusBar.resetQsPanelVisibility();
             resetQsPanelVisibility();
         }
         boolean twoFingerQsEvent = mTwoFingerQsExpandPossible
@@ -1212,6 +1213,7 @@ public class NotificationPanelView extends PanelView implements
         updateNotificationScrim(height);
         if (mKeyguardShowing) {
             updateHeaderKeyguard();
+            mStatusBar.resetQsPanelVisibility();
             resetQsPanelVisibility();
         }
         if (mStatusBarState == StatusBarState.SHADE && mQsExpanded
