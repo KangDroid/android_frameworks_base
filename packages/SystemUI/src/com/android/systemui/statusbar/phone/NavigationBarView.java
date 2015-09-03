@@ -641,6 +641,7 @@ public class NavigationBarView extends LinearLayout {
         setButtonWithTagVisibility(NavbarEditor.NAVBAR_ALWAYS_MENU_2, shouldShowAlwaysMenu);
         setButtonWithTagVisibility(NavbarEditor.NAVBAR_CONDITIONAL_MENU, shouldShow);
         setButtonWithTagVisibility(NavbarEditor.NAVBAR_SEARCH, shouldShowAlwaysMenu);
+        setButtonWithTagVisibility(NavbarEditor.NAVBAR_POWER, shouldShowAlwaysMenu);
     }
 
     @Override
