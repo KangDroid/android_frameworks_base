@@ -4927,6 +4927,12 @@ public final class Settings {
          */
         public static final String RECENT_APP_SIDEBAR_SCALE_FACTOR =
                 "recent_app_sidebar_scale_factor";
+			
+        /**
+         * Settings for clock font size
+         * @hide
+         */
+        public static final String STATUSBAR_CLOCK_FONT_SIZE = "statusbar_clock_font_size";
 
         /**
          * Settings to backup. This is here so that it's in the same place as the settings
