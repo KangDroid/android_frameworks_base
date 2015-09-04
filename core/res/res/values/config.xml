@@ -2381,4 +2381,7 @@
         <item>-44</item>
     </integer-array>
 
+    <!-- Boolean to enable the advanced settings switch -->
+    <bool name="config_advancedSettingsMode">true</bool>
+
 </resources>
