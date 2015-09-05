@@ -80,17 +80,6 @@
         android:layout_marginStart="8dp"
         android:visibility="gone"/>
 
-	    <ImageView
-			android:id="@+id/status_bar_power_menu"
-			style="@android:style/Widget.Material.Button.Borderless"
-			android:layout_toStartOf="@id/settings_button"
-			android:layout_width="48dp"
-			android:layout_height="@dimen/status_bar_header_height"
-			android:background="@drawable/ripple_drawable"
-			android:layout_marginStart="8dp"
-			android:src="@drawable/ic_lock_power_off_alpha"
-			android:visibility="gone"/>
-
     <LinearLayout android:id="@+id/system_icons_super_container"
         android:layout_width="wrap_content"
         android:layout_height="@dimen/status_bar_header_height"
@@ -115,16 +104,6 @@
             android:textColor="@color/status_bar_battery_level_text_color"
             android:textSize="@dimen/battery_level_text_size"
             android:importantForAccessibility="noHideDescendants"/>
-        <com.android.systemui.DockBatteryLevelTextView android:id="@+id/dock_battery_level_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginStart="@dimen/header_battery_margin_expanded"
-            android:paddingEnd="@dimen/battery_level_padding_end"
-            android:textColor="@color/status_bar_battery_level_text_color"
-            android:textSize="@dimen/battery_level_text_size"
-            android:importantForAccessibility="noHideDescendants"
-            android:visibility="gone"/>
     </LinearLayout>
 
     <TextView
