@@ -359,4 +359,7 @@
 
     <!-- Advanced settings switch -->
     <java-symbol type="bool" name="config_advancedSettingsMode" />
+
+    <!-- Config to disable showing ringtones from removable storage -->
+    <java-symbol type="bool" name="config_excludeRingtonesFromRemovableStorage" />
 </resources>

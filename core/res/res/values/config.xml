@@ -2384,4 +2384,7 @@
     <!-- Boolean to enable the advanced settings switch -->
     <bool name="config_advancedSettingsMode">true</bool>
 
+    <!-- Config to disable showing ringtones from removable storage -->
+    <bool name="config_excludeRingtonesFromRemovableStorage">false</bool>
+
 </resources>
