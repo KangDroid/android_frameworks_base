@@ -660,6 +660,7 @@ public class StatusBarHeaderView extends RelativeLayout implements View.OnClickL
             handledOnClick = true;
         } else if (v == mHeadsUpButton) {
             startHeadsUpActivity();
+            updateHeadsUpButton();
         }
 
         if (handledOnClick) {
