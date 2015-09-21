@@ -556,11 +556,8 @@ public class TaskStackView extends FrameLayout implements TaskStack.TaskStackCal
     }
 
     public void dismissAllTasks() {
-        post(new Runnable() {
-            @Override
-            public void run() {
-                ArrayList<Task> tasks = new ArrayList<Task>();
-                tasks.addAll(mStack.getTasks());
+        final ArrayList<Task> tasks = new ArrayList<Task>();
+        tasks.addAll(mStack.getTasks());
 
                 // Remove visible TaskViews
                 long dismissDelay = 0;
@@ -576,20 +573,23 @@ public class TaskStackView extends FrameLayout implements TaskStack.TaskStackCal
                 }
 			}
 
-                int size = tasks.size();
-                // Remove any other Tasks
-                for (int i = 0; i < size; i++) {
-                    Task t = tasks.get(i);
-                    if (mStack.getTasks().contains(t)) {
-                        mStack.removeTask(t);
-                    }
-                }
+        // Remove any other Tasks
+        for (Task t : tasks) {
+            if (mStack.getTasks().contains(t)) {
+                mStack.removeTask(t);
+            }
+        }
 
+        // removeAllUserTask() can take upwards of two seconds to execute so post
+        // a delayed runnable to run this code once we are done animating
+        postDelayed(new Runnable() {
+            @Override
+            public void run() {
                 // And remove all the excluded or all the other tasks
                 SystemServicesProxy ssp = RecentsTaskLoader.getInstance().getSystemServicesProxy();
                 ssp.removeAllUserTask(UserHandle.myUserId());
             }
-        });
+        }, mConfig.taskViewRemoveAnimDuration);
     }
 
     @Override
