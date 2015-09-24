@@ -24,7 +24,6 @@ import android.os.Message;
 import android.os.UserHandle;
 import android.provider.Settings;
 import android.view.WindowManager;
-import android.view.WindowManagerPolicy;
 import android.view.accessibility.AccessibilityManager;
 import android.widget.Toast;
 
@@ -40,7 +39,6 @@ public class LockTaskNotify {
 
     private final Context mContext;
     private final H mHandler;
-    private final WindowManagerPolicy mPolicy = PolicyManager.makeNewWindowManager();
     private AccessibilityManager mAccessibilityManager;
     private Toast mLastToast;
     private boolean mHasNavigationBar;
