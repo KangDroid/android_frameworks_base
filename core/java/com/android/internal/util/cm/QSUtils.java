@@ -34,6 +34,7 @@ import android.os.SystemProperties;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Handler;
+import android.os.PowerManager;
 import android.os.UserHandle;
 import android.provider.Settings;
 import android.telephony.TelephonyManager;
@@ -126,6 +127,9 @@ public class QSUtils {
                     break;
                 case QSConstants.TILE_AMBIENT_DISPLAY:
                     removeTile = !isDozeAvailable(context);
+                    break;
+                case QSConstants.TILE_PERFORMANCE:
+                    removeTile = !deviceSupportsPowerProfiles(context);
                     break;
 
                 case QSConstants.DYNAMIC_TILE_SU:
@@ -298,6 +302,11 @@ public class QSUtils {
                     com.android.internal.R.string.config_dozeComponent);
         }
         return !TextUtils.isEmpty(name);
+    }
+
+    public static boolean deviceSupportsPowerProfiles(Context context) {
+        PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
+        return pm.hasPowerProfiles();
     }
 
     private static boolean supportsRootAccess() {
