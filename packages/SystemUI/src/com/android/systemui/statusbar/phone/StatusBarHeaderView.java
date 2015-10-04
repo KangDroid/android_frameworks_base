@@ -664,9 +664,7 @@ public class StatusBarHeaderView extends RelativeLayout implements View.OnClickL
 	
     @Override
     public boolean onLongClick(View v) {
-        if (v == mHeadsUpButton) {
-            startHeadsUpLongClickActivity();
-        } else if (v == mTaskManagerButton) {
+        if (v == mTaskManagerButton) {
             startTaskManagerLongClickActivity();
         }
         return false;
