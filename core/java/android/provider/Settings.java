@@ -4815,13 +4815,6 @@ public final class Settings {
         public static final String LOCK_SCREEN_MAX_NOTIFICATIONS = "lock_screen_max_notifications";
 
         /**
-         * Launch headsup in floating window or not
-         *
-         * @hide
-         */
-        public static final String HEADS_UP_FLOATING = "heads_up_floating";
-
-        /**
          * Launch gesture anywhere in floating window or not
          * @hide
          */
