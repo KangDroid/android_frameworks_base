@@ -32,7 +32,6 @@ import android.os.Handler;
 import android.os.Message;
 import android.os.Process;
 import android.os.UserHandle;
-import android.provider.Settings;
 import android.util.AttributeSet;
 import android.view.HapticFeedbackConstants;
 import android.view.LayoutInflater;
@@ -53,6 +52,7 @@ import com.android.systemui.statusbar.policy.BrightnessMirrorController;
 import com.android.systemui.statusbar.policy.KeyguardMonitor;
 
 import cyanogenmod.app.StatusBarPanelCustomTile;
+import cyanogenmod.providers.CMSettings;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -207,12 +207,15 @@ public class QSPanel extends ViewGroup {
         @Override
         protected void update() {
             ContentResolver resolver = mContext.getContentResolver();
-            mUseMainTiles = Settings.Secure.getIntForUser(resolver,
-				Settings.Secure.QS_USE_MAIN_TILES,
-                1, UserHandle.USER_CURRENT) == 1;
+	        mUseMainTiles = CMSettings.Secure.getIntForUser(resolver,
+	            CMSettings.Secure.QS_USE_MAIN_TILES,
+				1, UserHandle.myUserId()) == 1;
             mBrightnessSliderEnabled = Settings.Secure.getIntForUser(resolver,
 				Settings.Secure.QS_SHOW_BRIGHTNESS_SLIDER,
-                1, UserHandle.USER_CURRENT) == 1;			
+                1, UserHandle.USER_CURRENT) == 1;
+	        mBrightnessSliderEnabled = CMSettings.Secure.getInt(resolver,
+				CMSettings.Secure.QS_SHOW_BRIGHTNESS_SLIDER,
+	            1) == 1;			
             mUseFourColumns = Settings.Secure.getIntForUser(resolver,
 				Settings.Secure.QS_USE_FOUR_COLUMNS,
                 0, UserHandle.USER_CURRENT) == 1;			
