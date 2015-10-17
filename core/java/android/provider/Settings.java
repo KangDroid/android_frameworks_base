@@ -2315,6 +2315,12 @@ public final class Settings {
          */
         @Deprecated
         public static final String QS_USE_MAIN_TILES = Secure.QS_USE_MAIN_TILES;
+		/**
+        * Defines global heads up snooze time if user want to snooze it.
+        *
+        * @hide
+        */
+       public static final String HEADS_UP_SNOOZE_TIME = "heads_up_snooze_time";
 
         /**
          * Defines the status and navigation bar color is battery safe mode is enabled.
@@ -2951,6 +2957,13 @@ public final class Settings {
          */
         public static final String STATUSBAR_BATTERY_BAR_ANIMATE = "statusbar_battery_bar_animate";
 
+        /**
+         * Whether the incoming call should be shown as non-intrusive notification.
+         * The value is boolean (1 or 0).
+         *    0 - Fullscreen
+         *    1 - Non-intrusive
+         */
+        public static final String USE_NON_INTRUSIVE_CALL = "use_non_intrusive_call";
 
         /**
          * Whether the audible DTMF tones are played by the dialer when dialing. The value is
@@ -3793,31 +3806,6 @@ public final class Settings {
         public static final String HEADS_UP_DISMISS_ON_REMOVE = "heads_up_dismiss_on_remove";
 
         /**
-         * Hide notification 1 second after touching outside
-         * @hide
-         */
-        public static final String HEADS_UP_TOUCH_OUTSIDE = "heads_up_touch_outside";
-
-		/**
-         * Heads Up background color
-         * @hide
-         */
-        public static final String HEADS_UP_BG_COLOR = "heads_up_bg_color";
-
-        /**
-         * Heads Up text color
-         * @hide
-         */
-        public static final String HEADS_UP_TEXT_COLOR = "heads_up_text_color";
-
-        /**
-         * Defines the global heads up notification snooze
-         *
-         * @hide
-         */
-        public static final String HEADS_UP_NOTIFICATION_SNOOZE = "heads_up_notification_snooze";
-
-        /**
          * An intent (a flattened Uri String) to launch when user voice launch
          * action is detected. An empty or null string will launch the default
          * voice search activity.
@@ -4417,38 +4405,6 @@ public final class Settings {
         public static final String RECENTS_CLEAR_ALL_LOCATION = "recents_clear_all_location";
 
         /**
-         * Whether the user has enabled headsup (Default 1)
-         * HeadsUp is enabled by default within its Settings.Global.HEADS_UP_NOTIFICATIONS_ENABLED
-         * setting. Avoid changing low level implementations and use a System setting to
-         * override per-user heads up on/off preference.
-         *
-         * Enable headsup = 1 (on by default)
-         * Disable headsup = 0
-         *
-         * @see com.android.systemui.statusbar.BaseStatusBar#addNotification
-         * @hide
-         */
-        public static final String HEADS_UP_USER_ENABLED =
-                "heads_up_user_enabled";
-
-        /** @hide */ public static final int HEADS_UP_USER_OFF = 0;
-        /** @hide */ public static final int HEADS_UP_USER_ON = 1;
-
-        /**
-         * Which applications to disable heads up notifications for
-         *
-         * @hide
-         */
-        public static final String HEADS_UP_CUSTOM_VALUES = "heads_up_custom_values";
-
-        /**
-         * Which applications to disable heads up notifications for
-         *
-         * @hide
-         */
-        public static final String HEADS_UP_BLACKLIST_VALUES = "heads_up_blacklist_values";
-
-        /**
          * Defines the global heads up notification decay
          *
          * @hide
@@ -4668,13 +4624,6 @@ public final class Settings {
         public static final String ENABLE_TASK_MANAGER = "enable_task_manager";
 
         /**
-         * Wether to show a headsup enable/disable button in status bar header
-         *
-         * @hide
-         */
-        public static final String HEADS_UP_SHOW_STATUS_BUTTON = "heads_up_show_status_button";
-
-        /**
          * Whether to disable the torch when the screen turns off
          * @hide
          */
@@ -4813,13 +4762,6 @@ public final class Settings {
          * @hide
          */
         public static final String LOCK_SCREEN_MAX_NOTIFICATIONS = "lock_screen_max_notifications";
-
-        /**
-         * Launch headsup in floating window or not
-         *
-         * @hide
-         */
-        public static final String HEADS_UP_FLOATING = "heads_up_floating";
 
         /**
          * Launch gesture anywhere in floating window or not
@@ -5002,6 +4944,13 @@ public final class Settings {
          * @hide
          */
         public static final String STATUS_BAR_CUSTOM_HEADER_DEFAULT = "status_bar_custom_header_default";
+			
+        /**
+         * Defines global heads up enable/disable switch.
+         *
+         * @hide
+         */
+        public static final String HEADS_UP_GLOBAL_SWITCH = "heads_up_global_switch";
 
         /**
          * Settings to backup. This is here so that it's in the same place as the settings
@@ -5068,6 +5017,7 @@ public final class Settings {
             SIP_RECEIVE_CALLS,
             POINTER_SPEED,
             VIBRATE_WHEN_RINGING,
+            USE_NON_INTRUSIVE_CALL,
             RINGTONE,
             LOCK_TO_APP_ENABLED,
             NOTIFICATION_SOUND,

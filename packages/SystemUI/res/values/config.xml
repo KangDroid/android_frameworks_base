@@ -156,6 +156,9 @@
 
     <bool name="config_showRsrpSignalLevelforLTE">false</bool>
 
+    <!-- milliseconds how long heads up should be in snooze. -->
+    <integer name="heads_up_snooze_time">300000</integer>
+
     <!-- The duration in seconds to wait before the dismiss buttons are shown. -->
     <integer name="recents_task_bar_dismiss_delay_seconds">1</integer>
 
@@ -321,3 +324,4 @@
          Default for pie is high sensivity -->
    <integer name="pie_gesture_sensivity">8</integer>
 </resources>
+
